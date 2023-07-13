@@ -9,7 +9,7 @@ export class SignatureEntity extends BaseEntity<SignatureEntity.Props>{
     static create(props: SignatureEntity.Input, id?: string): SignatureEntity  {
         const signatureEntity = new SignatureEntity({
             ...props,
-            expirationDate: props.expirationDate || new Date(Date.now() - 1000)
+            expirationDate: props.expirationDate || new Date()
         }, id)
         return signatureEntity
     }
@@ -18,7 +18,6 @@ export class SignatureEntity extends BaseEntity<SignatureEntity.Props>{
         if(this.isExpired()) {
             this.props.expirationDate = new Date()
         }
-
         const expirationDate = this.expirationDate
         this.expirationDate.setDate(expirationDate.getDate() + days)
     }

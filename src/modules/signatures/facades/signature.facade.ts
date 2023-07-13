@@ -1,4 +1,6 @@
 import { PrismaClient } from "@prisma/client";
+import { PrismaSignatureRepository } from "../repositories";
+import { CreateSignatureUseCase } from "../usecase";
 
 export class SignatureFacade {
 
@@ -7,11 +9,13 @@ export class SignatureFacade {
     ){}
 
     async exists(userId: string, serviceId: string): Promise<boolean> {
-        return false
+        const prismaSignatureRepository = new PrismaSignatureRepository(this.prismaClient)
+        return !!await prismaSignatureRepository.findByUserIdAndServiceId(userId, serviceId)
     }
 
     async create(input: SignatureFacade.CreateInput): Promise<boolean> {
-        return null
+        const createSignatureUseCase = new CreateSignatureUseCase(this.prismaClient)
+        return await createSignatureUseCase.execute(input)
     }
 }
 

@@ -2,7 +2,7 @@ import { PrismaClient } from "@prisma/client";
 import { RedeemKeyDto } from "../../dto/redeem-key.dto";
 import { PrismaKeyRepository } from "../../respositories";
 import { PrismaRabbitmqOutbox } from "src/modules/@shared/providers";
-import { KeyNotFoundError } from "../errors";
+import { KeyNotFoundError } from "../_errors";
 import { KeyAlreadyRedeemedError } from "./errors";
 import { KeyRedeemedEvent } from "./key-redeemed.event";
 

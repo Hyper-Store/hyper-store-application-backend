@@ -37,6 +37,16 @@ model Key {
   @@map("keys")
 }
 
+model Signature {
+  id       String @unique
+  userId String
+  serviceId String
+  expirationDate DateTime
+  
+  @@id([userId, serviceId])
+  @@map("signatures")
+}
+
 
 
 

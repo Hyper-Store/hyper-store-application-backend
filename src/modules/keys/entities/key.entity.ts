@@ -37,6 +37,12 @@ export class KeyEntity extends BaseEntity<KeyEntity.Props>{
         this.props.status = "REDEEMED"
     }
 
+    isDisabled() {
+        return this.props.status === "DISABLED"
+    }
+    isActive(){
+        return this.props.status === "ACTIVE"
+    }
     isRedeemed() {
         return this.props.status === "REDEEMED"
     }
