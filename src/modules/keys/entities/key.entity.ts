@@ -6,12 +6,13 @@ export class KeyEntity extends BaseEntity<KeyEntity.Props>{
         super(props, id)
     }
 
-    static create(input: KeyEntity.Input): KeyEntity {
+    static create(input: KeyEntity.Input, id?: string): KeyEntity {
         return new KeyEntity({
             ...input,
             key: input.key || KeyEntity.generateRandomKey(),
-            status: "ACTIVE"
-        })
+            status: "ACTIVE",
+            keyRedeemerId: undefined
+        }, id)
     }
 
     static generateRandomKey(){
@@ -31,11 +32,12 @@ export class KeyEntity extends BaseEntity<KeyEntity.Props>{
         return true
     }
 
-    redeem(){
+    redeem(keyRedeemerId: string){
+        this.props.keyRedeemerId = keyRedeemerId
         this.props.status = "REDEEMED"
     }
 
-    isRedeemed(){
+    isRedeemed() {
         return this.props.status === "REDEEMED"
     }
 
@@ -45,7 +47,8 @@ export class KeyEntity extends BaseEntity<KeyEntity.Props>{
             serviceId: this.serviceId,
             key: this.key,
             validUntil: this.validUntil,
-            status: this.status
+            status: this.status,
+            keyRedeemerId: this.keyRedeemerId
         }
     }
 
@@ -60,6 +63,9 @@ export class KeyEntity extends BaseEntity<KeyEntity.Props>{
     }
     get status(): KeyEntity.Status {
         return this.props.status
+    }
+    get keyRedeemerId(): string | undefined {
+        return this.props.keyRedeemerId
     }
 }
 
@@ -78,6 +84,7 @@ export namespace KeyEntity {
         key: string
         validUntil: number
         status: Status
+        keyRedeemerId?: string
     }
 
     export type PropsJSON = Props  & { id: string}

@@ -33,6 +33,7 @@ model Key {
   serviceId String
   validUntil Int
   status String
+  keyRedeemerId String?
   @@map("keys")
 }
 
