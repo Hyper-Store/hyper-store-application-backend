@@ -7,13 +7,19 @@ export class UserSectionEntity extends BaseEntity<UserSectionEntity.Props>{
         super(props, id)
     }
 
+    update(input: UserSectionEntity.Update) {
+        if(input.ip) this.props.ip = input.ip
+        if(input.userAgent) this.props.userAgent = input.userAgent
+        if(input.accessToken) this.props.accessToken = input.accessToken
+    }
+
     toJSON(): UserSectionEntity.PropsJSON {
         return {
             id: this.id,
             userId: this.props.userId,
             ip: this.props.ip,
             userAgent: this.props.userAgent,
-            accesstoken: this.props.accesstoken        
+            accessToken: this.props.accessToken        
         }
     }
 
@@ -21,11 +27,17 @@ export class UserSectionEntity extends BaseEntity<UserSectionEntity.Props>{
 
 export namespace UserSectionEntity {
 
+    export type Update = {
+        ip?: string
+        userAgent?: string
+        accessToken?: string
+    }
+
     export type Props = {
         userId: string
         ip: string
         userAgent: string
-        accesstoken: string
+        accessToken: string
     }
 
     export type PropsJSON = Props  & { id: string}

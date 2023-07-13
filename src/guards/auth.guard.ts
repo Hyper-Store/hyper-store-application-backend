@@ -1,7 +1,17 @@
 
 import { CanActivate, ExecutionContext, Injectable } from '@nestjs/common';
 import { Request, Response } from 'express';
-import { GetCurrentUserUsecase } from 'src/modules/auth/usecases';
+import { UserSectionService } from 'src/modules/user-section/user-section.service';
+import {  UnauthorizedException } from '@nestjs/common';
+
+export class InvalidAccessTokenError extends UnauthorizedException {
+
+    constructor(){
+        super({
+            name: "InvalidAccessTokenError"
+        })
+    }
+}
 
 interface User {
   userId: string;
@@ -19,18 +29,17 @@ declare global {
 
 @Injectable()
 export class AuthGuard implements CanActivate {
+
   async canActivate(
     context: ExecutionContext,
   ):  Promise<boolean>  {
 
     const ctx = context.switchToHttp();
     const req = ctx.getRequest<Request & any>();
-    console.log(req.ip)
-    console.log( req.headers['user-agent'])
-    const getCurrentUserUsecase = new GetCurrentUserUsecase()
-    const user = await getCurrentUserUsecase.execute({
-        accessToken: req.headers.authorization ?? ""
-    })
+    
+    const accessToken = req.headers.authorization ?? ""
+    const user = await UserSectionService.verifySection(accessToken)
+    if(!user) throw new InvalidAccessTokenError()
 
     req.currentUser = user
 

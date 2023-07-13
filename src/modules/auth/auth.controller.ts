@@ -32,11 +32,10 @@ export class AuthController {
   ) {
     const loginUsecase = new LoginUsecase(this.prismaService)
     const result = await loginUsecase.execute(body);
-    this.userSectionService.registerSection({ 
+    await this.userSectionService.registerSection({ 
       ip: req.ip,
       userAgent: req.headers["user-agent"] ?? "",
-      userId: req.currentUser.userId,
-      accesstoken: result.accessToken
+      accessToken: result.accessToken
     })
     return result
   }
@@ -52,11 +51,10 @@ export class AuthController {
       refreshToken: body.refreshToken ?? ""
     });
 
-    this.userSectionService.registerSection({ 
+    await this.userSectionService.registerSection({ 
       ip: req.ip,
       userAgent: req.headers["user-agent"] ?? "",
-      userId: "req.currentUser.userId",
-      accesstoken: result.accessToken
+      accessToken: result.accessToken
     })
     return result
   }

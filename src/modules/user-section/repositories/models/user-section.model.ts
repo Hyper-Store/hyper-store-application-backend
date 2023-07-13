@@ -9,8 +9,8 @@ export interface IEvent extends Document {
 }
 
 const EventSchema: Schema = new Schema({
-  id: { type: String, required: true },
-  userId: { type: String, required: true },
+  id: { type: String, required: true, unique: true },
+  userId: { type: String, required: true, unique: true },
   ip: { type: String, required: true },
   userAgent: { type: String, required: true },
   accessToken: { type: String, required: true, unique: true },
