@@ -1,1 +1,1 @@
-export * from "./process-redeem-key"
+export * from "./process-redeem-key/process-redeem-key.usecase"

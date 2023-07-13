@@ -15,7 +15,6 @@ async function bootstrap() {
   });
 
   app.useGlobalPipes(new CustomValidationPipe());
-
   await app.listen(5000);
 }
 bootstrap();

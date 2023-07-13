@@ -9,11 +9,13 @@ import { Response, Request } from "express"
 import { PrismaService } from 'src/prisma/prisma.service';
 import { LoginDto } from './dto';
 import { AuthGuard } from 'src/guards';
+import { UserSectionService } from '../user-section/user-section.service';
 
 @Controller('auth')
 export class AuthController {
   constructor(
     private readonly prismaService: PrismaService,
+    private readonly userSectionService: UserSectionService
   ) {}
 
   @Post("/signup")
@@ -25,21 +27,38 @@ export class AuthController {
   @HttpCode(200)
   @Post("/login")
   async login(
-    @Body() body: LoginDto
+    @Body() body: LoginDto,
+    @Req() req: Request
   ) {
     const loginUsecase = new LoginUsecase(this.prismaService)
-    return await loginUsecase.execute(body);
+    const result = await loginUsecase.execute(body);
+    this.userSectionService.registerSection({ 
+      ip: req.ip,
+      userAgent: req.headers["user-agent"] ?? "",
+      userId: req.currentUser.userId,
+      accesstoken: result.accessToken
+    })
+    return result
   }
 
   @HttpCode(200)
   @Post("/refresh-token")
   async refreshToken(
     @Body() body: any, 
+    @Req() req: Request
   ) {
     const refreshTokenUsecase = new RefreshTokenUsecase()
-    return await refreshTokenUsecase.execute({
+    const result = await refreshTokenUsecase.execute({
       refreshToken: body.refreshToken ?? ""
     });
+
+    this.userSectionService.registerSection({ 
+      ip: req.ip,
+      userAgent: req.headers["user-agent"] ?? "",
+      userId: "req.currentUser.userId",
+      accesstoken: result.accessToken
+    })
+    return result
   }
 
   @HttpCode(200)

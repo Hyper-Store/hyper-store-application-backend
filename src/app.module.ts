@@ -10,6 +10,8 @@ import { SignaturesModule } from './modules/signatures/signatures.module';
 import { ServicesModule } from './modules/services/services.module';
 import { KeysModule } from './modules/keys/keys.module';
 import { KeyRedemptionModule } from './modules/key-redemption/key-redemption.module';
+import { UserSectionService } from './modules/user-section/user-section.service';
+import { UserSectionModule } from './modules/user-section/user-section.module';
 
 @Module({
   imports: [
@@ -23,8 +25,9 @@ import { KeyRedemptionModule } from './modules/key-redemption/key-redemption.mod
     ServicesModule,
     KeysModule,
     KeyRedemptionModule,
+    UserSectionModule,
   ],
   controllers: [],
-  providers: [],
+  providers: [UserSectionService],
 })
 export class AppModule {}

@@ -1,6 +1,6 @@
 import { PrismaClient } from "@prisma/client";
 import { PrismaSignatureRepository } from "../repositories";
-import { CreateSignatureUseCase } from "../usecase";
+import { CreateSignatureUseCase } from "../usecases";
 
 export class SignatureFacade {
 

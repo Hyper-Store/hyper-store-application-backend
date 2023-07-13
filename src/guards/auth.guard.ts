@@ -24,8 +24,9 @@ export class AuthGuard implements CanActivate {
   ):  Promise<boolean>  {
 
     const ctx = context.switchToHttp();
-    const req = ctx.getRequest<Request>();
-
+    const req = ctx.getRequest<Request & any>();
+    console.log(req.ip)
+    console.log( req.headers['user-agent'])
     const getCurrentUserUsecase = new GetCurrentUserUsecase()
     const user = await getCurrentUserUsecase.execute({
         accessToken: req.headers.authorization ?? ""
