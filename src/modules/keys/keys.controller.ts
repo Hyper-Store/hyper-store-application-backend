@@ -13,7 +13,7 @@ export class KeysController {
     private readonly prismaService: PrismaService
   ) {}
 
-  @UseGuards(new AuthGuard())
+  @UseGuards(AuthGuard)
   @Post("/redeem/:key")
   async redeem(
     @Param("key") key: string,

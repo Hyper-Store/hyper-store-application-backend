@@ -15,21 +15,21 @@ export class KeysServerController {
     private readonly prismaService: PrismaService
   ) {}
 
-  @UseGuards(new ServerAuthGuard())
+  @UseGuards(ServerAuthGuard)
   @Post()
   async create(@Body() body: CreateKeyDto) {
     const generateKeyUsecase = new GenerateKeyUsecase(this.prismaService)
     return await generateKeyUsecase.execute(body)
   }
 
-  @UseGuards(new ServerAuthGuard())
+  @UseGuards(ServerAuthGuard)
   @Post()
   async disable(@Body() body: StatusChangeDto) {
     const disableKeyUsecase = new DisableKeyUsecase(this.prismaService)
     return await disableKeyUsecase.execute(body)
   }
 
-  @UseGuards(new ServerAuthGuard())
+  @UseGuards(ServerAuthGuard)
   @Post()
   async activate(@Body() body: StatusChangeDto) {
     const activateKeyUsecase = new ActivateKeyUsecase(this.prismaService)

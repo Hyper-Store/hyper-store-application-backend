@@ -60,7 +60,7 @@ export class AuthController {
   }
 
   @HttpCode(200)
-  @UseGuards(new AuthGuard())
+  @UseGuards(AuthGuard)
   @Post("/current-user")
   async currentUser(
     @Req() req: Request

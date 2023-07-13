@@ -4,20 +4,17 @@ import {
   UnBanUserUsecase,
   BanUserUsecase
 } from './usecases';
-import { Response, Request } from "express"
 import { PrismaService } from 'src/prisma/prisma.service';
-import { LoginDto } from './dto';
-import { AuthGuard, ServerAuthGuard } from 'src/guards';
-import { UserSectionService } from '../user-section/user-section.service';
+import { ServerAuthGuard } from 'src/guards';
 import { UserIdDto } from './dto';
 
 @Controller('server/auth')
-export class AuthController {
+export class AuthServerController {
     constructor(
         private readonly prismaService: PrismaService
     ) {}
 
-    @UseGuards(new ServerAuthGuard())
+    @UseGuards(ServerAuthGuard)
     @Post("/ban")
     ban(
         @Body() body: UserIdDto
@@ -26,7 +23,7 @@ export class AuthController {
         return banUserUsecase.execute(body);
     }
 
-    @UseGuards(new ServerAuthGuard())
+    @UseGuards(ServerAuthGuard)
     @Post("/unban")
     unBan(@Body() body: UserIdDto) {
         const unBanUserUsecase = new UnBanUserUsecase(this.prismaService)

@@ -4,9 +4,11 @@ import { Injectable } from "@nestjs/common";
 
 class PrismaUserEntityMapper {
     static toDomain(user: User): UserEntity {
-        return new UserEntity({
+        const userEntity =  new UserEntity({
             ...user
         }, user.id)
+        if(user.isBanned) userEntity.ban()
+        return userEntity
     }
 }
 

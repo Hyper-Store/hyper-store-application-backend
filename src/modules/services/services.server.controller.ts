@@ -11,7 +11,7 @@ export class ServicesController {
     private readonly prismaService: PrismaService,
   ) {}
 
-  @UseGuards(new ServerAuthGuard())
+  @UseGuards(ServerAuthGuard)
   @Post()
   async create(@Body() body: CreateServiceDto) {
     const createServiceUsecase = new CreateServiceUsecase(this.prismaService)
