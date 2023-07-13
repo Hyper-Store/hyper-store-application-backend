@@ -64,13 +64,13 @@ services:
     volumes:
       - ./.mysql-data:/var/lib/mysql
 
-  app:
-    build: .
-    command: tail -f /dev/null
-    ports: 
-      - "6000:5000"
-    volumes:
-      - .:/usr/src/app
-    depends_on:
-      - mongodb-primary
+  # app:
+  #   build: .
+  #   command: tail -f /dev/null
+  #   ports: 
+  #     - "6000:5000"
+  #   volumes:
+  #     - .:/usr/src/app
+  #   depends_on:
+  #     - mongodb-primary
 

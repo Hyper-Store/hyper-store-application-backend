@@ -20,6 +20,27 @@ model User {
   @@map("users")
 }
 
+model Service {
+  id       String      @id @default(uuid())
+  name     String      @unique
+  imageUrl      String
+  @@map("services")
+}
+
+model Key {
+  id       String      @id @default(uuid())
+  key     String      @unique
+  serviceId String
+  validUntil Int
+  status String
+  @@map("keys")
+}
+
+
+
+
+
+
 model PrismaRabbitmqOutbox {
   id       String      @id @default(uuid())
   eventName String
