@@ -4,6 +4,7 @@ import { PrismaRabbitmqOutbox } from "src/modules/@shared/providers";
 import { UserUnBannedEvent } from "./user-unbanned.event";
 import { UserNotFoundError } from "../_errors";
 import { UserAlreadyUnBannedError } from "./errors";
+import { UserIdDto } from "../../dto";
 
 export class UnBanUserUsecase {
 
@@ -11,7 +12,7 @@ export class UnBanUserUsecase {
         private readonly prismaClient: PrismaClient,
       ){}
     
-    async execute({ userId }: UnBanUserUsecase.Input) {
+    async execute({ userId }: UserIdDto) {
         
         return await this.prismaClient.$transaction(async (prisma: PrismaClient) => {
             const prismaUserRepository = new PrismaUserRepository(prisma)

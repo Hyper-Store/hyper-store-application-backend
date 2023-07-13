@@ -1,5 +1,5 @@
 import { PrismaClient } from "@prisma/client";
-import { CreateUserDto } from "../../dto";
+import { CreateUserDto, UserIdDto } from "../../dto";
 import { PrismaUserRepository } from "../../repositories";
 import { PrismaRabbitmqOutbox } from "src/modules/@shared/providers";
 import { UserEntity } from "../../entities/user.entity";
@@ -13,7 +13,7 @@ export class BanUserUsecase {
         private readonly prismaClient: PrismaClient,
       ){}
     
-    async execute({ userId }: BanUserUsecase.Input) {
+    async execute({ userId }: UserIdDto) {
         
         return await this.prismaClient.$transaction(async (prisma: PrismaClient) => {
             const prismaUserRepository = new PrismaUserRepository(prisma)
