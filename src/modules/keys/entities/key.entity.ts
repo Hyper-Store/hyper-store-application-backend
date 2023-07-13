@@ -40,7 +40,7 @@ export class KeyEntity extends BaseEntity<KeyEntity.Props>{
     isDisabled() {
         return this.props.status === "DISABLED"
     }
-    isActive(){
+    isActivated(){
         return this.props.status === "ACTIVE"
     }
     isRedeemed() {

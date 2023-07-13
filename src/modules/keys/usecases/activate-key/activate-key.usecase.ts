@@ -3,11 +3,11 @@ import { StatusChangeDto } from "../../dto/status-change.dto";
 import { PrismaKeyRepository } from "../../respositories";
 import { PrismaRabbitmqOutbox } from "src/modules/@shared/providers";
 import { KeyIsRedeemedError, KeyNotFoundError } from "../_errors";
-import { KeyDisabledEvent } from "./key-disabled.event";
-import { KeyAlreadyDisabledError } from "./errors";
+import { KeyActivatedEvent } from "./key-activated.event";
+import { KeyAlreadyActivatedError } from "./errors";
 
 
-export class DisableKeyUsecase {
+export class ActivateKeyUsecase {
 
     constructor(
         private readonly prismaClient: PrismaClient
@@ -21,16 +21,16 @@ export class DisableKeyUsecase {
             const keyEntity = await prismaKeyRepository.findByKey(key) 
             if(!keyEntity) throw new KeyNotFoundError()
 
-            if(!keyEntity.disable()) throw new KeyAlreadyDisabledError()
+            if(!keyEntity.isActivated()) throw new KeyAlreadyActivatedError()
 
-            const isSuccess = keyEntity.disable()
+            const isSuccess = keyEntity.activate()
             if(!isSuccess) throw new KeyIsRedeemedError()
             await prismaKeyRepository.update(keyEntity)
 
-            const keyDisabledEvent = new KeyDisabledEvent({
+            const keyActivatedEvent = new KeyActivatedEvent({
                 key: keyEntity.key
             })
-            await prismaRabbitmqOutbox.publish(keyDisabledEvent)
+            await prismaRabbitmqOutbox.publish(keyActivatedEvent)
         })
     }
 }
