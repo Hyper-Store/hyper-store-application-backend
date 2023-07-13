@@ -29,7 +29,7 @@ export class RedeemKeyUsecase {
             await prismaKeyRepository.update(keyEntity)
             
             const keyGeneratedEvent = new KeyRedeemedEvent({
-                keyId: keyEntity.id,
+                key: keyEntity.key,
                 keyRedeemerId: keyRedeemerId
             })
             await prismaRabbitmqOutbox.publish(keyGeneratedEvent)

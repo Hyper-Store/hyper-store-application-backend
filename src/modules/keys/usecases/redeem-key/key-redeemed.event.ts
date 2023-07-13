@@ -14,7 +14,7 @@ export class KeyRedeemedEvent extends BaseEvent {
 
 export namespace KeyRedeemedEvent {
     export type Payload = {
-        keyId: string
+        key: string
         keyRedeemerId: string
     }
 }

@@ -1,5 +1,5 @@
 import { Module } from '@nestjs/common';
-import { SignaturesController } from './signatures.controller';
+import { SignaturesController } from './signatures.server.controller';
 
 @Module({
   controllers: [SignaturesController],

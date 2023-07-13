@@ -35,6 +35,6 @@ export namespace BaseEvent {
         eventName: string
         schemaVersion: string
         dateTimeOccurred: Date
-        payload: string
+        payload: any
     }
 }

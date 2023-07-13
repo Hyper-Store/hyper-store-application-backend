@@ -1,5 +1,5 @@
 import { PrismaClient } from "@prisma/client";
-import { PrismaRabbitmqOutbox } from "src/modules/@shared/providers";
+import { PrismaIdpotenceConsumer, PrismaRabbitmqOutbox } from "src/modules/@shared/providers";
 import { KeyFacade } from "src/modules/keys/facade";
 import { SignatureFacade } from "src/modules/signatures/facades";
 import { CreateSignatureFailedEvent, FailedGetKeyDetailsEvent, RedeemKeyProcessedEvent } from "./events";
@@ -8,12 +8,18 @@ import { CreateSignatureFailedEvent, FailedGetKeyDetailsEvent, RedeemKeyProcesse
 export class ProcessRedeemKeyUsecase {
 
     constructor(
-        private readonly prismaClient: PrismaClient
+        private readonly prismaClient: PrismaClient,
+        private readonly consumerName: string,
+        private readonly eventId: string
     ) {}
 
     async execute({ key }: ProcessRedeemKeyUsecase.Params) {
-
+        
         return await this.prismaClient.$transaction(async (prisma: PrismaClient) => {
+            const prismaIdpotenceConsumer = new PrismaIdpotenceConsumer(prisma)
+            const isEventRegistered = await prismaIdpotenceConsumer.isEventRegistered(this.eventId, this.consumerName)
+            if(isEventRegistered) return
+
             const keyFacade = new KeyFacade(prisma)
             const prismaRabbitmqOutbox = new PrismaRabbitmqOutbox(prisma)
             const signatureFacade = new SignatureFacade(prisma)
@@ -35,12 +41,13 @@ export class ProcessRedeemKeyUsecase {
                     return await prismaRabbitmqOutbox.publish(createSignatureFailedEvent)
                 }
             }
-            const keyRedeemedEvent = new RedeemKeyProcessedEvent({ 
+            const redeemKeyProcessedEvent = new RedeemKeyProcessedEvent({ 
                 validUntil: keyDetails.validUntil,
                 keyRedeemerId: keyDetails.keyRedeemerId!,
                 serviceId: keyDetails.serviceId 
             })
-            await prismaRabbitmqOutbox.publish(keyRedeemedEvent)
+            await prismaRabbitmqOutbox.publish(redeemKeyProcessedEvent)
+            await prismaIdpotenceConsumer.registerEvent(this.eventId, this.consumerName)
         })
     }
 
