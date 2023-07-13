@@ -1,7 +1,7 @@
 import { PrismaClient } from "@prisma/client";
 import { PrismaSignatureRepository } from "../../repositories";
 import { PrismaIdpotenceConsumer, PrismaRabbitmqOutbox } from "src/modules/@shared/providers";
-import { DaysAddedEvent } from "./days-added.event";
+import { AddDaysFailedEvent, DaysAddedEvent } from "./events";
 
 export class AddDaysUsecase {
 
@@ -11,7 +11,7 @@ export class AddDaysUsecase {
         private readonly eventId: string
     ){}
 
-    async execute(input: AddDaysUsecase.Input): Promise<boolean> {
+    async execute(input: AddDaysUsecase.Input): Promise<void> {
         return await this.prismaClient.$transaction(async (prisma: PrismaClient) => {
             const prismaIdpotenceConsumer = new PrismaIdpotenceConsumer(prisma)
             const isEventRegistered = await prismaIdpotenceConsumer.isEventRegistered(this.eventId, this.consumerName)
@@ -21,7 +21,10 @@ export class AddDaysUsecase {
             const prismaRabbitmqOutbox = new PrismaRabbitmqOutbox(this.prismaClient)
     
             const signatureEntity = await prismaSignatureRepository.findByUserIdAndServiceId(input.userId, input.serviceId)
-            if(!signatureEntity) return false
+            if(!signatureEntity) {
+                const addDaysFailedEvent = new AddDaysFailedEvent(input)
+                return await prismaRabbitmqOutbox.publish(addDaysFailedEvent)
+            }
     
             signatureEntity.addDays(input.days)
             await prismaSignatureRepository.update(signatureEntity)
@@ -32,7 +35,6 @@ export class AddDaysUsecase {
             })
             await prismaRabbitmqOutbox.publish(daysAddedEvent)
             await prismaIdpotenceConsumer.registerEvent(this.eventId, this.consumerName)
-            return true
         })
     }
 }
