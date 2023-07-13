@@ -28,7 +28,7 @@ export class PrismaKeyRepository {
     }
 
     async findByKey(key: string): Promise<KeyEntity | null> {
-        const keyEntity = await this.prismaClient.key.findUnique({
+        const keyEntity = await this.prismaClient.key.findFirst({
             where: { key: key ?? "" }
         })
         if(!keyEntity) return null

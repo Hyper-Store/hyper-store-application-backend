@@ -12,26 +12,28 @@ export class AddDaysUsecase {
     ){}
 
     async execute(input: AddDaysUsecase.Input): Promise<boolean> {
-        const prismaIdpotenceConsumer = new PrismaIdpotenceConsumer(prisma)
-        const isEventRegistered = await prismaIdpotenceConsumer.isEventRegistered(this.eventId, this.consumerName)
-        if(isEventRegistered) return
-
-        const prismaSignatureRepository = new PrismaSignatureRepository(this.prismaClient)
-        const prismaRabbitmqOutbox = new PrismaRabbitmqOutbox(this.prismaClient)
-
-        const signatureEntity = await prismaSignatureRepository.findByUserIdAndServiceId(input.userId, input.serviceId)
-        if(signatureEntity) return false
-
-        signatureEntity.addDays(input.days)
-        await prismaSignatureRepository.update(signatureEntity)
-
-        const daysAddedEvent = new DaysAddedEvent({
-            signatureId: signatureEntity.id,
-            expirationDate: signatureEntity.expirationDate,
+        return await this.prismaClient.$transaction(async (prisma: PrismaClient) => {
+            const prismaIdpotenceConsumer = new PrismaIdpotenceConsumer(prisma)
+            const isEventRegistered = await prismaIdpotenceConsumer.isEventRegistered(this.eventId, this.consumerName)
+            if(isEventRegistered) return
+    
+            const prismaSignatureRepository = new PrismaSignatureRepository(this.prismaClient)
+            const prismaRabbitmqOutbox = new PrismaRabbitmqOutbox(this.prismaClient)
+    
+            const signatureEntity = await prismaSignatureRepository.findByUserIdAndServiceId(input.userId, input.serviceId)
+            if(!signatureEntity) return false
+    
+            signatureEntity.addDays(input.days)
+            await prismaSignatureRepository.update(signatureEntity)
+    
+            const daysAddedEvent = new DaysAddedEvent({
+                signatureId: signatureEntity.id,
+                expirationDate: signatureEntity.expirationDate,
+            })
+            await prismaRabbitmqOutbox.publish(daysAddedEvent)
+            await prismaIdpotenceConsumer.registerEvent(this.eventId, this.consumerName)
+            return true
         })
-        await prismaRabbitmqOutbox.publish(daysAddedEvent)
-        await prismaIdpotenceConsumer.registerEvent(this.eventId, this.consumerName)
-        return true
     }
 }
 

@@ -23,7 +23,7 @@ model User {
 model Service {
   id       String      @id @default(uuid())
   name     String      @unique
-  imageUrl      String
+  imageUrl      String 
   @@map("services")
 }
 
@@ -58,7 +58,7 @@ model PrismaRabbitmqOutbox {
   topic String
   schemaVersion String
   retry_count Int @default(0)
-  error_message String @default("")
+  error_message String? @db.LongText()
   dateTimeOccurred DateTime
   eventSchemaData String @db.LongText()
   payload String @db.LongText()

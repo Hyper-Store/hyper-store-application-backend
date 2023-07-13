@@ -9,4 +9,8 @@ export class CreateKeyDto {
     @IsNotEmpty({ message: "NameNotProvidedError" })
     @IsNumber({  },{ message: "InvalidValidUntilTypeError"})
     validUntil: number
+
+    @IsNotEmpty({ message: "QuantityNotProvidedError" })
+    @IsNumber({  },{ message: "InvalidQuantityTypeError"})
+    quantity: number
 }

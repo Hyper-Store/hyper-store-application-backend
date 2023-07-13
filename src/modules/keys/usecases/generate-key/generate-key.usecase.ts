@@ -15,22 +15,25 @@ export class GenerateKeyUsecase {
 
     async execute(input: CreateKeyDto) {
         return await this.prismaClient.$transaction(async (prisma: PrismaClient) => {
-            const prismaKeyRepository = new PrismaKeyRepository(prisma)
-            const prismaRabbitmqOutbox = new PrismaRabbitmqOutbox(prisma)
-            const serviceFacade = new ServiceFacade(prisma)
-
-            const serviceExists = await serviceFacade.serviceExists(input.serviceId)
-            if(!serviceExists) throw new ServiceNotFoundError()
-
-            const keyEntity = KeyEntity.create(input)
-            await prismaKeyRepository.create(keyEntity)
-
-            const keyGeneratedEvent = new KeyGeneratedEvent({
-                ...keyEntity.toJSON()
-            })
-            await prismaRabbitmqOutbox.publish(keyGeneratedEvent)
-
-            return { id: keyEntity.id };
+            const createdList = []
+            for(let i=0; i < input.quantity; i++) {
+                const prismaKeyRepository = new PrismaKeyRepository(prisma)
+                const prismaRabbitmqOutbox = new PrismaRabbitmqOutbox(prisma)
+                const serviceFacade = new ServiceFacade(prisma)
+    
+                const serviceExists = await serviceFacade.serviceExists(input.serviceId)
+                if(!serviceExists) throw new ServiceNotFoundError()
+    
+                const keyEntity = KeyEntity.create(input)
+                await prismaKeyRepository.create(keyEntity)
+    
+                const keyGeneratedEvent = new KeyGeneratedEvent({
+                    ...keyEntity.toJSON()
+                })
+                await prismaRabbitmqOutbox.publish(keyGeneratedEvent)
+                createdList.push({ id: keyEntity.id, key: keyEntity.key })
+            }
+            return createdList;
         })
     }
 }
