@@ -3,7 +3,7 @@ import { RedeemKeyDto } from "../../dto/redeem-key.dto";
 import { PrismaKeyRepository } from "../../respositories";
 import { PrismaRabbitmqOutbox } from "src/modules/@shared/providers";
 import { KeyNotFoundError } from "../_errors";
-import { KeyAlreadyRedeemedError } from "./errors";
+import {  KeyNotActivatedError } from "./errors";
 import { KeyRedeemedEvent } from "./key-redeemed.event";
 
 
@@ -22,7 +22,8 @@ export class RedeemKeyUsecase {
             const keyEntity = await prismaKeyRepository.findByKey(key)
             if(!keyEntity) throw new KeyNotFoundError()
          
-            if(keyEntity.isRedeemed()) throw new KeyAlreadyRedeemedError()
+            if(!keyEntity.activate()) throw new KeyNotActivatedError()
+            
             keyEntity.redeem(keyRedeemerId)
 
             await prismaKeyRepository.update(keyEntity)
