@@ -7,7 +7,6 @@ export class UserSectionEntity extends BaseEntity<UserSectionEntity.Props>{
         super(props, id)
     }
 
-
     toJSON(): UserSectionEntity.PropsJSON {
         return {
             id: this.id,

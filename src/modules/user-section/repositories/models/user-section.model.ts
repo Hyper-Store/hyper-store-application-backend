@@ -5,7 +5,7 @@ export interface IEvent extends Document {
     userId: string
     ip: string
     userAgent: string
-    token: string
+    accessToken: string
 }
 
 const EventSchema: Schema = new Schema({
@@ -13,7 +13,7 @@ const EventSchema: Schema = new Schema({
   userId: { type: String, required: true },
   ip: { type: String, required: true },
   userAgent: { type: String, required: true },
-  token: { type: String, required: true },
+  accessToken: { type: String, required: true, unique: true },
 });
 
 export const MongoUserSectionModel = mongoose.model<IEvent>('userSection', EventSchema);

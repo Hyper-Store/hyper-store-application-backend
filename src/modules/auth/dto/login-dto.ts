@@ -2,9 +2,9 @@ import { IsNotEmpty, IsEmail, IsStrongPassword, IsString, Length } from "class-v
 
 export class LoginDto {
 
-    @IsNotEmpty({ message: "EmailNotProvidedError" })
-    @IsString({ message: "InvalidEmailTypeError"})
-    email: string
+    @IsNotEmpty({ message: "ValueNotProvidedError" })
+    @IsString({ message: "InvalidValueTypeError"})
+    value: string
 
     @IsNotEmpty({ message: "PasswordNotProvidedError" })
     @IsString({ message: "InvalidPasswordTypeError"})

@@ -3,6 +3,7 @@ import {  LoginDto } from "../../dto";
 import { PrismaUserRepository } from "../../repositories";
 import { InvalidCredentialsError } from "./_errors";
 import { JwtGateway } from "../../gateways";
+import { UserEntity } from "../../entities/user.entity";
 
 export class LoginUsecase {
 
@@ -10,11 +11,16 @@ export class LoginUsecase {
         private readonly prismaClient: PrismaClient,
       ){}
     
-    async execute({ email, password }: LoginDto) {
+    async execute({ value, password }: LoginDto) {
         
         const prismaUserRepository = new PrismaUserRepository(this.prismaClient)
 
-        const userEntity = await prismaUserRepository.findByEmail(email)
+        let userEntity: UserEntity
+        
+        const isEmail = value.includes('@')
+        if(isEmail) userEntity = await prismaUserRepository.findByEmail(value)
+        else userEntity = await prismaUserRepository.findByUsername(value)
+    
         if(!userEntity) throw new InvalidCredentialsError()
 
         const passwordMatch = await userEntity.comparePassword(password)

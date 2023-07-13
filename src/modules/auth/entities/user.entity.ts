@@ -8,10 +8,6 @@ export class UserEntity extends BaseEntity<UserEntity.Props>{
         super(props, id)
     }
 
-    isEmail(): boolean {
-        return this.props.email.includes('@')
-    }
-
     async encryptPassword(password: string): Promise<string> {
         const encryptedPassword = await hash(password, 10)
         this.props.password = encryptedPassword
