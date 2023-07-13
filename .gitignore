@@ -5,6 +5,7 @@
 .mysql-data
 prisma/migrations
 .mongodb_data
+.env
 
 # Logs
 logs
