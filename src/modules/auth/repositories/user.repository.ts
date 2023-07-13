@@ -38,4 +38,22 @@ export class PrismaUserRepository {
         if(!user) return null
         return PrismaUserEntityMapper.toDomain(user)
     }
+
+    async findById(id: string): Promise<UserEntity | null>{
+        const user = await this.prismaClient.user.findUnique({
+            where: { id }
+        })
+        if(!user) return null
+        return PrismaUserEntityMapper.toDomain(user)
+    }
+
+    async update(userEntity: UserEntity): Promise<void>{
+        const { id, ...props } = userEntity.toJSON()
+        await this.prismaClient.user.updateMany({
+            where: { id: userEntity.id },
+            data: {
+                ...props
+            }
+        })
+    }
 }
