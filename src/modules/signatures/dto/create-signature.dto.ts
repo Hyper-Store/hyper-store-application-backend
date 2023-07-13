@@ -1,1 +1,4 @@
-export class CreateSignatureDto {}
+export class CreateSignatureDto {
+    userId: string
+    serviceId: string
+}
