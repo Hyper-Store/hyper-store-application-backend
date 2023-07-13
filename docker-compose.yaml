@@ -1,0 +1,76 @@
+version: '3.9'
+
+services:
+
+  mongodb-primary:
+    restart: always
+    image: bitnami/mongodb:latest
+    container_name: mongodb-primary
+    environment:
+      - MONGODB_REPLICA_SET_MODE=primary
+      - MONGODB_ADVERTISED_HOSTNAME=mongodb-primary
+      - MONGODB_REPLICA_SET_KEY=replicasetkey123
+      - MONGODB_ROOT_PASSWORD=password123
+      - MONGODB_ROOT_USER=root
+      - MONGODB_DATABASE=app
+    ports:
+        - 27017:27017
+    volumes:
+      - .mongodb_data/primary:/bitnami
+    
+
+  # mongodb-secondary:
+  #   restart: always
+  #   image: bitnami/mongodb:latest
+  #   environment:
+  #     - MONGODB_REPLICA_SET_MODE=secondary
+  #     - MONGODB_ADVERTISED_HOSTNAME=mongodb-secondary
+  #     - MONGODB_PRIMARY_HOST=mongodb-primary
+  #     - MONGODB_PRIMARY_ROOT_PASSWORD=password123
+  #     - MONGODB_REPLICA_SET_KEY=replicasetkey123
+  #   volumes:
+  #     - .mongodb_data/secondary:/bitnami
+  #   depends_on:
+  #     - mongodb-primary 
+
+  rabbitmq:
+    image: "rabbitmq:3.8-management-alpine"
+    container_name: nestjs-rabbitmq
+    hostname: rabbitmq
+    ports:
+      - "15672:15672"
+      - "5672:5672"
+    volumes:
+      - "./.rabbitmq_data:/var/lib/rabbitmq/mnesia"
+    environment:
+      - RABBITMQ_DEFAULT_USER=admin
+      - RABBITMQ_DEFAULT_PASS=admin
+
+
+  mysql:
+    image: mysql:8.0
+    command:
+      - --default-authentication-plugin=mysql_native_password
+      - --character-set-server=utf8mb4
+      - --collation-server=utf8mb4_unicode_ci
+    restart: always
+    container_name: mysql-container
+    environment:
+      MYSQL_ROOT_PASSWORD: password
+      MYSQL_DATABASE: nestjs
+      MYSQL_PASSWORD: password
+    ports:
+      - "33010:3306"
+    volumes:
+      - ./.mysql-data:/var/lib/mysql
+
+  app:
+    build: .
+    command: tail -f /dev/null
+    ports: 
+      - "6000:5000"
+    volumes:
+      - .:/usr/src/app
+    depends_on:
+      - mongodb-primary
+
