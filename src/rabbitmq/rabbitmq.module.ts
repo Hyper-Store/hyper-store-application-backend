@@ -2,6 +2,7 @@ import { RabbitMQModule } from '@golevelup/nestjs-rabbitmq';
 import { Global, Module } from '@nestjs/common';
 import { exchanges } from './exchanges';
 import { ConsumeMessage } from 'amqplib';
+import "dotenv/config"
 
 @Global()
 @Module({
