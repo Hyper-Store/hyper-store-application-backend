@@ -11,4 +11,9 @@ export class ServiceFacade {
         const prismaServiceRepository = new PrismaServiceRepository(this.prismaClient)
         return !!await prismaServiceRepository.findById(serviceId)
     }
+
+    async serviceNameExists(name: string): Promise<boolean> {
+        const prismaServiceRepository = new PrismaServiceRepository(this.prismaClient)
+        return !!await prismaServiceRepository.findByName(name)
+    }
 }

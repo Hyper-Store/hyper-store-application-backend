@@ -5,6 +5,7 @@ import { PrismaServiceRepository } from "../../repositories";
 import { ServiceAlreadyExistsError } from "./errors";
 import { PrismaRabbitmqOutbox } from "src/modules/@shared/providers";
 import { ServiceCreatedEvent } from "./service-created.event";
+import { ServiceNameAlreadyInUseError } from "../_errors";
 
 
 export class CreateServiceUsecase {
@@ -20,7 +21,7 @@ export class CreateServiceUsecase {
             const prismaRabbitmqOutbox = new PrismaRabbitmqOutbox(prisma)
     
             const serviceAlreadyExists = await prismaServiceRepository.findByName(input.name)
-            if(serviceAlreadyExists) throw new ServiceAlreadyExistsError()
+            if(serviceAlreadyExists) throw new ServiceNameAlreadyInUseError()
     
             const serviceEntity = new ServiceEntity(input)
             await prismaServiceRepository.create(serviceEntity)

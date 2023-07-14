@@ -1,4 +1,5 @@
 import { BaseEntity } from "src/modules/@shared"
+import { Either, failure, success } from "src/modules/@shared/logic"
 
 export class ServiceEntity extends BaseEntity<ServiceEntity.Props>{
 
@@ -12,6 +13,12 @@ export class ServiceEntity extends BaseEntity<ServiceEntity.Props>{
             name: this.name,
             imageUrl: this.imageUrl
         }
+    }
+
+    changeName(name: string): Either<string, null> {
+        if(this.name === name) return failure("NameIsTheSameError")
+        this.props.name = name
+        return success(null)
     }
 
     get name() {

@@ -31,10 +31,20 @@ export class PrismaServiceRepository {
     }
 
     async findById(id: string): Promise<ServiceEntity | null> {
-        const service = await this.prismaClient.service.findUnique({
+        const service = await this.prismaClient.service.findFirst({
             where: { id: id ?? "" }
-        })
+        })        
         if(!service) return null
         return PrismaServiceEntityMapper.toDomain(service) 
+    }
+
+    async update(serviceEntity: ServiceEntity): Promise<void> {
+        const { id, ...props } = serviceEntity.toJSON()
+        await this.prismaClient.service.update({
+            where: { id },
+            data: {
+                ...props
+            }
+        })
     }
 }
