@@ -11,11 +11,12 @@ export class UserSessionEntity extends BaseEntity<UserSessionEntity.Props>{
         super(props, id)
     }
 
-    static create(props: UserSessionEntity.Props, id?: string): UserSessionEntity {
+    static create(input: UserSessionEntity.Input, id?: string): UserSessionEntity {
 
 
         const userSessionEntity = new UserSessionEntity({
-            ...props
+            ...input,
+            status: "ACTIVE"
         }, id)
         return userSessionEntity
     }
@@ -73,6 +74,7 @@ export namespace UserSessionEntity {
 
     export type Update = Partial<Omit<Props, "userId" | "status">>
 
+    export type Input = Omit<Props, "status">
 
     export type Props = {
         userId: string

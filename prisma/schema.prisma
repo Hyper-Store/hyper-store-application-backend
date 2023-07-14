@@ -47,6 +47,18 @@ model Signature {
   @@map("signatures")
 }
 
+model UserSession {
+  id       String      @id @default(uuid())
+  userId String
+  ip String
+  userAgent String
+  accessToken String @unique()
+  acessTokenExpirationDateTime DateTime
+  refreshToken String @unique()
+  refreshTokenExpirationDateTime DateTime
+  status String
+  @@map("user_sessions")
+}
 
 
 
@@ -82,3 +94,4 @@ model IdpotenceConsumer {
 
   @@map("idpotence_consumer")
 }
+
