@@ -13,6 +13,7 @@ import { KeyRedemptionModule } from './modules/key-redemption/key-redemption.mod
 import { UserSectionService } from './modules/user-section/user-section.service';
 import { UserSectionModule } from './modules/user-section/user-section.module';
 import { GuardModule } from './guards/guard.module';
+import { UserSessionModule } from './modules/user-session/user-session.module';
 
 @Module({
   imports: [
@@ -28,6 +29,7 @@ import { GuardModule } from './guards/guard.module';
     KeyRedemptionModule,
     UserSectionModule,
     GuardModule,
+    UserSessionModule,
   ],
   controllers: [],
   providers: [UserSectionService],

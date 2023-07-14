@@ -1,5 +1,4 @@
 import { Injectable } from '@nestjs/common';
-import { PrismaService } from 'src/prisma/prisma.service';
 import { UserSectionEntity } from './entities';
 import { MongoUserSectionRepository } from './repositories';
 import { RegisterSectionDto } from './dto';
