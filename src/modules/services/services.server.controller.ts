@@ -2,11 +2,13 @@ import { Controller, Get, Post, Body, Patch, Param, Delete, UseGuards } from '@n
 import { PrismaService } from 'src/prisma/prisma.service';
 import { 
   CreateServiceDto,
-  UpdateNameDto
+  UpdateNameDto,
+  UpdateImageUrlDto
 } from './dto';
 import { 
   ChangeNameUsecase, 
-  CreateServiceUsecase 
+  CreateServiceUsecase,
+  ChangeImageUrlUsecase
 } from './usecases';
 import { ServerAuthGuard } from 'src/guards';
 
@@ -34,5 +36,13 @@ export class ServicesController {
     return await changeNameUsecase.execute({ ...body, serviceId })
   }
 
-
+  @UseGuards(ServerAuthGuard)
+  @Patch("/change-image-url/:serviceId")
+  async changeImageUrl(
+    @Body() body: UpdateImageUrlDto,
+    @Param("serviceId") serviceId: string
+  ) {
+    const changeImageUrlUsecase = new ChangeImageUrlUsecase(this.prismaService)
+    return await changeImageUrlUsecase.execute({ ...body, serviceId })
+  }
 }

@@ -21,6 +21,12 @@ export class ServiceEntity extends BaseEntity<ServiceEntity.Props>{
         return success(null)
     }
 
+    changeImageUrl(imageUrl: string): Either<string, null> {
+        if(this.imageUrl === imageUrl) return failure("ImageUrlIsTheSameError")
+        this.props.imageUrl = imageUrl
+        return success(null)
+    }
+
     get name() {
         return this.props.name
     }

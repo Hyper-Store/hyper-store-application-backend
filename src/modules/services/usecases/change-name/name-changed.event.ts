@@ -15,5 +15,6 @@ export class NameChangedEvent extends BaseEvent {
 export namespace NameChangedEvent {
     export type Payload = {
         serviceId: string
+        name: string
     }
 }
