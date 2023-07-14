@@ -13,32 +13,37 @@ export class CreateSessionUseCase {
     ){}
 
     async execute(input: CreateSessionUseCase.Input) {
-        const prismaUserSessionRepository = new PrismaUserSessionRepository(this.prismaClient)
-        const prismaRabbitmqOutbox = new PrismaRabbitmqOutbox(this.prismaClient)
 
-        const userPayload: JwtGateway.JwtModel = { userId: input.userId }
+        return await this.prismaClient.$transaction(async (prismaClient) => {
+            const prismaUserSessionRepository = new PrismaUserSessionRepository(this.prismaClient)
+            const prismaRabbitmqOutbox = new PrismaRabbitmqOutbox(this.prismaClient)
+    
+            const userPayload: JwtGateway.JwtModel = { userId: input.userId }
+            const { accessToken, expirationDateTime: accessTokenExpiration } = await JwtGateway.generateAccessToken(userPayload)
+            const { refreshToken, expirationDateTime: refreshTokenExpiration } = await JwtGateway.generateRefreshToken(userPayload)
+    
+            const accessTokenValueObject = new AccessTokenValueObject({
+                accessToken,
+                expirationDateTime: accessTokenExpiration
+            })
+            const refreshTokenValueObject = new RefreshTokenValueObject({
+                refreshToken: refreshToken,
+                expirationDateTime: refreshTokenExpiration
+            })
+            const userSessionEntity = UserSessionEntity.create({
+                ...input,
+                accessToken: accessTokenValueObject,
+                refreshToken: refreshTokenValueObject,
+            })
+    
+            await prismaUserSessionRepository.create(userSessionEntity)
+    
+            const sessionCreatedEvent = new SessionCreatedEvent(userSessionEntity.toJSON())
+            await prismaRabbitmqOutbox.publish(sessionCreatedEvent)
 
-        const { accessToken, expirationDateTime: accessTokenExpiration } = await JwtGateway.generateAccessToken(userPayload)
-        const { refreshToken, expirationDateTime: refreshTokenExpiration } = await JwtGateway.generateRefreshToken(userPayload)
-
-        const accessTokenValueObject = new AccessTokenValueObject({
-            accessToken,
-            expirationDateTime: accessTokenExpiration
+            return { accessToken, refreshToken }
         })
-        const refreshTokenValueObject = new RefreshTokenValueObject({
-            refreshToken: refreshToken,
-            expirationDateTime: refreshTokenExpiration
-        })
-        const userSessionEntity = UserSessionEntity.create({
-            ...input,
-            accessToken: accessTokenValueObject,
-            refreshToken: refreshTokenValueObject,
-        })
 
-        await prismaUserSessionRepository.create(userSessionEntity)
-
-        const sessionCreatedEvent = new SessionCreatedEvent(userSessionEntity.toJSON())
-        await prismaRabbitmqOutbox.publish(sessionCreatedEvent)
     }
 }
 

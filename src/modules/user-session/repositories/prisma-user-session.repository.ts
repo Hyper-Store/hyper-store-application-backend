@@ -40,4 +40,28 @@ export class PrismaUserSessionRepository {
             }
         })
     }
+
+    async findById(id: string): Promise<UserSessionEntity | null> {
+        const prismaUserSession = await this.prismaClient.userSession.findUnique({
+            where: { id }
+        })
+        if(!prismaUserSession) return null
+        return PrismaUserEntityMapper.toDomain(prismaUserSession)
+    }
+
+    async findByRefreshToken(refreshToken: string): Promise<UserSessionEntity | null> {
+        const prismaUserSession = await this.prismaClient.userSession.findFirst({
+            where: { refreshToken: refreshToken ?? "" }
+        })
+        if(!prismaUserSession) return null
+        return PrismaUserEntityMapper.toDomain(prismaUserSession)
+    }
+
+    async findByAccessToken(accessToken: string): Promise<UserSessionEntity | null> {
+        const prismaUserSession = await this.prismaClient.userSession.findFirst({
+            where: { accessToken: accessToken ?? ""}
+        })
+        if(!prismaUserSession) return null
+        return PrismaUserEntityMapper.toDomain(prismaUserSession)
+    }
 }
