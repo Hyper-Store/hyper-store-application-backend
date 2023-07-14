@@ -66,11 +66,13 @@ services:
 
   # app:
   #   build: .
-  #   command: tail -f /dev/null
+  #   command: npm run start:prod
   #   ports: 
   #     - "6000:5000"
   #   volumes:
-  #     - .:/usr/src/app
+  #     - .:/app
   #   depends_on:
+  #     - mysql
+  #     - rabbitmq
   #     - mongodb-primary
 
