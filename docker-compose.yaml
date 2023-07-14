@@ -5,7 +5,6 @@ services:
   mongodb-primary:
     image: bitnami/mongodb:latest
     container_name: mongodb-primary
-    user: root
     environment:
       - MONGODB_REPLICA_SET_MODE=primary
       - MONGODB_ADVERTISED_HOSTNAME=mongodb-primary
