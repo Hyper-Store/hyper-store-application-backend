@@ -3,7 +3,6 @@ version: '3.9'
 services:
 
   mongodb-primary:
-    restart: always
     image: bitnami/mongodb:latest
     container_name: mongodb-primary
     environment:
@@ -53,7 +52,6 @@ services:
       - --default-authentication-plugin=mysql_native_password
       - --character-set-server=utf8mb4
       - --collation-server=utf8mb4_unicode_ci
-    restart: always
     container_name: mysql-container
     environment:
       MYSQL_ROOT_PASSWORD: password
