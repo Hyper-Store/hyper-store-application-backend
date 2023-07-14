@@ -18,19 +18,19 @@ services:
       - .mongodb_data/primary:/bitnami
     
 
-  # mongodb-secondary:
-  #   restart: always
-  #   image: bitnami/mongodb:latest
-  #   environment:
-  #     - MONGODB_REPLICA_SET_MODE=secondary
-  #     - MONGODB_ADVERTISED_HOSTNAME=mongodb-secondary
-  #     - MONGODB_PRIMARY_HOST=mongodb-primary
-  #     - MONGODB_PRIMARY_ROOT_PASSWORD=password123
-  #     - MONGODB_REPLICA_SET_KEY=replicasetkey123
-  #   volumes:
-  #     - .mongodb_data/secondary:/bitnami
-  #   depends_on:
-  #     - mongodb-primary 
+  mongodb-secondary:
+    restart: always
+    image: bitnami/mongodb:latest
+    environment:
+      - MONGODB_REPLICA_SET_MODE=secondary
+      - MONGODB_ADVERTISED_HOSTNAME=mongodb-secondary
+      - MONGODB_PRIMARY_HOST=mongodb-primary
+      - MONGODB_PRIMARY_ROOT_PASSWORD=password123
+      - MONGODB_REPLICA_SET_KEY=replicasetkey123
+    volumes:
+      - .mongodb_data/secondary:/bitnami
+    depends_on:
+      - mongodb-primary 
 
   rabbitmq:
     image: "rabbitmq:3.8-management-alpine"
