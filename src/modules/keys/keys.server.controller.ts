@@ -4,7 +4,9 @@ import { PrismaService } from 'src/prisma/prisma.service';
 import { 
   GenerateKeyUsecase, 
   ActivateKeyUsecase,
-  DisableKeyUsecase
+  DisableKeyUsecase,
+  DeleteKeyUsecase,
+  
 } from './usecases';
 import { ServerAuthGuard } from 'src/guards';
 import { StatusChangeDto } from './dto/status-change.dto';
@@ -35,5 +37,15 @@ export class KeysServerController {
     const activateKeyUsecase = new ActivateKeyUsecase(this.prismaService)
     return await activateKeyUsecase.execute(body)
   }
+
+  @UseGuards(ServerAuthGuard)
+  @Post("/:key")
+  async delete( 
+    @Param("key") key: string
+  ) {
+    const deleteKeyUsecase = new DeleteKeyUsecase(this.prismaService)
+    return await deleteKeyUsecase.execute({ key })
+  }
+
 
 }

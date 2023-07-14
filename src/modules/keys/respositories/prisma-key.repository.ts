@@ -44,5 +44,11 @@ export class PrismaKeyRepository {
             }
         })
     }
+
+    async delete(id: string): Promise<void> {
+        await this.prismaClient.key.deleteMany({
+            where: { id: id ?? "" }
+        })
+    }
     
 }
