@@ -21,8 +21,8 @@ export class RedeemKeyUsecase {
 
             const keyEntity = await prismaKeyRepository.findByKey(key)
             if(!keyEntity) throw new KeyNotFoundError()
-         
-            if(!keyEntity.activate()) throw new KeyNotActivatedError()
+
+            if(!keyEntity.isActivated()) throw new KeyNotActivatedError()
             
             keyEntity.redeem(keyRedeemerId)
 

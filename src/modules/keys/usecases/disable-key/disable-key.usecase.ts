@@ -21,7 +21,7 @@ export class DisableKeyUsecase {
             const keyEntity = await prismaKeyRepository.findByKey(key) 
             if(!keyEntity) throw new KeyNotFoundError()
 
-            if(!keyEntity.disable()) throw new KeyAlreadyDisabledError()
+            if(keyEntity.isDisabled()) throw new KeyAlreadyDisabledError()
 
             const isSuccess = keyEntity.disable()
             if(!isSuccess) throw new KeyIsRedeemedError()

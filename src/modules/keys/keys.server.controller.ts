@@ -25,21 +25,25 @@ export class KeysServerController {
   }
 
   @UseGuards(ServerAuthGuard)
-  @Post()
-  async disable(@Body() body: StatusChangeDto) {
+  @Post("/disable/:key")
+  async disable(
+    @Param("key") key: string
+  ) {
     const disableKeyUsecase = new DisableKeyUsecase(this.prismaService)
-    return await disableKeyUsecase.execute(body)
+    return await disableKeyUsecase.execute({ key })
   }
 
   @UseGuards(ServerAuthGuard)
-  @Post()
-  async activate(@Body() body: StatusChangeDto) {
+  @Post("/activate/:key")
+  async activate(
+    @Param("key") key: string
+  ) {
     const activateKeyUsecase = new ActivateKeyUsecase(this.prismaService)
-    return await activateKeyUsecase.execute(body)
+    return await activateKeyUsecase.execute({ key })
   }
 
   @UseGuards(ServerAuthGuard)
-  @Post("/:key")
+  @Delete("/:key")
   async delete( 
     @Param("key") key: string
   ) {

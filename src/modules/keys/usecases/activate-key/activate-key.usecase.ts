@@ -21,7 +21,7 @@ export class ActivateKeyUsecase {
             const keyEntity = await prismaKeyRepository.findByKey(key) 
             if(!keyEntity) throw new KeyNotFoundError()
 
-            if(!keyEntity.isActivated()) throw new KeyAlreadyActivatedError()
+            if(keyEntity.isActivated()) throw new KeyAlreadyActivatedError()
 
             const isSuccess = keyEntity.activate()
             if(!isSuccess) throw new KeyIsRedeemedError()
