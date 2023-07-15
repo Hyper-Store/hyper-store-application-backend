@@ -43,7 +43,7 @@ export class PrismaUserSessionRepository {
 
     async findById(id: string): Promise<UserSessionEntity | null> {
         const prismaUserSession = await this.prismaClient.userSession.findUnique({
-            where: { id }
+            where: { id: id ?? "" }
         })
         if(!prismaUserSession) return null
         return PrismaUserEntityMapper.toDomain(prismaUserSession)
@@ -63,5 +63,19 @@ export class PrismaUserSessionRepository {
         })
         if(!prismaUserSession) return null
         return PrismaUserEntityMapper.toDomain(prismaUserSession)
+    }
+
+    async update(userSessionEntity: UserSessionEntity): Promise<void> {
+        const { accessToken, refreshToken, id, userId,...props} = userSessionEntity.toJSON()
+        await this.prismaClient.userSession.update({
+            where: { id: id ?? "" },
+            data: {
+                ...props,
+                accessToken: accessToken.accessToken,
+                acessTokenExpirationDateTime: accessToken.expirationDateTime,
+                refreshToken: refreshToken.refreshToken,
+                refreshTokenExpirationDateTime: refreshToken.expirationDateTime
+            }
+        })
     }
 }

@@ -34,7 +34,7 @@ export class UserSessionEntity extends BaseEntity<UserSessionEntity.Props>{
         return success(null)
     }
 
-    activateSession() {
+    activateSession():  Either<string, null> {
         if(this.isSessionActive()) return failure("SessionAlreadyActivatedError")
         this.props.status = "ACTIVE"
         return success(null)
@@ -65,6 +65,18 @@ export class UserSessionEntity extends BaseEntity<UserSessionEntity.Props>{
 
     get refreshToken(): RefreshTokenValueObject {
         return this.props.refreshToken
+    }
+
+    get userId(): string {
+        return this.props.userId
+    }
+
+    get ip(): string {
+        return this.props.ip
+    }
+
+    get userAgent(): string {
+        return this.props.userAgent
     }
 }
 

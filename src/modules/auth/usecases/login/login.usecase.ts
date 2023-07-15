@@ -2,8 +2,8 @@ import { PrismaClient } from "@prisma/client";
 import {  LoginDto } from "../../dto";
 import { PrismaUserRepository } from "../../repositories";
 import { InvalidCredentialsError } from "./_errors";
-import { JwtGateway } from "../../gateways";
 import { UserEntity } from "../../entities/user.entity";
+import { UserSessionFacade } from "src/modules/user-session/facades";
 
 export class LoginUsecase {
 
@@ -11,9 +11,10 @@ export class LoginUsecase {
         private readonly prismaClient: PrismaClient,
       ){}
     
-    async execute({ value, password }: LoginDto) {
+    async execute({ value, password, ip, userAgent }: LoginDto & LoginUsecase.InputAditionalInfo) {
         
         const prismaUserRepository = new PrismaUserRepository(this.prismaClient)
+        const userSessionFacade = new UserSessionFacade(this.prismaClient)
 
         let userEntity: UserEntity
         
@@ -26,17 +27,23 @@ export class LoginUsecase {
         const passwordMatch = await userEntity.comparePassword(password)
         if(!passwordMatch) throw new InvalidCredentialsError()
 
-        const payload: JwtGateway.JwtModel = {
+        const { accessToken, refreshToken } = await userSessionFacade.createSession({
             userId: userEntity.id,
-            email: userEntity.email
-        }
-        const accessToken = await JwtGateway.generateAccessToken(payload)
-        const refreshToken = await JwtGateway.generateRefreshToken(payload)
+            ip,
+            userAgent
+        })
 
         return { 
             accessToken,
             refreshToken
         };
 
+    }
+}
+
+export namespace LoginUsecase {
+    export type InputAditionalInfo = {
+        ip: string
+        userAgent: string
     }
 }

@@ -1,7 +1,6 @@
 import { PrismaClient } from "@prisma/client";
 import { PrismaUserSessionRepository } from "../../repositories";
 import { PrismaRabbitmqOutbox } from "src/modules/@shared/providers";
-import { AccessTokenValueObject, RefreshTokenValueObject, UserSessionEntity } from "../../entities";
 import { SessionExpiredEvent } from "./session-expired.event";
 import { Either, failure, success } from "src/modules/@shared/logic";
 
@@ -13,9 +12,9 @@ export class ExpireSessionUseCase {
 
     async execute(input: ExpireSessionUseCase.Input): Promise<Either<ExpireSessionUseCase.Errors, null>> {
 
-        return await this.prismaClient.$transaction(async (prismaClient) => {
-            const prismaUserSessionRepository = new PrismaUserSessionRepository(this.prismaClient)
-            const prismaRabbitmqOutbox = new PrismaRabbitmqOutbox(this.prismaClient)
+        return await this.prismaClient.$transaction(async (prisma: PrismaClient): Promise<Either<ExpireSessionUseCase.Errors, null>> => {
+            const prismaUserSessionRepository = new PrismaUserSessionRepository(prisma)
+            const prismaRabbitmqOutbox = new PrismaRabbitmqOutbox(prisma)
     
             const userSessionEntity = await prismaUserSessionRepository.findById(input.userSessionId)
             if(!userSessionEntity) return failure("UserSessionNotFoundError")

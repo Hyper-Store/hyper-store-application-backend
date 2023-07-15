@@ -14,7 +14,7 @@ export class JwtGateway {
             createdAt: new Date()
         }, 
             process.env.JWT_ACCESS_TOKEN_SECRET,
-            { expiresIn: `${minutesToExpire}m` }
+            { expiresIn: `${minutesToExpire}h`,  }
         )
         return { accessToken, expirationDateTime }
     }

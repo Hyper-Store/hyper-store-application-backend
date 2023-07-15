@@ -6,17 +6,17 @@ import { SessionCreatedEvent } from "./session-create.event";
 import { JwtGateway } from "../../gateways";
 
 
-export class CreateSessionUseCase {
+export class CreateSessionUsecase {
 
     constructor(
         private readonly prismaClient: PrismaClient
     ){}
 
-    async execute(input: CreateSessionUseCase.Input) {
+    async execute(input: CreateSessionUsecase.Input) {
 
-        return await this.prismaClient.$transaction(async (prismaClient) => {
-            const prismaUserSessionRepository = new PrismaUserSessionRepository(this.prismaClient)
-            const prismaRabbitmqOutbox = new PrismaRabbitmqOutbox(this.prismaClient)
+        return await this.prismaClient.$transaction(async (prisma: PrismaClient) => {
+            const prismaUserSessionRepository = new PrismaUserSessionRepository(prisma)
+            const prismaRabbitmqOutbox = new PrismaRabbitmqOutbox(prisma)
     
             const userPayload: JwtGateway.JwtModel = { userId: input.userId }
             const { accessToken, expirationDateTime: accessTokenExpiration } = await JwtGateway.generateAccessToken(userPayload)
@@ -47,7 +47,7 @@ export class CreateSessionUseCase {
     }
 }
 
-export namespace CreateSessionUseCase {
+export namespace CreateSessionUsecase {
     export type Input = {
         userId: string
         ip: string

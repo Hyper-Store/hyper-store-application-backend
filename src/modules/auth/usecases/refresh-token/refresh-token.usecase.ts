@@ -1,11 +1,17 @@
-import { JwtGateway } from "../../gateways";
+import { UserSessionFacade } from "src/modules/user-session/facades";
 import { InvalidRefreshTokenError } from "./errors";
+import { PrismaClient } from "@prisma/client";
 
 export class RefreshTokenUsecase {
 
-    async execute({ refreshToken }: RefreshTokenUsecase.Input) {
-        const result = await JwtGateway.generateAccessTokenFromRefreshToken(refreshToken)
-        if(!result) throw new InvalidRefreshTokenError()
+    constructor(
+        private readonly prismaClient: PrismaClient
+    ){}
+
+    async execute(input: RefreshTokenUsecase.Input) {
+        const userSessionFacade = new UserSessionFacade(this.prismaClient)
+        const result = await userSessionFacade.revalidateSession(input)
+        if(result === "UserSessionNotFoundError") throw new InvalidRefreshTokenError()
 
         return { 
             accessToken: result.accessToken,
@@ -17,5 +23,7 @@ export class RefreshTokenUsecase {
 export namespace RefreshTokenUsecase {
     export type Input = {
         refreshToken: string
+        ip: string
+        userAgent: string
     }
 }

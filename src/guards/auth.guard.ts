@@ -1,10 +1,10 @@
 
 import { CanActivate, ExecutionContext, Injectable } from '@nestjs/common';
 import { Request, Response } from 'express';
-import { UserSectionService } from 'src/modules/user-section/user-section.service';
 import { AuthFacade } from 'src/modules/auth/facade';
 import { PrismaService } from 'src/prisma/prisma.service';
 import { InvalidAccessTokenError, UserBannedError } from './errors';
+import { UserSessionFacade } from 'src/modules/user-session/facades';
 
 
 interface User {
@@ -46,7 +46,8 @@ export class AuthGuard implements CanActivate {
   }
 
   async validateAccessToken(accessToken: string){
-    const user = await UserSectionService.verifySection(accessToken)
+    const userSessionFacade = new UserSessionFacade(this.prismaService) 
+    const user = await userSessionFacade.verifyAccessToken(accessToken)
     if(!user) throw new InvalidAccessTokenError()
     return user
   }
@@ -56,6 +57,5 @@ export class AuthGuard implements CanActivate {
     const isUserBanned = await authFacade.isUserBanned(userId)
     if(isUserBanned) throw new UserBannedError()
   }
-
 
 }
