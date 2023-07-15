@@ -3,6 +3,7 @@ import { AccessTokenValueObject, RefreshTokenValueObject, UserSessionEntity } fr
 
 class PrismaUserEntityMapper {
     static toDomain(prismaUserSession: UserSession): UserSessionEntity {
+        
         const accessTokenValueObject = new AccessTokenValueObject({
             accessToken: prismaUserSession.accessToken,
             expirationDateTime: prismaUserSession.acessTokenExpirationDateTime
@@ -76,6 +77,12 @@ export class PrismaUserSessionRepository {
                 refreshToken: refreshToken.refreshToken,
                 refreshTokenExpirationDateTime: refreshToken.expirationDateTime
             }
+        })
+    }
+
+    async delete(id: string): Promise<void> {
+        await this.prismaClient.userSession.delete({
+            where: { id: id ?? "" }
         })
     }
 }
