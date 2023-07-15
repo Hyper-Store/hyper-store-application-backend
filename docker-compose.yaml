@@ -2,20 +2,20 @@ version: '3.9'
 
 services:
 
-  mongodb-primary:
-    image: bitnami/mongodb:latest
-    container_name: mongodb-primary
-    environment:
-      - MONGODB_REPLICA_SET_MODE=primary
-      - MONGODB_ADVERTISED_HOSTNAME=mongodb-primary
-      - MONGODB_REPLICA_SET_KEY=replicasetkey123
-      - MONGODB_ROOT_PASSWORD=password123
-      - MONGODB_ROOT_USER=root
-      - MONGODB_DATABASE=app
-    ports:
-        - 27017:27017
-    volumes:
-      - .mongodb_data/primary:/bitnami
+  # mongodb-primary:
+  #   image: bitnami/mongodb:latest
+  #   container_name: mongodb-primary
+  #   environment:
+  #     - MONGODB_REPLICA_SET_MODE=primary
+  #     - MONGODB_ADVERTISED_HOSTNAME=mongodb-primary
+  #     - MONGODB_REPLICA_SET_KEY=replicasetkey123
+  #     - MONGODB_ROOT_PASSWORD=password123
+  #     - MONGODB_ROOT_USER=root
+  #     - MONGODB_DATABASE=app
+  #   ports:
+  #       - 27017:27017
+  #   volumes:
+  #     - .mongodb_data/primary:/bitnami
 
 
   # mongodb-secondary:
