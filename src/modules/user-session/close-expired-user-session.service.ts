@@ -36,13 +36,13 @@ export class CloseExpiredUserSessionService implements OnModuleInit {
         this.assertSessionExpirationQueue()
     }
     assertSessionExpirationQueue() {
-        const minutesToExpire = parseFloat(process.env.JWT_ACCESS_TOKEN_EXPIRATION_TIME_IN_MINUTES)
-        const expiration = minutesToExpire * 1000 * 60 + 5000 // times 5 seconds
+        const daysToExpire = parseInt(process.env.JWT_REFRESH_TOKEN_EXPIRATION_TIME_IN_DAYS)
+        const expiration =  1000 * 60 * 60 * 24 * daysToExpire + 10000 // times 10 seconds
         this.amqpConnection.channel.assertQueue("close-expired-session-handler", { 
             durable: true,
             deadLetterExchange: "userSession",
             deadLetterRoutingKey: "CloseUserSession",
-            messageTtl: expiration // 1 second
+            messageTtl: expiration 
         })
     }
 }
