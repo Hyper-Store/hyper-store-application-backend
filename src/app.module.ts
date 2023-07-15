@@ -10,8 +10,6 @@ import { SignaturesModule } from './modules/signatures/signatures.module';
 import { ServicesModule } from './modules/services/services.module';
 import { KeysModule } from './modules/keys/keys.module';
 import { KeyRedemptionModule } from './modules/key-redemption/key-redemption.module';
-import { UserSectionService } from './modules/user-section/user-section.service';
-import { UserSectionModule } from './modules/user-section/user-section.module';
 import { GuardModule } from './guards/guard.module';
 import { UserSessionModule } from './modules/user-session/user-session.module';
 
@@ -27,11 +25,11 @@ import { UserSessionModule } from './modules/user-session/user-session.module';
     ServicesModule,
     KeysModule,
     KeyRedemptionModule,
-    UserSectionModule,
+    
     GuardModule,
     UserSessionModule,
   ],
   controllers: [],
-  providers: [UserSectionService],
+  providers: [],
 })
 export class AppModule {}

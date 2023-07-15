@@ -14,7 +14,7 @@ export class BanUserUsecase {
       ){}
     
     async execute({ userId }: UserIdDto) {
-        
+            
         return await this.prismaClient.$transaction(async (prisma: PrismaClient) => {
             const prismaUserRepository = new PrismaUserRepository(prisma)
             const prismaRabbitmqOutbox = new PrismaRabbitmqOutbox(prisma)

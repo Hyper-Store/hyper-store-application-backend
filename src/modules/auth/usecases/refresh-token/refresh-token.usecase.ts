@@ -12,7 +12,6 @@ export class RefreshTokenUsecase {
         const userSessionFacade = new UserSessionFacade(this.prismaClient)
         const result = await userSessionFacade.revalidateSession(input)
         if(result === "UserSessionNotFoundError") throw new InvalidRefreshTokenError()
-
         return { 
             accessToken: result.accessToken,
             refreshToken: result.refreshToken

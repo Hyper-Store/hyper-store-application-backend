@@ -46,7 +46,7 @@ export class AuthController {
     const refreshTokenUsecase = new RefreshTokenUsecase(this.prismaService)
     const result = await refreshTokenUsecase.execute({
       refreshToken: body.refreshToken ?? "",
-      ip: req.ip,
+      ip: req.ip ?? "",
       userAgent: req.headers["user-agent"] ?? ""
     });
 

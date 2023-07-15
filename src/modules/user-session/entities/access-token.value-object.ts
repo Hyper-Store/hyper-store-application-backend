@@ -16,6 +16,10 @@ export class AccessTokenValueObject extends BaseValueObject<AccessTokenValueObje
             expirationDateTime: this.props.expirationDateTime
         }
     }
+
+    get accessToken(): string {
+        return this.props.accessToken
+    }
 }
 
 export namespace AccessTokenValueObject {

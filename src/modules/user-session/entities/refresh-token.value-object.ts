@@ -16,6 +16,10 @@ export class RefreshTokenValueObject extends BaseValueObject<RefreshTokenValueOb
             expirationDateTime: this.props.expirationDateTime
         }
     }
+
+    get refreshToken(): string {
+        return this.props.refreshToken
+    }
 }
 
 export namespace RefreshTokenValueObject {

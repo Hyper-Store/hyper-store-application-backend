@@ -50,11 +50,11 @@ model Signature {
 model UserSession {
   id       String      @id @default(uuid())
   userId String
-  ip String
-  userAgent String
-  accessToken String @unique()
+  ip String @db.Text()
+  userAgent String @db.Text()
+  accessToken String @db.VarChar(255) @unique()
   acessTokenExpirationDateTime DateTime
-  refreshToken String @unique()
+  refreshToken String @db.VarChar(255)  @unique()
   refreshTokenExpirationDateTime DateTime
   status String
   @@map("user_sessions")

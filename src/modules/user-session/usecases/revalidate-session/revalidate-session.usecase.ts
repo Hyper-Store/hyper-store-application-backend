@@ -13,8 +13,7 @@ export class RevalidateSessionUsecase {
     ){}
 
     async execute(input: RevalidateSessionUsecase.Input): Promise<Either<RevalidateSessionUsecase.Errors, JwtGateway.Tokens>> {
-
-        return await this.prismaClient.$transaction(async (prisma: PrismaClient): Promise<Either<RevalidateSessionUsecase.Errors, null>> => {
+        return await this.prismaClient.$transaction(async (prisma: PrismaClient): Promise<Either<RevalidateSessionUsecase.Errors, JwtGateway.Tokens>> => {
             const prismaUserSessionRepository = new PrismaUserSessionRepository(prisma)
             const prismaRabbitmqOutbox = new PrismaRabbitmqOutbox(prisma)
     
@@ -46,7 +45,10 @@ export class RevalidateSessionUsecase {
             const sessionRevalidatedEvent = new SessionRevalidatedEvent(userSessionEntity.toJSON())
             await prismaRabbitmqOutbox.publish(sessionRevalidatedEvent)
 
-            return success(null)
+            return success({ 
+                accessToken: accessTokenValueObject.accessToken,
+                refreshToken: refreshTokenValueObject.refreshToken
+             })
         })
 
     }
