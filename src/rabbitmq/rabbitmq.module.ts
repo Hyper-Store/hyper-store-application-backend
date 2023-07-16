@@ -2,6 +2,7 @@ import { RabbitMQModule } from '@golevelup/nestjs-rabbitmq';
 import { Global, Module } from '@nestjs/common';
 import { exchanges } from './exchanges';
 import "dotenv/config"
+import { RabbitmqService } from './rabbitmq.service';
 
 @Global()
 @Module({
@@ -13,7 +14,7 @@ import "dotenv/config"
       enableControllerDiscovery: true,
     }),
   ],
-  exports: [RabbitMQModule],
+  exports: [RabbitMQModule, RabbitmqService],
 
 })
 export class RabbitModule { }

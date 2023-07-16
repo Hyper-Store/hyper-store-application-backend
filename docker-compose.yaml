@@ -16,7 +16,8 @@ services:
         - 27017:27017
     volumes:
       - .mongodb_data:/bitnami
-
+    extra_hosts:
+      - "host.docker.internal:172.17.0.1"
 
   # mongodb-secondary:
   #   restart: always
@@ -44,7 +45,8 @@ services:
     environment:
       - RABBITMQ_DEFAULT_USER=admin
       - RABBITMQ_DEFAULT_PASS=admin
-
+    extra_hosts:
+      - "host.docker.internal:172.17.0.1"
 
   mysql:
     image: mysql:8.0
@@ -61,14 +63,15 @@ services:
       - "33010:3306"
     volumes:
       - ./.mysql-data:/var/lib/mysql
+    extra_hosts:
+      - "host.docker.internal:172.17.0.1"
 
   # app:
   #   build: .
-  #   command: npm run start:prod
   #   ports:
   #     - "6000:5000"
   #   volumes:
-  #     - .:/app
+  #     - .:/home/node/app
   #   depends_on:
   #     - mysql
   #     - rabbitmq
