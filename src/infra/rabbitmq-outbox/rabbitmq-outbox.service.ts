@@ -11,8 +11,6 @@ export class RabbitmqOutboxService implements OnModuleInit {
 
     constructor(
         private readonly mysqlConsumerService: MysqlConsumerService,
-        private readonly amqpConnection: AmqpConnection,
-        private readonly prismaService: PrismaService,
         private readonly publishEventRabbitmqService: PublishEventRabbitmqService
     ){}
 
