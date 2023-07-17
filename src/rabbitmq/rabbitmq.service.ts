@@ -13,15 +13,15 @@ export class RabbitmqService {
     async setupTemporaryConsumer(
         exchange: string, 
         routingKey: string, 
-        callback: (message: any | BaseEvent.Schema) => void
+        callback: (message: BaseEvent.Schema) => void
     ): Promise<RabbitmqService.TemporaryConsumerResponse> {
         const queueName = `temporary-queue-${randomUUID()}`
         await this.amqpConnection.channel.assertQueue(queueName, { exclusive: true, autoDelete: true })
         await this.amqpConnection.channel.bindQueue(queueName, exchange, routingKey)
         const consumer = await this.amqpConnection.channel.consume(queueName, (message) => {
-            callback(message)
-        }, { noAck: true })
-        return { consumerTag: consumer.consumerTag }
+            callback(JSON.stringify(message.content.toString()) as any)
+        }, { noAck: true,  })
+        return { consumerTag: consumer.consumerTag, queueName }
     }
 
     async cancelTemporaryConsumer(consumerTag: string) {
@@ -34,5 +34,6 @@ export namespace RabbitmqService {
 
     export type TemporaryConsumerResponse = {
         consumerTag: string
+        queueName: string
     }
 }

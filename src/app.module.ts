@@ -10,6 +10,7 @@ import { KeysModule } from './modules/keys/keys.module';
 import { KeyRedemptionModule } from './modules/key-redemption/key-redemption.module';
 import { GuardModule } from './guards/guard.module';
 import { UserSessionModule } from './modules/user-session/user-session.module';
+import { MongooseModule } from './mongoose/mongoose.module';
 
 @Module({
   imports: [
@@ -22,7 +23,7 @@ import { UserSessionModule } from './modules/user-session/user-session.module';
     ServicesModule,
     KeysModule,
     KeyRedemptionModule,
-    
+    MongooseModule,
     GuardModule,
     UserSessionModule,
   ],

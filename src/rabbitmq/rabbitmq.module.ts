@@ -11,10 +11,10 @@ import { RabbitmqService } from './rabbitmq.service';
       exchanges,
       uri: process.env.RABBITMQ_LOGIN_CREDENTIALS,
       connectionInitOptions: { wait: true },
-      enableControllerDiscovery: true,
+      enableControllerDiscovery: true
     }),
   ],
-  exports: [RabbitMQModule, RabbitmqService],
+  exports: [RabbitMQModule],
 
 })
 export class RabbitModule { }

@@ -11,7 +11,6 @@ export class UserSessionController  {
 
     constructor(
         private readonly prismaService: PrismaService,
-        private readonly rabbitmqService: RabbitmqService,
 
     ){}
 
@@ -25,10 +24,5 @@ export class UserSessionController  {
         return await closeSessionUsecase.execute({ userSessionId })
     }
 
-    async test() {
-        const response = await this.rabbitmqService.setupTemporaryConsumer("userSession", "SessionCreatedEvent", (message) => {
-            console.log(message)
-        })
-        console.log(response)
-    }
+ 
 }

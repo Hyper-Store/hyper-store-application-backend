@@ -18,7 +18,7 @@ export class RedeemKeyUsecase {
         return await this.prismaClient.$transaction(async (prisma: PrismaClient) => {
             const prismaKeyRepository = new PrismaKeyRepository(prisma)
             const prismaRabbitmqOutbox = new PrismaRabbitmqOutbox(prisma)
-
+            
             const keyEntity = await prismaKeyRepository.findByKey(key)
             if(!keyEntity) throw new KeyNotFoundError()
 
