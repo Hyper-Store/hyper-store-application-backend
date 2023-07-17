@@ -5,6 +5,7 @@ import { BaseEvent } from "src/modules/@shared";
 import { MongoIdpotenceConsumer } from "src/modules/@shared/providers";
 import { RegisterNotificationQueryUsecase } from "./usecases";
 import { MongoIdpotenceConsumerService } from "src/modules/@shared/services";
+import { MongoNotificationQueryRepository } from "./repositories";
 
 
 @Injectable()
@@ -16,7 +17,7 @@ export class NotificationQueryPersistService {
         queue: "register-notification-sent-query"
     })
     async registerNotification(msg: BaseEvent.Schema) {
-        MongoIdpotenceConsumerService.consume(
+        return await MongoIdpotenceConsumerService.consume(
             msg.id, 
             "register-notification-query", 
             async (session) =>
