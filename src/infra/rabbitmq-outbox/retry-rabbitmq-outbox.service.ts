@@ -1,6 +1,6 @@
 import { Controller, Injectable, OnModuleInit } from '@nestjs/common';
 import { PrismaRabbitmqOutbox } from 'src/modules/@shared/providers';
-import { PrismaService } from 'src/prisma/prisma.service';
+import { PrismaService } from 'src/infra/prisma/prisma.service';
 import { PublishEventRabbitmqService } from './publish-event-rabbitmq.service';
 
 @Controller()

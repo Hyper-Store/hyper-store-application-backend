@@ -4,7 +4,7 @@ import {
   UnBanUserUsecase,
   BanUserUsecase
 } from './usecases';
-import { PrismaService } from 'src/prisma/prisma.service';
+import { PrismaService } from 'src/infra/prisma/prisma.service';
 import { ServerAuthGuard } from 'src/guards';
 import { UserIdDto } from './dto';
 

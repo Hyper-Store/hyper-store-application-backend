@@ -2,7 +2,7 @@ import { Controller, Injectable, OnModuleInit } from '@nestjs/common';
 import { MysqlConsumerService } from '../services';
 import { MysqlResponseInterface } from '../services/mysql-consumer/interfaces';
 import { AmqpConnection } from '@golevelup/nestjs-rabbitmq';
-import { PrismaService } from 'src/prisma/prisma.service';
+import { PrismaService } from 'src/infra/prisma/prisma.service';
 import { OutboxRecord } from './interface';
 import { PublishEventRabbitmqService } from './publish-event-rabbitmq.service';
 

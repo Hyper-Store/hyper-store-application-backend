@@ -2,7 +2,7 @@
 import { CanActivate, ExecutionContext, Injectable } from '@nestjs/common';
 import { Request, Response } from 'express';
 import { AuthFacade } from 'src/modules/auth/facade';
-import { PrismaService } from 'src/prisma/prisma.service';
+import { PrismaService } from 'src/infra/prisma/prisma.service';
 import { InvalidAccessTokenError, UserBannedError, UserValidationMapper } from './errors';
 import { UserSessionFacade } from 'src/modules/user-session/facades';
 import { AccessTokenValidationService } from './access-token-validation.service';

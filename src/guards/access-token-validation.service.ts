@@ -4,7 +4,7 @@ import { Either, failure, success } from "src/modules/@shared/logic";
 import { AuthFacade } from "src/modules/auth/facade";
 import { UserSessionFacade } from "src/modules/user-session/facades";
 import { JwtGateway } from "src/modules/user-session/gateways";
-import { PrismaService } from "src/prisma/prisma.service";
+import { PrismaService } from "src/infra/prisma/prisma.service";
 
 export class AccessTokenValidationService {
 

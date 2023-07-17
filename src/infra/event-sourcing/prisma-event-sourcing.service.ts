@@ -3,7 +3,7 @@ import { Injectable, OnModuleInit } from '@nestjs/common';
 import { PrismaClient } from '@prisma/client';
 import { BaseEvent } from 'src/modules/@shared';
 import { PrismaEventSourcingProvider, PrismaIdpotenceConsumer } from 'src/modules/@shared/providers';
-import { PrismaService } from 'src/prisma/prisma.service';
+import { PrismaService } from 'src/infra/prisma/prisma.service';
 
 @Injectable()
 export class PrismaEventSourcingService implements OnModuleInit {

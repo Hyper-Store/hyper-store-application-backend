@@ -1,9 +1,9 @@
 import { Controller, Get, Post, Body, Patch, Param, Delete, OnModuleInit, UseGuards, HttpCode } from '@nestjs/common';
 import { ServerAuthGuard } from 'src/guards';
-import { PrismaService } from 'src/prisma/prisma.service';
+import { PrismaService } from 'src/infra/prisma/prisma.service';
 import { CloseSessionUsecase } from './usecases';
 import { AmqpConnection } from '@golevelup/nestjs-rabbitmq';
-import { RabbitmqService } from 'src/rabbitmq/rabbitmq.service';
+import { RabbitmqService } from 'src/infra/rabbitmq/rabbitmq.service';
 
 
 @Controller('server/user-session')

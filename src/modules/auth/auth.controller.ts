@@ -6,7 +6,7 @@ import {
   RefreshTokenUsecase
 } from './usecases';
 import { Response, Request } from "express"
-import { PrismaService } from 'src/prisma/prisma.service';
+import { PrismaService } from 'src/infra/prisma/prisma.service';
 import { LoginDto } from './dto';
 import { AuthGuard } from 'src/guards';
 

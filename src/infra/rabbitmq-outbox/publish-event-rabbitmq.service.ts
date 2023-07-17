@@ -1,7 +1,7 @@
 import { Injectable } from "@nestjs/common"
 import { OutboxRecord } from "./interface"
 import { AmqpConnection } from "@golevelup/nestjs-rabbitmq"
-import { PrismaService } from "src/prisma/prisma.service"
+import { PrismaService } from "src/infra/prisma/prisma.service"
 import { PrismaRabbitmqOutbox } from "src/modules/@shared/providers"
 
 

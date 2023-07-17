@@ -1,6 +1,6 @@
 import { AmqpConnection, RabbitRPC } from '@golevelup/nestjs-rabbitmq';
 import { Controller, Get, Post, Body, Patch, Param, Delete, OnModuleInit, Inject, Injectable } from '@nestjs/common';
-import { PrismaService } from 'src/prisma/prisma.service';
+import { PrismaService } from 'src/infra/prisma/prisma.service';
 import { BaseEvent } from '../@shared';
 import { ExpireSessionUseCase } from './usecases';
 
