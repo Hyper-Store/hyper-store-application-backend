@@ -43,7 +43,7 @@ export class AuthGuard implements CanActivate {
     const user = await accessTokenValidationService.validate(accessToken)
     if(user.isFailure()) UserValidationMapper.map(user.value) 
 
-    req.currentUser = user
+    req.currentUser = user.value
 
     return true;
   }

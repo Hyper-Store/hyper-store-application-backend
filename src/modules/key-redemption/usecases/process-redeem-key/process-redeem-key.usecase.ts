@@ -19,11 +19,10 @@ export class ProcessRedeemKeyUsecase {
             const prismaIdpotenceConsumer = new PrismaIdpotenceConsumer(prisma)
             const isEventRegistered = await prismaIdpotenceConsumer.isEventRegistered(this.eventId, this.consumerName)
             if(isEventRegistered) return
-
             const keyFacade = new KeyFacade(prisma)
             const prismaRabbitmqOutbox = new PrismaRabbitmqOutbox(prisma)
             const signatureFacade = new SignatureFacade(prisma)
-    
+            
             const keyDetails = await keyFacade.consultKeyDetails(key)
             if(!keyDetails) {
                 const failedGetKeyDetailsEvent = new FailedGetKeyDetailsEvent({ key })

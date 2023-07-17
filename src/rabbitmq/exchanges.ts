@@ -7,5 +7,6 @@ export const exchanges: RabbitMQExchangeConfig[] = [
     { name: "keyRedemption", type: "topic" },
     { name: "services", type: "topic" },
     { name: "signature", type: "topic" },
-    { name: "userSession", type: "topic" }
+    { name: "userSession", type: "topic" },
+    { name: "notification", type: "topic" }
 ]
