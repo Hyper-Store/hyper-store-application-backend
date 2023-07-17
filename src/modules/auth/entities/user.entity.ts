@@ -26,7 +26,6 @@ export class UserEntity extends BaseEntity<UserEntity.Props>{
         return this.props.isBanned
     }
 
-
     async comparePassword(password: string): Promise<boolean> {
         return compare(password, this.props.password) 
     }

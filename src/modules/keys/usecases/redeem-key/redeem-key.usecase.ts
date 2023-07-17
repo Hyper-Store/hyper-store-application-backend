@@ -23,7 +23,6 @@ export class RedeemKeyUsecase {
             if(!keyEntity) throw new KeyNotFoundError()
 
             if(!keyEntity.isActivated()) throw new KeyNotActivatedError()
-            
             keyEntity.redeem(keyRedeemerId)
 
             await prismaKeyRepository.update(keyEntity)
