@@ -33,7 +33,8 @@ export class PrismaNotificationRepository {
         await this.prismaClient.notification.update({
             where: { id: id ?? "" },
             data: {
-                ...props
+                ...props,
+                notificationInfo: JSON.stringify(notificationEntity.notificationInfo),
             }
         })
     }

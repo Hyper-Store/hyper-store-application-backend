@@ -12,6 +12,7 @@ import { Server, Socket } from 'socket.io';
 import { AccessTokenValidationService } from 'src/guards';
 import { RabbitRPC } from '@golevelup/nestjs-rabbitmq';
 import { BaseEvent } from '../@shared';
+import { MarkAsSeenUsecase } from './usecases';
 
 
 interface UserSocket extends Socket {
@@ -41,10 +42,15 @@ export class NoficationController implements OnGatewayConnection, OnGatewayDisco
     @WebSocketServer() server: Server;
 
 
-    @SubscribeMessage('message')
-    handleMessage(client: UserSocket, payload: any): string {
-      console.log(`Message from user ${client.userId}: ${payload}`);
-      return 'Message received!';
+    @SubscribeMessage('mark-notification-as-seen')
+    async handleMessage(client: UserSocket, payload: any): Promise<string> {
+        const markAsSeenUsecase = new MarkAsSeenUsecase(this.prismaService)
+        const result = await markAsSeenUsecase.execute({ 
+            notificationId: payload.notificationId, 
+            userId: client.userId 
+        })
+        if(result.isFailure()) return result.value
+        return 'MessageReceived';
     }
 
 
