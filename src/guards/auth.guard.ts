@@ -3,8 +3,9 @@ import { CanActivate, ExecutionContext, Injectable } from '@nestjs/common';
 import { Request, Response } from 'express';
 import { AuthFacade } from 'src/modules/auth/facade';
 import { PrismaService } from 'src/prisma/prisma.service';
-import { InvalidAccessTokenError, UserBannedError } from './errors';
+import { InvalidAccessTokenError, UserBannedError, UserValidationMapper } from './errors';
 import { UserSessionFacade } from 'src/modules/user-session/facades';
+import { AccessTokenValidationService } from './access-token-validation.service';
 
 
 interface User {
@@ -35,27 +36,18 @@ export class AuthGuard implements CanActivate {
     const ctx = context.switchToHttp();
     const req = ctx.getRequest<Request & any>();
 
+    
     const accessToken = req.headers.authorization ?? ""
-    const user = await this.validateAccessToken(accessToken)
-
-    await this.validateUserBanned(user.userId)
+    
+    const accessTokenValidationService = new AccessTokenValidationService(this.prismaService)
+    const user = await accessTokenValidationService.validate(accessToken)
+    if(user.isFailure()) UserValidationMapper.map(user.value) 
 
     req.currentUser = user
 
     return true;
   }
 
-  async validateAccessToken(accessToken: string){
-    const userSessionFacade = new UserSessionFacade(this.prismaService) 
-    const user = await userSessionFacade.verifyAccessToken(accessToken)
-    if(!user) throw new InvalidAccessTokenError()
-    return user
-  }
-
-  async validateUserBanned(userId: string){
-    const authFacade = new AuthFacade(this.prismaService)
-    const isUserBanned = await authFacade.isUserBanned(userId)
-    if(isUserBanned) throw new UserBannedError()
-  }
+  
 
 }

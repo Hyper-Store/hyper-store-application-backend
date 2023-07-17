@@ -69,6 +69,7 @@ model PrismaRabbitmqOutbox {
   eventName String
   topic String
   schemaVersion String
+  persistEvent Boolean @default(true)
   retry_count Int @default(0)
   error_message String? @db.LongText()
   dateTimeOccurred DateTime
@@ -83,6 +84,7 @@ model EventSourcing {
   eventName String
   schemaVersion String
   dateTimeOccurred DateTime
+  persistEvent Boolean @default(true)
   payload String @db.LongText()
   @@map("event_sourcing")
 }

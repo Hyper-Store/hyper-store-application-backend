@@ -26,10 +26,9 @@ export class PrismaEventSourcingService implements OnModuleInit {
         }
       })
     public async consumer(msg: BaseEvent.Schema) {
-
+        if(msg.persistEvent === false) return
         try{
             await this.prismaService.$transaction(async (prisma: PrismaClient) => {
-                
                 const prismaEventSourcingProvider = new PrismaEventSourcingProvider(prisma)
                 const prismaIdpotenceConsumer = new PrismaIdpotenceConsumer(prisma)
                 

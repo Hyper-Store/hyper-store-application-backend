@@ -11,6 +11,7 @@ import { KeyRedemptionModule } from './modules/key-redemption/key-redemption.mod
 import { GuardModule } from './guards/guard.module';
 import { UserSessionModule } from './modules/user-session/user-session.module';
 import { MongooseModule } from './mongoose/mongoose.module';
+import { NotificationModule } from './modules/notification/notification.module';
 
 @Module({
   imports: [
@@ -26,6 +27,7 @@ import { MongooseModule } from './mongoose/mongoose.module';
     MongooseModule,
     GuardModule,
     UserSessionModule,
+    NotificationModule
   ],
   controllers: [],
   providers: [],

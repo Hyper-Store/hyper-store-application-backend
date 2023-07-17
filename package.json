@@ -26,6 +26,8 @@
     "@nestjs/common": "^9.4.3",
     "@nestjs/core": "^9.4.3",
     "@nestjs/mapped-types": "^2.0.2",
+    "@nestjs/platform-socket.io": "^9.4.3",
+    "@nestjs/websockets": "^9.4.3",
     "@prisma/client": "^5.0.0",
     "@prisma/extension-pulse": "^0.1.4",
     "@rodrigogs/mysql-events": "^0.6.0",
@@ -47,7 +49,8 @@
     "mysql2": "^3.5.1",
     "prisma": "^5.0.0",
     "reflect-metadata": "^0.1.13",
-    "rxjs": "^7.8.1"
+    "rxjs": "^7.8.1",
+    "socket.io": "^4.7.1"
   },
   "devDependencies": {
     "@types/jest": "^29.5.2",

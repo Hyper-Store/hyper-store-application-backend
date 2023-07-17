@@ -5,6 +5,7 @@ export abstract class BaseEvent {
     schemaVersion: string = "1.0.0"
     dateTimeOccurred: Date = new Date();
     eventName: string;
+    persistEvent: boolean = true
     abstract topic: string;
 
     abstract readonly payload: any;
@@ -19,6 +20,7 @@ export abstract class BaseEvent {
         return {
             id: this.id,
             topic: this.topic,
+            persistEvent: this.persistEvent,
             eventName: this.eventName,
             schemaVersion: this.schemaVersion,
             dateTimeOccurred: this.dateTimeOccurred,
@@ -32,6 +34,7 @@ export namespace BaseEvent {
     export type Schema = {
         id: string
         topic: string
+        persistEvent: boolean
         eventName: string
         schemaVersion: string
         dateTimeOccurred: Date

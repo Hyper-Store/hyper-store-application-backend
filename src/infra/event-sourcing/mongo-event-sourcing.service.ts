@@ -24,6 +24,7 @@ export class MongoEventSourcingService implements OnModuleInit {
         }
     })
     public async consumer(msg: BaseEvent.Schema) {
+        if(msg.persistEvent === false) return
         const session = await mongoose.startSession()
         session.startTransaction()
         try {
