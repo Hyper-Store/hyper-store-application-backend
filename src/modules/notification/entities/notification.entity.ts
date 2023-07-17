@@ -1,4 +1,5 @@
 import { BaseEntity } from "src/modules/@shared"
+import { Either, failure, success } from "src/modules/@shared/logic"
 
 export class NotificationEntity extends BaseEntity<NotificationEntity.Props>{
 
@@ -29,6 +30,11 @@ export class NotificationEntity extends BaseEntity<NotificationEntity.Props>{
         return this.props.isSeen
     }
 
+    markAsSeen(): Either<"NotificationAlreadyMarkedAsSeenError" , null> {
+        if(this.isSeen()) return failure("NotificationAlreadyMarkedAsSeenError")
+        this.props.isSeen = true
+        return success(null)
+    }
 
     toJSON(): NotificationEntity.PropsJSON {
         return {
