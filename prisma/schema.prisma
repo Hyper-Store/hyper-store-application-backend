@@ -67,6 +67,7 @@ model Notification {
   isGlobal Boolean
   isSeen Boolean
   notificationInfo String @db.Text()
+  dateTimeSent DateTime
   @@map("notifications")
 }
 
