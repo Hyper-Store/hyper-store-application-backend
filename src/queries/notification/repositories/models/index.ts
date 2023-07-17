@@ -1,0 +1,1 @@
+export * from "./mongo-notification-query.model"

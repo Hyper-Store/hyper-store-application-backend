@@ -12,6 +12,7 @@ import { GuardModule } from './guards/guard.module';
 import { UserSessionModule } from './modules/user-session/user-session.module';
 import { MongooseModule } from './infra/mongoose/mongoose.module';
 import { NotificationModule } from './modules/notification/notification.module';
+import { NotificationQueryModule } from './queries/notification/notification-query.module';
 
 @Module({
   imports: [
@@ -27,7 +28,8 @@ import { NotificationModule } from './modules/notification/notification.module';
     MongooseModule,
     GuardModule,
     UserSessionModule,
-    NotificationModule
+    NotificationModule,
+    NotificationQueryModule
   ],
   controllers: [],
   providers: [],

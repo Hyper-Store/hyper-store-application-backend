@@ -11,5 +11,5 @@ const EventSchema: Schema = new Schema({
 });
 EventSchema.index({ consumerName: 1, eventId: 1 }, { unique: true });
 
-export const MongoIdpotenceConsumerModel = mongoose.model<IdpotenceConsumer>('idpotenceConsumer', EventSchema);
+export const MongoIdpotenceConsumerModel = mongoose.model<IdpotenceConsumer>('idpotence_consumer', EventSchema);
 

@@ -18,5 +18,5 @@ const EventSchema: Schema = new Schema({
   payload: { type: Object, required: true }
 });
 
-export const MongoEventSouringModel = mongoose.model<IEvent>('eventSourcing', EventSchema);
+export const MongoEventSouringModel = mongoose.model<IEvent>('event_sourcing', EventSchema);
 
