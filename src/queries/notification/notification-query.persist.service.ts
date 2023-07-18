@@ -25,6 +25,22 @@ export class NotificationQueryPersistService {
 
     @RabbitRPC({
         exchange: 'notification',
+        routingKey: "GlobalNotificationSentEvent",
+        queue: "register-global-notification-query"
+    })
+    async registerGlobalNotification(msg: BaseEvent.Schema) {
+        await MongoIdpotenceConsumerService.consume(
+            msg.id, 
+            "register-global-notification-query", 
+            async (session) =>
+            new RegisterNotificationQueryUsecase(session)
+            .execute({ ...msg.payload })
+        )
+    }  
+
+
+    @RabbitRPC({
+        exchange: 'notification',
         routingKey: "NotificationMarkedAsSeenEvent",
         queue: "register-notification-marked-as-seen-query"
     })

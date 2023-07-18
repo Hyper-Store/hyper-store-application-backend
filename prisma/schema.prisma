@@ -65,10 +65,20 @@ model Notification {
   userId String?
   title String
   isGlobal Boolean
-  isSeen Boolean
   notificationInfo String @db.Text()
   dateTimeSent DateTime
   @@map("notifications")
+}
+
+
+model NotificationSeen {
+  id       String      @unique()
+  userId String
+  notificationId String
+  dateTimeSeen DateTime
+  
+  @@id([userId, notificationId])
+  @@map("notifications_seen")
 }
 
 

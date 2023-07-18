@@ -11,13 +11,11 @@ export class NotificationEntity extends BaseEntity<NotificationEntity.Props>{
 
         if(input.isGlobal === true){
             input.userId = undefined
-            input.isSeen = true
         }
 
         return new NotificationEntity({
             ...input,
             isGlobal: input.isGlobal ?? false,
-            isSeen: input.isSeen ?? false,
             dateTimeSent: input.dateTimeSent ?? new Date()
         }, id)
     }
@@ -26,15 +24,8 @@ export class NotificationEntity extends BaseEntity<NotificationEntity.Props>{
         return this.props.isGlobal
     }
 
-    isSeen(): boolean {
-        return this.props.isSeen
-    }
 
-    markAsSeen(): Either<"NotificationAlreadyMarkedAsSeenError" , null> {
-        if(this.isSeen()) return failure("NotificationAlreadyMarkedAsSeenError")
-        this.props.isSeen = true
-        return success(null)
-    }
+
 
     toJSON(): NotificationEntity.PropsJSON {
         return {
@@ -42,7 +33,6 @@ export class NotificationEntity extends BaseEntity<NotificationEntity.Props>{
             title: this.title,
             isGlobal: this.isGlobal(),
             userId: this.userId,
-            isSeen: this.isSeen(),
             notificationInfo: this.notificationInfo,
             dateTimeSent: this.dateTimeSent
         }
@@ -71,21 +61,18 @@ export namespace NotificationEntity {
     export type NotificationInfo = {
         [ key: string ]: any
     }
-
-
+    // KeyRedemmed 
     export type Input = {
         title: string
         userId?: string
         isGlobal?: boolean
         dateTimeSent?: Date
-        isSeen?: boolean
         notificationInfo: NotificationInfo
     }
 
     export type Props = {
         title: string
         isGlobal: boolean
-        isSeen: boolean
         userId?: string
         notificationInfo: NotificationInfo
         dateTimeSent: Date

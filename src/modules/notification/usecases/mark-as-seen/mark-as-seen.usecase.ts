@@ -1,8 +1,8 @@
 
 import { PrismaClient } from "@prisma/client";
 import { PrismaRabbitmqOutbox } from "src/modules/@shared/providers";
-import { PrismaNotificationRepository } from "../../repositories";
-import { NotificationEntity } from "../../entities";
+import { PrismaNotificationRepository, PrismaNotificationSeenRepository } from "../../repositories";
+import { NotificationEntity, NotificationSeenEntity } from "../../entities";
 import { Either, failure, success } from "src/modules/@shared/logic";
 import { NotificationMarkedAsSeenEvent } from "./notification-marked-as-seen.event";
 
@@ -16,6 +16,7 @@ export class MarkAsSeenUsecase {
 
     async execute({ notificationId, userId }: MarkAsSeenUsecase.Input): Promise<Either<MarkAsSeenUsecase.Errors, null>> {
         return await this.prismaClient.$transaction(async (prisma: PrismaClient) => {
+            const prismaNotificationSeenRepository = new PrismaNotificationSeenRepository(prisma)
             const prismaNotificationRepository = new PrismaNotificationRepository(prisma)
             const prismaRabbitmqOutbox = new PrismaRabbitmqOutbox(prisma)
 
@@ -24,14 +25,16 @@ export class MarkAsSeenUsecase {
 
             if(notificationEntity.userId !== userId) return failure("NotificationNotFromUserError")
 
-            const markAsSeenResult = notificationEntity.markAsSeen()
-            if(markAsSeenResult.isFailure()) return failure(markAsSeenResult.value)
+            const notificationAlreadySeen = await prismaNotificationSeenRepository.find(userId, notificationId)
+            if(!notificationAlreadySeen) return failure("NotificationAlreadyMarkedAsSeenError")
 
-            prismaNotificationRepository.update(notificationEntity)
-
-            const notificationMarkedAsSeenEvent = new NotificationMarkedAsSeenEvent({ 
-                notificationId: notificationEntity.id 
+            const notificationSeenEntity = NotificationSeenEntity.create({
+                userId,
+                notificationId,
             })
+            await prismaNotificationSeenRepository.create(notificationSeenEntity)
+
+            const notificationMarkedAsSeenEvent = new NotificationMarkedAsSeenEvent(notificationSeenEntity.toJSON())
             await prismaRabbitmqOutbox.publish(notificationMarkedAsSeenEvent)
 
             return success(null)
@@ -41,7 +44,7 @@ export class MarkAsSeenUsecase {
 
 export namespace MarkAsSeenUsecase {
 
-    export type Errors = "NotificationNotFoundError" | "NotificationNotFromUserError"
+    export type Errors = "NotificationNotFoundError" | "NotificationNotFromUserError" | "NotificationAlreadyMarkedAsSeenError"
 
     export type Input = {
         notificationId: string

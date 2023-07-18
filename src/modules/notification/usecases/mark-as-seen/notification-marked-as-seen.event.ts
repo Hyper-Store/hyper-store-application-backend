@@ -1,4 +1,5 @@
 import { BaseEvent } from "src/modules/@shared";
+import { NotificationSeenEntity } from "../../entities";
 
 export class NotificationMarkedAsSeenEvent extends BaseEvent {
 
@@ -12,7 +13,5 @@ export class NotificationMarkedAsSeenEvent extends BaseEvent {
 }
 
 export namespace NotificationMarkedAsSeenEvent {
-    export type Payload = {
-        notificationId: string
-    }
+    export type Payload = NotificationSeenEntity.PropsJSON
 }
