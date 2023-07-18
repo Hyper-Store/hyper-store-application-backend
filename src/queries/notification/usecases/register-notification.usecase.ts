@@ -12,8 +12,3 @@ export class RegisterNotificationQueryUsecase {
         await mongoNotificationQueryRepository.create(notificationQueryModel)
     }
 }
-
-export namespace RegisterNotificationQueryUsecase {
-
-
-}

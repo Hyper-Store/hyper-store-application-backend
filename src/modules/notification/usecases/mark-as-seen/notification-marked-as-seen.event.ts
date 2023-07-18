@@ -1,5 +1,4 @@
 import { BaseEvent } from "src/modules/@shared";
-import { NotificationEntity  } from "../../entities";
 
 export class NotificationMarkedAsSeenEvent extends BaseEvent {
 

@@ -9,12 +9,16 @@ export class MongoNotificationQueryRepository {
     ){}
 
     async create(notificationModel: NotificationQueryModel){
-        await MongoNotificationQueryModel.create([{ ...notificationModel }], { session: this.session })
+        await MongoNotificationQueryModel.create([{ ...notificationModel, id: notificationModel.id }], { session: this.session })
     }
 
     async findById(id: string): Promise<NotificationQueryModel | null>{
         const mongoData = await MongoNotificationQueryModel.findOne({ id }, null, { session: this.session })
         if(!mongoData) return null
-        return mongoData
+        return mongoData.toObject()
+    }
+
+    async update(notificationModel: NotificationQueryModel){
+        await MongoNotificationQueryModel.updateOne({ id: notificationModel.id },  { $set: { ...notificationModel }}, { session: this.session })
     }
 }
