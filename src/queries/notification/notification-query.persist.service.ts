@@ -1,11 +1,8 @@
 import { AmqpConnection, RabbitRPC } from "@golevelup/nestjs-rabbitmq";
 import { Injectable } from "@nestjs/common";
-import mongoose from "mongoose";
 import { BaseEvent } from "src/modules/@shared";
-import { MongoIdpotenceConsumer } from "src/modules/@shared/providers";
 import { MarkAsSeenUsecase, RegisterNotificationQueryUsecase } from "./usecases";
 import { MongoIdpotenceConsumerService } from "src/modules/@shared/services";
-import { MongoNotificationQueryRepository } from "./repositories";
 
 
 @Injectable()
@@ -24,7 +21,7 @@ export class NotificationQueryPersistService {
             new RegisterNotificationQueryUsecase(session)
             .execute({ ...msg.payload })
         )
-    }
+    }  
 
     @RabbitRPC({
         exchange: 'notification',

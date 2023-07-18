@@ -6,7 +6,9 @@
 prisma/migrations
 .mongodb_data
 .env
-
+.kafka-connect
+.custom-smt
+.kafka-data
 # Logs
 logs
 *.log
