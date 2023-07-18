@@ -5,7 +5,9 @@ import { CustomValidationPipe } from './infra/filters';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
-
+  app.enableCors({
+    origin: '*',
+  });
   app.useGlobalPipes(new CustomValidationPipe());
   await app.listen(5000);
 }

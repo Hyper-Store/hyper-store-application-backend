@@ -38,7 +38,6 @@ export class NotificationQueryPersistService {
         )
     }  
 
-
     @RabbitRPC({
         exchange: 'notification',
         routingKey: "NotificationMarkedAsSeenEvent",
@@ -47,7 +46,7 @@ export class NotificationQueryPersistService {
     async markAsSeen(msg: BaseEvent.Schema) {        
         await MongoIdpotenceConsumerService.consume(
             msg.id, 
-            "register-notification-marked-as-seen-query", 
+            "register-notification-marked-as-seen-query",
             async (session) =>
             new MarkAsSeenUsecase(session)
             .execute({ ...msg.payload })
