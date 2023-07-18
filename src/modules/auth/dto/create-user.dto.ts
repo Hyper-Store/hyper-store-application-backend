@@ -13,9 +13,9 @@ export class CreateUserDto {
 
     @IsNotEmpty({ message: "UsernameNotProvidedError" })
     @IsString({ message: "InvalidUsernameTypeError"})
-    @Length(5, 20, { message: "InvalidUsernameLengthError" })
+    @Length(3, 20, { message: "InvalidUsernameLengthError" })
     @Matches(/^[a-zA-Z0-9_]{3,20}$/, {
         message: 'invalidUsernameFormatError',
-      })
+    })
     username: string
 }
