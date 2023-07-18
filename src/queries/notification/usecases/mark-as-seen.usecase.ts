@@ -1,20 +1,15 @@
 import mongoose from "mongoose"
-import { MongoNotificationQueryRepository } from "../repositories"
+import { MongoNotificationSeenRepository } from "../repositories/mongo-notification-seen.repository"
+import { NotificationSeenModel } from "../models"
 
 export class MarkAsSeenUsecase {
     constructor(
         private readonly session?: mongoose.mongo.ClientSession
     ) {}
     
-    async execute({ notificationId }: MarkAsSeenUsecase.Input) {
-        const mongoNotificationQueryRepository = new MongoNotificationQueryRepository(this.session)
-
-        const notificationModel = await mongoNotificationQueryRepository.findById(notificationId)
-        
-        if(!notificationModel) return
-        notificationModel.isSeen = true
-
-        await mongoNotificationQueryRepository.update(notificationModel)
+    async execute(notificationSeenModel: NotificationSeenModel) {
+        const mongoNotificationSeenRepository = new MongoNotificationSeenRepository(this.session)
+        await mongoNotificationSeenRepository.create(notificationSeenModel)
     }
 }
 

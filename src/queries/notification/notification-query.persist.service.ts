@@ -50,7 +50,7 @@ export class NotificationQueryPersistService {
             "register-notification-marked-as-seen-query", 
             async (session) =>
             new MarkAsSeenUsecase(session)
-            .execute({ notificationId: msg.payload.notificationId })
+            .execute({ ...msg.payload })
         )
     }
     
