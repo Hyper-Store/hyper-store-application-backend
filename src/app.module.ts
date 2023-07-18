@@ -13,6 +13,8 @@ import { UserSessionModule } from './modules/user-session/user-session.module';
 import { MongooseModule } from './infra/mongoose/mongoose.module';
 import { NotificationModule } from './modules/notification/notification.module';
 import { NotificationQueryModule } from './queries/notification/notification-query.module';
+import { APP_FILTER } from '@nestjs/core';
+import { AllExceptionsFilter } from './infra/filters';
 
 @Module({
   imports: [
@@ -32,6 +34,11 @@ import { NotificationQueryModule } from './queries/notification/notification-que
     NotificationQueryModule
   ],
   controllers: [],
-  providers: [],
+  providers: [
+    {
+      provide: APP_FILTER,
+      useClass: AllExceptionsFilter,
+    },
+  ],
 })
 export class AppModule {}
