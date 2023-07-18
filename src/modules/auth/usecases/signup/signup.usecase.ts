@@ -15,7 +15,7 @@ export class SignupUsecase {
     
     async execute(createUserDto: CreateUserDto & { ip: string, userAgent: string  }) {
         return await this.prismaClient.$transaction(async (prisma: PrismaClient) => {
-            const userSessionFacade = new UserSessionFacade(prisma)
+            const userSessionFacade = new UserSessionFacade(this.prismaClient)
             const prismaUserRepository = new PrismaUserRepository(prisma)
             const prismaRabbitmqOutbox = new PrismaRabbitmqOutbox(prisma)
 
