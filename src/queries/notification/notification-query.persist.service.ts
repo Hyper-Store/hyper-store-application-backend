@@ -1,4 +1,4 @@
-import { AmqpConnection, RabbitRPC } from "@golevelup/nestjs-rabbitmq";
+import { RabbitRPC } from "@golevelup/nestjs-rabbitmq";
 import { Injectable } from "@nestjs/common";
 import { BaseEvent } from "src/modules/@shared";
 import { MarkAsSeenUsecase, RegisterNotificationQueryUsecase } from "./usecases";
@@ -53,5 +53,5 @@ export class NotificationQueryPersistService {
             .execute({ ...msg.payload })
         )
     }
-    
 }
+
