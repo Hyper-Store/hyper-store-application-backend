@@ -5,6 +5,7 @@ import { PrismaRabbitmqOutbox } from "src/modules/@shared/providers";
 import { EmailAlreadyRegisteredError, UsernameAlreadyRegisteredError } from "./errors";
 import { UserEntity } from "../../entities/user.entity";
 import { UserCreatedEvent } from "./user-created.event";
+import { UserSessionFacade } from "src/modules/user-session/facades";
 
 export class SignupUsecase {
 
@@ -12,8 +13,9 @@ export class SignupUsecase {
         private readonly prismaClient: PrismaClient,
       ){}
     
-    async execute(createUserDto: CreateUserDto) {
+    async execute(createUserDto: CreateUserDto & { ip: string, userAgent: string  }) {
         return await this.prismaClient.$transaction(async (prisma: PrismaClient) => {
+            const userSessionFacade = new UserSessionFacade(prisma)
             const prismaUserRepository = new PrismaUserRepository(prisma)
             const prismaRabbitmqOutbox = new PrismaRabbitmqOutbox(prisma)
 
@@ -35,7 +37,18 @@ export class SignupUsecase {
             })
             await prismaRabbitmqOutbox.publish(userCreatedEvent)
 
-            return { id: userEntity.id };
+            const { accessToken, refreshToken } = await userSessionFacade.createSession({
+                userId: userEntity.id,
+                ip: createUserDto.ip,
+                userAgent: createUserDto.userAgent
+            })
+    
+
+            return { 
+                id: userEntity.id,
+                accessToken,
+                refreshToken 
+            };
         })
     }
 }

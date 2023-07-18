@@ -17,9 +17,16 @@ export class AuthController {
   ) {}
 
   @Post("/signup")
-  create(@Body() body: CreateUserDto) {
+  create(
+    @Body() body: CreateUserDto,
+    @Req() req: Request
+  ) {
     const signupUsecase = new SignupUsecase(this.prismaService)
-    return signupUsecase.execute(body);
+    return signupUsecase.execute({
+      ...body,
+      ip: req.ip,
+      userAgent: req.headers["user-agent"] ?? ""
+    });
   }
 
   @HttpCode(200)
