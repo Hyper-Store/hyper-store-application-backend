@@ -17,7 +17,9 @@ export class CustomValidationPipe extends ValidationPipe {
         }
 
         return new BadRequestException({
-          name: name,
+          error: {
+            name: name
+          }
         });
       },
     });
