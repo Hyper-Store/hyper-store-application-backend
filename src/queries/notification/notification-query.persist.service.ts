@@ -16,7 +16,7 @@ export class NotificationQueryPersistService {
     async registerNotification(msg: BaseEvent.Schema) {
         await MongoIdpotenceConsumerService.consume(
             msg.id, 
-            "register-notification-query", 
+            "register-notification-sent-query", 
             async (session) =>
             new RegisterNotificationQueryUsecase(session)
             .execute({ ...msg.payload })
@@ -44,7 +44,7 @@ export class NotificationQueryPersistService {
         routingKey: "NotificationMarkedAsSeenEvent",
         queue: "register-notification-marked-as-seen-query"
     })
-    async markAsSeen(msg: BaseEvent.Schema) {
+    async markAsSeen(msg: BaseEvent.Schema) {        
         await MongoIdpotenceConsumerService.consume(
             msg.id, 
             "register-notification-marked-as-seen-query", 

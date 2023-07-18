@@ -24,7 +24,11 @@ export class NotificationEntity extends BaseEntity<NotificationEntity.Props>{
         return this.props.isGlobal
     }
 
-
+    canBeSeenBy(userId: string): boolean {
+        if(this.isGlobal()) return true
+        if(this.userId === userId) return true
+        return false
+    }
 
 
     toJSON(): NotificationEntity.PropsJSON {

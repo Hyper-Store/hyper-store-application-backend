@@ -22,11 +22,10 @@ export class MarkAsSeenUsecase {
 
             const notificationEntity = await prismaNotificationRepository.findById(notificationId)
             if(!notificationEntity) return failure("NotificationNotFoundError")
-
-            if(notificationEntity.userId !== userId) return failure("NotificationNotFromUserError")
+            if(!notificationEntity.canBeSeenBy(userId)) return failure("NotificationNotFromUserError")
 
             const notificationAlreadySeen = await prismaNotificationSeenRepository.find(userId, notificationId)
-            if(!notificationAlreadySeen) return failure("NotificationAlreadyMarkedAsSeenError")
+            if(notificationAlreadySeen) return failure("NotificationAlreadyMarkedAsSeenError")
 
             const notificationSeenEntity = NotificationSeenEntity.create({
                 userId,
