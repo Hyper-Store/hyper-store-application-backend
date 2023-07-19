@@ -19,6 +19,7 @@ import { WebsocketModule } from './modules/websocket/websocket.module';
 import { PrismaIdpotenceConsumerService } from './modules/@shared/services';
 import { StockModule } from './modules/stock/stock.module';
 import { StockRedemptionModule } from './modules/stock-redemption/stock-redemption.module';
+import { KeyRedemptionInfoModule } from './queries/key-redemption-info/key-redemption-info.module';
 
 @Global()
 @Module({
@@ -39,7 +40,8 @@ import { StockRedemptionModule } from './modules/stock-redemption/stock-redempti
     NotificationQueryModule,
     WebsocketModule,
     StockModule,
-    StockRedemptionModule
+    StockRedemptionModule,
+    KeyRedemptionInfoModule
   ],
   controllers: [],
   providers: [
