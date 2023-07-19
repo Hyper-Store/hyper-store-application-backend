@@ -1,7 +1,9 @@
 import { PrismaService } from "src/infra/prisma/prisma.service"
 import { PrismaIdpotenceConsumer } from "../providers"
 import { PrismaClient } from "@prisma/client"
+import { Injectable } from "@nestjs/common"
 
+@Injectable()
 export class PrismaIdpotenceConsumerService {
 
     constructor(
@@ -13,8 +15,6 @@ export class PrismaIdpotenceConsumerService {
         consumerName: string,
         callback: (session: PrismaClient) => Promise<any>
     ): Promise<any> {
-
-
         return await this.prismaService.$transaction(async (prisma: PrismaClient) => {
 
             const prismaIdpotenceConsumer = new PrismaIdpotenceConsumer(prisma)

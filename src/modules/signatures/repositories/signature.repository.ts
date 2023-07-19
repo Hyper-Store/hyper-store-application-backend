@@ -25,11 +25,11 @@ export class PrismaSignatureRepository {
     }
 
     async update(signatureEntity: SignatureEntity): Promise<void> {
-        const { expirationDate } = signatureEntity.toJSON()
+        const { id, serviceId, userId, ...props } = signatureEntity.toJSON()
         await this.prismaClient.signature.updateMany({
             where: { id: signatureEntity.id },
             data: {
-                expirationDate
+                ...props
             }
         })
     }

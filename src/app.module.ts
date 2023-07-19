@@ -35,7 +35,8 @@ import { PrismaIdpotenceConsumerService } from './modules/@shared/services';
     UserSessionModule,
     NotificationModule,
     NotificationQueryModule,
-    WebsocketModule
+    WebsocketModule,
+    
   ],
   controllers: [],
   providers: [

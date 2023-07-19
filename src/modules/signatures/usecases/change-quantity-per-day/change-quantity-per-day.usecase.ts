@@ -21,6 +21,7 @@ export class ChangeQuantityPerDayUsecase {
         }
 
         signatureEntity.changeQuantityPerDay(input.quantityPerDay)
+        console.log(signatureEntity.toJSON())
         await prismaSignatureRepository.update(signatureEntity)
 
         const quantityPerDayChangedEvent = new QuantityPerDayChangedEvent({
