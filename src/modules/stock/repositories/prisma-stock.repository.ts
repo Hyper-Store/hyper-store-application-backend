@@ -15,9 +15,9 @@ export class PrismaStockRepository {
         })
     }
 
-    async takeOneFromStock(stockType: string): Promise<StockEntity | null>{
+    async takeOneFromStock(serviceId: string): Promise<StockEntity | null>{
         const stock = await this.prisma.stock.findFirst({
-            where: { type: stockType, }
+            where: { serviceId: serviceId ?? serviceId, }
         })
         if(!stock) return null
         const stockEntity = StockEntity.create(stock, stock.id)

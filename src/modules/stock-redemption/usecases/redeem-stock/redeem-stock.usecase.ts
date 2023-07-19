@@ -5,7 +5,7 @@ import {  StockRedeemedEvent } from "./stock-redeemed.event"
 import { StockRedemptionEntity } from "../../entities"
 import { StockFacade } from "src/modules/stock/facades"
 import { SignatureFacade } from "src/modules/signatures/facades"
-import { OutOfStockError, SignatureNotFoundError } from "../_errors"
+import { OutOfStockError, ServiceTypeNotAccounceGeneratorError, SignatureNotFoundError } from "../_errors"
 
 
 export class RedeemStockUsecase {
@@ -25,7 +25,9 @@ export class RedeemStockUsecase {
             const signature = await signatureFacade.getSignatureDetails(signatureId)
             if(!signature) throw new SignatureNotFoundError()
             
-            const stock = await stockFacade.takeOneFromStock(signature.service.type)
+            if(signature.service.type !== "ACCOUNT_GENERATOR") throw new ServiceTypeNotAccounceGeneratorError()
+
+            const stock = await stockFacade.takeOneFromStock(signature.service.id)
             if(!stock) throw new OutOfStockError()
 
             const stockRedemptionEntity = StockRedemptionEntity.create({

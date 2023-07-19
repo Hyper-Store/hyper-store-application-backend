@@ -17,5 +17,13 @@ export class SignatureNotFoundError extends NotFoundException {
     }
 }
 
+export class ServiceTypeNotAccounceGeneratorError extends NotFoundException {
+    constructor() {
+        super({
+            name: "ServiceTypeNotAccounceGeneratorError"
+        })
+    }
+}
+
 
 
