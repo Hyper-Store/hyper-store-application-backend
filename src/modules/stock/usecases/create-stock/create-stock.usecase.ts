@@ -11,27 +11,34 @@ export class CreateStockUsecase {
         private readonly prismaClient: PrismaClient
     ){}
 
-    async execute(input: CreateStockUsecase.Input) {
+    async execute({ stocks }: CreateStockUsecase.Input) {
         return await this.prismaClient.$transaction(async (prisma: PrismaClient) => {
-            const prismaStockRepository = new PrismaStockRepository(prisma)
-            const prismaRabbitmqOutbox = new PrismaRabbitmqOutbox(prisma)
-            
-            const stockEntity = StockEntity.create(input)
+            for(const stock of stocks) {
+                const prismaStockRepository = new PrismaStockRepository(prisma)
+                const prismaRabbitmqOutbox = new PrismaRabbitmqOutbox(prisma)
+                
+                const stockEntity = StockEntity.create(stock)
+    
+                await prismaStockRepository.create(stockEntity)
+    
+                const stockCreatedEvent = new StockCreatedEvent(stockEntity.toJSON())
+                await prismaRabbitmqOutbox.publish(stockCreatedEvent)
+            }
 
-            await prismaStockRepository.create(stockEntity)
-
-            const stockCreatedEvent = new StockCreatedEvent(stockEntity.toJSON())
-            await prismaRabbitmqOutbox.publish(stockCreatedEvent)
         })
-
     }
 
 
 }
 
 export namespace CreateStockUsecase {
-    export type Input = {
+    
+    export type Stock = {
         value: string
         type: string
+    }
+
+    export type Input = {
+        stocks: Stock[]
     }
 }

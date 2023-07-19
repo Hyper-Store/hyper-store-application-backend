@@ -17,6 +17,7 @@ import { APP_FILTER } from '@nestjs/core';
 import { AllExceptionsFilter } from './infra/filters';
 import { WebsocketModule } from './modules/websocket/websocket.module';
 import { PrismaIdpotenceConsumerService } from './modules/@shared/services';
+import { StockModule } from './modules/stock/stock.module';
 
 @Global()
 @Module({
@@ -36,7 +37,7 @@ import { PrismaIdpotenceConsumerService } from './modules/@shared/services';
     NotificationModule,
     NotificationQueryModule,
     WebsocketModule,
-    
+    StockModule
   ],
   controllers: [],
   providers: [
