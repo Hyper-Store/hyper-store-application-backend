@@ -29,7 +29,7 @@ export class RedeemKeyUsecase {
             keyEntity.redeem(keyRedeemerId)
             
             const signatureAlreadyActive = await signatureFacade.isSignatureActive(keyRedeemerId, keyEntity.serviceId)
-            if(!signatureAlreadyActive) throw new SignatureAlreadyActiveError()
+            if(signatureAlreadyActive) throw new SignatureAlreadyActiveError()
 
 
             await prismaKeyRepository.update(keyEntity)
