@@ -3,11 +3,18 @@ import { CreateSignatureDto } from './dto/create-signature.dto';
 import { PrismaService } from 'src/infra/prisma/prisma.service';
 import { RabbitRPC } from '@golevelup/nestjs-rabbitmq';
 import { BaseEvent } from '../@shared';
-import { AddDaysUsecase } from './usecases';
+import { 
+  AddDaysUsecase,
+  ChangeQuantityPerDayUsecase
+} from './usecases';
+import { PrismaIdpotenceConsumerService } from '../@shared/services';
 
 @Controller('signatures')
 export class SignaturesController {
-  constructor(private readonly prismaService: PrismaService) {}
+  constructor(
+    private readonly prismaIdpotenceConsumerService: PrismaIdpotenceConsumerService,
+    private readonly prismaService: PrismaService
+  ) {}
 
   @RabbitRPC({
     exchange: 'keyRedemption',
@@ -25,5 +32,25 @@ export class SignaturesController {
           serviceId: msg.payload.serviceId,
           userId: msg.payload.keyRedeemerId
       })
+  }
+
+  @RabbitRPC({
+    exchange: 'keyRedemption',
+    routingKey: "RedeemKeyProcessedEvent",
+    queue:  "change-quantity-per-day-signature-queue"
+  })
+  async changeQuantityPerDay(msg: BaseEvent.Schema) {
+    await this.prismaIdpotenceConsumerService.consume(
+      msg.id,
+      "change-quantity-per-day-signature-queue",
+      async (prisma) => 
+      new ChangeQuantityPerDayUsecase(prisma)
+        .execute({
+          quantityPerDay: msg.payload.quantityPerDay,
+          serviceId: msg.payload.serviceId,
+          userId: msg.payload.keyRedeemerId
+        })
+    )
+
   }
 }

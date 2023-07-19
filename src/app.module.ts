@@ -1,4 +1,4 @@
-import { Module } from '@nestjs/common';
+import { Global, Module } from '@nestjs/common';
 import { PrismaModule } from './infra/prisma/prisma.module';
 import { AuthModule } from './modules/auth/auth.module';
 import { RabbitmqOutboxModule } from './infra/rabbitmq-outbox/rabbitmq-outbox.module';
@@ -16,7 +16,9 @@ import { NotificationQueryModule } from './queries/notification/notification-que
 import { APP_FILTER } from '@nestjs/core';
 import { AllExceptionsFilter } from './infra/filters';
 import { WebsocketModule } from './modules/websocket/websocket.module';
+import { PrismaIdpotenceConsumerService } from './modules/@shared/services';
 
+@Global()
 @Module({
   imports: [
     RabbitModule,
@@ -41,6 +43,8 @@ import { WebsocketModule } from './modules/websocket/websocket.module';
       provide: APP_FILTER,
       useClass: AllExceptionsFilter,
     },
+    PrismaIdpotenceConsumerService
   ],
+  exports: [ PrismaIdpotenceConsumerService ]
 })
 export class AppModule {}
