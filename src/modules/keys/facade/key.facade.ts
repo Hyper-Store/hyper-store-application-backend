@@ -26,7 +26,7 @@ export namespace KeyFacade {
         serviceId: string
         validUntil: number
         keyRedeemerId?: string
-        quantityForDay?: number
+        quantityPerDay?: number
         isRedeemed: boolean
     }
 }

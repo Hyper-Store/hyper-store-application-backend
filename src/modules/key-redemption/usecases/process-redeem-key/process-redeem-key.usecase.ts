@@ -45,7 +45,7 @@ export class ProcessRedeemKeyUsecase {
                 validUntil: keyDetails.validUntil, 
                 keyRedeemerId: keyDetails.keyRedeemerId!,
                 serviceId: keyDetails.serviceId,
-                quantityForDay: keyDetails.quantityForDay
+                quantityPerDay: keyDetails.quantityPerDay
             })
             await prismaRabbitmqOutbox.publish(redeemKeyProcessedEvent)
             await prismaIdpotenceConsumer.registerEvent(this.eventId, this.consumerName)

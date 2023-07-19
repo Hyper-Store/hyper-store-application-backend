@@ -25,12 +25,24 @@ export class PrismaSignatureRepository {
     }
 
     async update(signatureEntity: SignatureEntity): Promise<void> {
-        const { id, serviceId, userId, ...props } = signatureEntity.toJSON()
+
+        const currentSignatureEntity = await this.findByUserIdAndServiceId(signatureEntity.userId, signatureEntity.serviceId)
+        if(!currentSignatureEntity) return
+
+        const updateProps = {}
+
+        for(const key of Object.keys(signatureEntity.toJSON())) {
+            if(signatureEntity.toJSON()[key] !== currentSignatureEntity.toJSON()[key]) {
+                updateProps[key] = signatureEntity[key]
+            }
+        }
+
         await this.prismaClient.signature.updateMany({
             where: { id: signatureEntity.id },
             data: {
-                ...props
+                ...updateProps
             }
         })
     }
+
 }
