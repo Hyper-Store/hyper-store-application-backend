@@ -1,4 +1,4 @@
-import {  BadRequestException, NotFoundException } from '@nestjs/common';
+import {  BadRequestException, NotFoundException, UnauthorizedException } from '@nestjs/common';
 
 
 export class OutOfStockError extends BadRequestException {
@@ -17,13 +17,28 @@ export class SignatureNotFoundError extends NotFoundException {
     }
 }
 
-export class ServiceTypeNotAccounceGeneratorError extends NotFoundException {
+export class ServiceTypeNotAccountGeneratorError extends NotFoundException {
     constructor() {
         super({
-            name: "ServiceTypeNotAccounceGeneratorError"
+            name: "ServiceTypeNotAccountGeneratorError"
         })
     }
 }
 
+export class SignatureNotFoundUserError extends UnauthorizedException {
+    constructor() {
+        super({
+            name: "SignatureNotFoundUserError"
+        })
+    }
+}
+
+export class MaxStockRedemptionReachedError extends UnauthorizedException {
+    constructor() {
+        super({
+            name: "MaxStockRedemptionReachedError"
+        })
+    }
+}
 
 

@@ -5,7 +5,13 @@ import {  StockRedeemedEvent } from "./stock-redeemed.event"
 import { StockRedemptionEntity } from "../../entities"
 import { StockFacade } from "src/modules/stock/facades"
 import { SignatureFacade } from "src/modules/signatures/facades"
-import { OutOfStockError, ServiceTypeNotAccounceGeneratorError, SignatureNotFoundError } from "../_errors"
+import { 
+    MaxStockRedemptionReachedError,
+    OutOfStockError, 
+    ServiceTypeNotAccountGeneratorError, 
+    SignatureNotFoundError, 
+    SignatureNotFoundUserError 
+} from "../_errors"
 
 
 export class RedeemStockUsecase {
@@ -25,7 +31,12 @@ export class RedeemStockUsecase {
             const signature = await signatureFacade.getSignatureDetails(signatureId)
             if(!signature) throw new SignatureNotFoundError()
             
-            if(signature.service.type !== "ACCOUNT_GENERATOR") throw new ServiceTypeNotAccounceGeneratorError()
+            if(signature.service.type !== "ACCOUNT_GENERATOR") throw new ServiceTypeNotAccountGeneratorError()
+            if(signature.userId !== userId) throw new SignatureNotFoundUserError()
+
+            const redemptionCount = await prismaStockRedemptionRepository.getRedemptionCount(userId, signatureId)
+            if(redemptionCount >= signature.quantityPerDay) throw new MaxStockRedemptionReachedError()
+
 
             const stock = await stockFacade.takeOneFromStock(signature.service.id)
             if(!stock) throw new OutOfStockError()

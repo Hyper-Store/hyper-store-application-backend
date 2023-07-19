@@ -1,6 +1,6 @@
 import { PrismaClient } from "@prisma/client";
 import { StockRedemptionEntity } from "../entities";
-
+import { startOfDay, endOfDay } from 'date-fns';
 
 export class PrismaStockRedemptionRepository {
 
@@ -15,6 +15,17 @@ export class PrismaStockRedemptionRepository {
     }
 
     async getRedemptionCount(userId: string, signatureId: string): Promise<number>{
-
+        const todayStart = startOfDay(new Date());
+        const todayEnd = endOfDay(new Date());
+        return await this.prismaClient.stockRedemption.count({
+            where: {
+                userId,
+                signatureId,
+                dateTimeRedeemed: {
+                    gte: todayStart,
+                    lte: todayEnd,
+                }
+            }
+        })
     }
 }

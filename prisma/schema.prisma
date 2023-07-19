@@ -95,6 +95,7 @@ model StockRedemption {
   id       String      @id @default(uuid())
   userId String
   stockId String
+  signatureId String
   dateTimeRedeemed DateTime
   @@map("stock_redemptions")
 }
