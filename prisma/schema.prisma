@@ -87,8 +87,16 @@ model NotificationSeen {
 model Stock {
   id       String      @id @default(uuid())
   type String
-  value String
+  serviceId String
   @@map("stocks")
+}
+
+model StockRedemption {
+  id       String      @id @default(uuid())
+  userId String
+  stockId String
+  dateTimeRedeemed DateTime
+  @@map("stock_redemptions")
 }
 
 

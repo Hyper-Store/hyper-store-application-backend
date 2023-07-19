@@ -16,4 +16,22 @@ export class ServiceFacade {
         const prismaServiceRepository = new PrismaServiceRepository(this.prismaClient)
         return !!await prismaServiceRepository.findByName(name)
     }
+
+    async getServiceDetails(id: string): Promise<ServiceFacade.ServiceDetails | null> {
+        const prismaServiceRepository = new PrismaServiceRepository(this.prismaClient)
+        const serviceEntity = await prismaServiceRepository.findById(id)
+        if(!serviceEntity) return null
+        return {
+            ...serviceEntity.toJSON()
+        }
+    }
+}
+
+export namespace ServiceFacade {
+
+    export type ServiceDetails = {
+        id: string
+        name: string
+        type: string
+    }
 }

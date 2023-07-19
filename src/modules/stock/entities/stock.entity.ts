@@ -7,10 +7,8 @@ export class StockEntity extends BaseEntity<StockEntity.Props>{
     }
 
     static create(input: StockEntity.Input, id?: string): StockEntity {
-        if(input.type !== "ROCKSTAR") input.type = "ROCKSTAR"
         return new StockEntity({
-            ...input,
-            type: input.type as StockEntity.Type
+            ...input
         }, id)
     }
 
@@ -20,7 +18,7 @@ export class StockEntity extends BaseEntity<StockEntity.Props>{
         return {
             id: this.id,
             value: this.value,
-            type: this.type
+            serviceId: this.serviceId
         }
     }
 
@@ -28,23 +26,21 @@ export class StockEntity extends BaseEntity<StockEntity.Props>{
         return this.props.value
     }
 
-    get type() {
-        return this.props.type
+    get serviceId() {
+        return this.props.serviceId
     }
 }
 
 export namespace StockEntity {
 
-    export type Type = "ROCKSTAR"
-
     export type Input = {
         value: string
-        type: string
+        serviceId: string
     }
 
     export type Props = {
         value: string
-        type: Type
+        serviceId: string
     }
 
     export type PropsJSON = Props  & { id: string}

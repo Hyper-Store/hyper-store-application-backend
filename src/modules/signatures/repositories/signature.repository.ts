@@ -24,6 +24,14 @@ export class PrismaSignatureRepository {
         return SignatureEntity.create(signature, signature.id)
     }
 
+    async findById(id: string): Promise<SignatureEntity | null> {
+        const signature = await this.prismaClient.signature.findUnique({
+            where: { id: id ?? "" }
+        })
+        if(!signature) return null
+        return SignatureEntity.create(signature, signature.id)
+    }
+
     async update(signatureEntity: SignatureEntity): Promise<void> {
 
         const currentSignatureEntity = await this.findByUserIdAndServiceId(signatureEntity.userId, signatureEntity.serviceId)
