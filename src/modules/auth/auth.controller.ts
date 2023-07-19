@@ -17,48 +17,56 @@ export class AuthController {
   ) {}
 
   @Post("/signup")
-  create(
+  async create(
     @Body() body: CreateUserDto,
-    @Req() req: Request
+    @Req() req: Request,
+    @Res() res: Response
   ) {
     const signupUsecase = new SignupUsecase(this.prismaService)
-    return signupUsecase.execute({
+    const { accessToken, refreshToken, id } = await signupUsecase.execute({
       ...body,
       ip: req.ip,
       userAgent: req.headers["user-agent"] ?? ""
     });
+    res.cookie("refreshToken", refreshToken, { httpOnly: true })
+    res.cookie("accesssToken", accessToken, { httpOnly: true })
+    res.json({ id })
   }
 
   @HttpCode(200)
   @Post("/login")
   async login(
     @Body() body: LoginDto,
-    @Req() req: Request
+    @Req() req: Request,
+    @Res() res: Response
   ) {
     const loginUsecase = new LoginUsecase(this.prismaService)
-    const result = await loginUsecase.execute({
+    const { accessToken, refreshToken }  = await loginUsecase.execute({
       ...body,
       ip: req.ip,
       userAgent: req.headers["user-agent"] ?? ""
     });
-    return result
+    res.cookie("refreshToken", refreshToken, { httpOnly: true })
+    res.cookie("accesssToken", accessToken, { httpOnly: true })
+    res.json()
   }
 
   @HttpCode(200)
   @Post("/refresh-token")
   async refreshToken(
     @Body() body: any, 
-    @Req() req: Request
+    @Req() req: Request,
+    @Res() res: Response
   ) {
     const refreshTokenUsecase = new RefreshTokenUsecase(this.prismaService)
-    const result = await refreshTokenUsecase.execute({
+    const { accessToken, refreshToken } = await refreshTokenUsecase.execute({
       refreshToken: body.refreshToken ?? "",
       ip: req.ip ?? "",
       userAgent: req.headers["user-agent"] ?? ""
     });
-
- 
-    return result
+    res.cookie("refreshToken", refreshToken, { httpOnly: true })
+    res.cookie("accesssToken", accessToken, { httpOnly: true })
+    res.json()
   }
 
   @HttpCode(200)
