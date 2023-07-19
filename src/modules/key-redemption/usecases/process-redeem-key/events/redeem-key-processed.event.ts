@@ -16,5 +16,6 @@ export namespace RedeemKeyProcessedEvent {
         validUntil: number
         keyRedeemerId: string
         serviceId: string
+        quantityForDay?: number
     }
 }

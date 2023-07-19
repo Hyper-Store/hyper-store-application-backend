@@ -1,4 +1,4 @@
-import { IsNotEmpty, IsEmail, IsStrongPassword, IsString, Length, IsNumber } from "class-validator"
+import { IsNotEmpty, IsEmail, IsStrongPassword, IsString, IsOptional, IsNumber } from "class-validator"
 
 export class CreateKeyDto {
 
@@ -13,4 +13,8 @@ export class CreateKeyDto {
     @IsNotEmpty({ message: "QuantityNotProvidedError" })
     @IsNumber({  },{ message: "InvalidQuantityTypeError"})
     quantity: number
+
+    @IsOptional()
+    @IsNumber({  },{ message: "InvalidQuantityTypeError"})
+    quantityForDay: number
 }

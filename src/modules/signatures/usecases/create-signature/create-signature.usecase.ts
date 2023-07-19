@@ -16,7 +16,7 @@ export class CreateSignatureUseCase {
         const prismaSignatureRepository = new PrismaSignatureRepository(this.prismaClient)
         const prismaRabbitmqOutbox = new PrismaRabbitmqOutbox(this.prismaClient)
 
-        const signatureExists= await prismaSignatureRepository.findByUserIdAndServiceId(input.userId, input.serviceId)
+        const signatureExists = await prismaSignatureRepository.findByUserIdAndServiceId(input.userId, input.serviceId)
         if(signatureExists) return false
 
         const signatureEntity = SignatureEntity.create({

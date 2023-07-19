@@ -19,6 +19,7 @@ export class ProcessRedeemKeyUsecase {
             const prismaIdpotenceConsumer = new PrismaIdpotenceConsumer(prisma)
             const isEventRegistered = await prismaIdpotenceConsumer.isEventRegistered(this.eventId, this.consumerName)
             if(isEventRegistered) return
+
             const keyFacade = new KeyFacade(prisma)
             const prismaRabbitmqOutbox = new PrismaRabbitmqOutbox(prisma)
             const signatureFacade = new SignatureFacade(prisma)
@@ -41,9 +42,10 @@ export class ProcessRedeemKeyUsecase {
                 }
             }
             const redeemKeyProcessedEvent = new RedeemKeyProcessedEvent({ 
-                validUntil: keyDetails.validUntil,
+                validUntil: keyDetails.validUntil, 
                 keyRedeemerId: keyDetails.keyRedeemerId!,
-                serviceId: keyDetails.serviceId 
+                serviceId: keyDetails.serviceId,
+                quantityForDay: keyDetails.quantityForDay
             })
             await prismaRabbitmqOutbox.publish(redeemKeyProcessedEvent)
             await prismaIdpotenceConsumer.registerEvent(this.eventId, this.consumerName)
