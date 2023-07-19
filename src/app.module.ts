@@ -18,6 +18,7 @@ import { AllExceptionsFilter } from './infra/filters';
 import { WebsocketModule } from './modules/websocket/websocket.module';
 import { PrismaIdpotenceConsumerService } from './modules/@shared/services';
 import { StockModule } from './modules/stock/stock.module';
+import { StockRedemptionModule } from './modules/stock-redemption/stock-redemption.module';
 
 @Global()
 @Module({
@@ -37,7 +38,8 @@ import { StockModule } from './modules/stock/stock.module';
     NotificationModule,
     NotificationQueryModule,
     WebsocketModule,
-    StockModule
+    StockModule,
+    StockRedemptionModule
   ],
   controllers: [],
   providers: [

@@ -2,23 +2,23 @@ import { Controller, Get, Post, Body, Patch, Param, Delete, UseGuards } from '@n
 import { PrismaService } from 'src/infra/prisma/prisma.service';
 
 import { 
-  CreateStockUsecase
+  RedeemStockUsecase
 } from './usecases';
-import { ServerAuthGuard } from 'src/guards';
+import { AuthGuard } from 'src/guards';
 
-@Controller('stock')
-export class StockServerController {
+@Controller('stock-redemption')
+export class StockRedemptionController {
 
   constructor(
     private readonly prismaService: PrismaService,
   ) {}
 
 
-  @UseGuards(ServerAuthGuard)
+  @UseGuards(AuthGuard)
   @Post()
   async create(@Body() body: any) {
-    const createStockUsecase = new CreateStockUsecase(this.prismaService)
-    return await createStockUsecase.execute(body)
+    const redeemStockUsecase = new RedeemStockUsecase(this.prismaService)
+    return await redeemStockUsecase.execute(body)
   }
 
 
