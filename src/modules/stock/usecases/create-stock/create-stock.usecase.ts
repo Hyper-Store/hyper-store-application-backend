@@ -15,6 +15,7 @@ export class CreateStockUsecase {
 
     async execute({ stocks }: CreateStockUsecase.Input) {
         return await this.prismaClient.$transaction(async (prisma: PrismaClient) => {
+            const stocksId = []
             for(const stock of stocks) {
                 const prismaStockRepository = new PrismaStockRepository(prisma)
                 const serviceFacade = new ServiceFacade(prisma)
@@ -29,8 +30,9 @@ export class CreateStockUsecase {
     
                 const stockCreatedEvent = new StockCreatedEvent(stockEntity.toJSON())
                 await prismaRabbitmqOutbox.publish(stockCreatedEvent)
+                stocksId.push({id: stockEntity.id})
             }
-
+            return stocksId
         })
     }
 

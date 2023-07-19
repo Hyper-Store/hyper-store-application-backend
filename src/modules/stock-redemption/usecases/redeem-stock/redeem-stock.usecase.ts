@@ -51,7 +51,9 @@ export class RedeemStockUsecase {
 
             const stockRedeemedEvent = new StockRedeemedEvent(stockRedemptionEntity.toJSON())
             await prismaRabbitmqOutbox.publish(stockRedeemedEvent)
-    
+            return {
+                value: stock.value
+            }
         })
     }
 

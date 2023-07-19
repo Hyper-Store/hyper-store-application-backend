@@ -8,5 +8,7 @@ export const exchanges: RabbitMQExchangeConfig[] = [
     { name: "services", type: "topic" },
     { name: "signature", type: "topic" },
     { name: "userSession", type: "topic" },
-    { name: "notification", type: "topic" }
+    { name: "notification", type: "topic" },
+    { name: "stock", type: "topic" },
+    { name: "stockRedemption", type: "topic" },
 ]

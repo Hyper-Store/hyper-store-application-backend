@@ -28,7 +28,7 @@ export class RedeemKeyUsecase {
             if(!keyEntity.isActivated()) throw new KeyNotActivatedError()
             keyEntity.redeem(keyRedeemerId)
             
-            const signatureAlreadyActive = await signatureFacade.isSignatureActive(keyRedeemerId, keyEntity.serviceId)
+            const signatureAlreadyActive = await signatureFacade.isSignatureActive(keyRedeemerId, keyEntity.serviceId)            
             if(signatureAlreadyActive) throw new SignatureAlreadyActiveError()
 
 

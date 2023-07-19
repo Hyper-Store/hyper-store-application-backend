@@ -40,6 +40,7 @@ export class SignatureFacade {
     async isSignatureActive(userId: string, serviceId: string): Promise<boolean> {
         const prismaSignatureRepository = new PrismaSignatureRepository(this.prismaClient)
         const signature = await prismaSignatureRepository.findByUserIdAndServiceId(userId, serviceId)
+        if(!signature) return false
         return !signature?.isExpired()
     }
 
