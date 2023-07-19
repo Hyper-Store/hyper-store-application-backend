@@ -46,7 +46,7 @@ export class SignaturesController {
       async (prisma) => 
       new ChangeQuantityPerDayUsecase(prisma)
         .execute({
-          quantityPerDay: msg.payload.quantityPerDay,
+          quantityPerDay: msg.payload.quantityPerDay ?? 1,
           serviceId: msg.payload.serviceId,
           userId: msg.payload.keyRedeemerId
         })
