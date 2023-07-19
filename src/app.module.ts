@@ -15,6 +15,7 @@ import { NotificationModule } from './modules/notification/notification.module';
 import { NotificationQueryModule } from './queries/notification/notification-query.module';
 import { APP_FILTER } from '@nestjs/core';
 import { AllExceptionsFilter } from './infra/filters';
+import { WebsocketModule } from './modules/websocket/websocket.module';
 
 @Module({
   imports: [
@@ -31,7 +32,8 @@ import { AllExceptionsFilter } from './infra/filters';
     GuardModule,
     UserSessionModule,
     NotificationModule,
-    NotificationQueryModule
+    NotificationQueryModule,
+    WebsocketModule
   ],
   controllers: [],
   providers: [

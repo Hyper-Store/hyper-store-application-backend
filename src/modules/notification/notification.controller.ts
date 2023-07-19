@@ -9,18 +9,16 @@ import {
     SubscribeMessage,
 } from '@nestjs/websockets';
 import { Server, Socket } from 'socket.io';
-import { AccessTokenValidationService } from 'src/guards';
 import { RabbitRPC } from '@golevelup/nestjs-rabbitmq';
 import { BaseEvent } from '../@shared';
 import { MarkAsSeenUsecase } from './usecases';
+import { WebsocketConnectionsService } from '../websocket/websocket-connections.service';
+import { UserSocket } from '../websocket';
 
 
-interface UserSocket extends Socket {
-    userId: string
-}
 
 @WebSocketGateway(1000)
-export class NoficationController implements OnGatewayConnection, OnGatewayDisconnect{
+export class NoficationController{
 
     
     @RabbitRPC({
@@ -29,16 +27,16 @@ export class NoficationController implements OnGatewayConnection, OnGatewayDisco
         queue: "message-websocket-queue"
     })
     async messageConsumer(msg: BaseEvent.Schema){
-        const clients = this.clients.get(msg.payload.userId)
-        for(const client of clients.values()) {
+        const clients = this.websocketConnectionsService.getClients(msg.payload.userId)
+        for(const client of clients) {
             client.emit('SignatureCreated', msg.payload)
         }
     }
 
     constructor(
-        private readonly prismaService: PrismaService
+        private readonly prismaService: PrismaService,
+        private readonly websocketConnectionsService: WebsocketConnectionsService
     ){}
-    private clients = new Map<string, Map<string, UserSocket> >();
     @WebSocketServer() server: Server;
 
 
@@ -52,30 +50,6 @@ export class NoficationController implements OnGatewayConnection, OnGatewayDisco
         if(result.isFailure()) return result.value
         return 'MessageReceived';
     }
-
-
-
-    async handleConnection(client: UserSocket) {
-        const accessToken = client.handshake.query.accessToken as string ?? "" 
-        const accessTokenValidationService = new AccessTokenValidationService(this.prismaService) 
-        const user = await accessTokenValidationService.validate(accessToken)
-
-        if(user.isFailure()) return client.disconnect() 
-        client.userId = user.value.userId
-
-        if(!this.clients.has(client.userId)) {
-            this.clients.set(client.userId, new Map())
-        }
-        this.clients.get(client.userId).set(client.id, client)
-
-    }
-  
-    async handleDisconnect(client: UserSocket) {
-        if(!client.userId) return
-        this.clients.get(client.userId).delete(client.id)
-        if(this.clients.get(client.userId).size === 0) this.clients.delete(client.userId)
-    }
-  
 
 
 }
