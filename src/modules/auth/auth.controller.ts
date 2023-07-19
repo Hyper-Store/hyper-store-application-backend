@@ -54,13 +54,12 @@ export class AuthController {
   @HttpCode(200)
   @Post("/refresh-token")
   async refreshToken(
-    @Body() body: any, 
     @Req() req: Request,
     @Res() res: Response
   ) {
     const refreshTokenUsecase = new RefreshTokenUsecase(this.prismaService)
     const { accessToken, refreshToken } = await refreshTokenUsecase.execute({
-      refreshToken: body.refreshToken ?? "",
+      refreshToken: req.cookies?.refreshToken ?? "",
       ip: req.ip ?? "",
       userAgent: req.headers["user-agent"] ?? ""
     });
