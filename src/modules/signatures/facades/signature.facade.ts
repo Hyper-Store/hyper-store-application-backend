@@ -13,6 +13,12 @@ export class SignatureFacade {
         return !!await prismaSignatureRepository.findByUserIdAndServiceId(userId, serviceId)
     }
 
+    async isSignatureActive(userId: string, serviceId: string): Promise<boolean> {
+        const prismaSignatureRepository = new PrismaSignatureRepository(this.prismaClient)
+        const signature = await prismaSignatureRepository.findByUserIdAndServiceId(userId, serviceId)
+        return signature?.isExpired()
+    }
+
     async create(input: SignatureFacade.CreateInput): Promise<boolean> {
         const createSignatureUseCase = new CreateSignatureUseCase(this.prismaClient)
         return await createSignatureUseCase.execute(input)

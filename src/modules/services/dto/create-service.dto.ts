@@ -9,4 +9,8 @@ export class CreateServiceDto {
     @IsNotEmpty({ message: "ImageUrlNotProvidedError" })
     @IsString({ message: "InvalidImageUrlTypeError"})
     imageUrl: string
+
+    @IsNotEmpty({ message: "typeNotProvidedError" })
+    @IsString({ message: "InvalidTypeTypeError"})
+    type: string
 }
