@@ -22,12 +22,17 @@ export class SignatureEntity extends BaseEntity<SignatureEntity.Props>{
         this.expirationDate.setDate(expirationDate.getDate() + days)
     }
 
+    changeQuantityPerDay(quantityPerDay: number): void {
+        this.props.quantityPerDay = quantityPerDay
+    }
+
     toJSON(): SignatureEntity.PropsJSON {
         return {
             id: this.id,
             userId: this.userId,
             serviceId: this.serviceId,
             expirationDate: this.expirationDate,
+            quantityPerDay: this.quantityPerDay
         }
     }
 
@@ -44,6 +49,9 @@ export class SignatureEntity extends BaseEntity<SignatureEntity.Props>{
     get expirationDate() {
         return this.props.expirationDate
     }
+    get quantityPerDay() {
+        return this.props.quantityPerDay
+    }
 }
 
 export namespace SignatureEntity {
@@ -52,12 +60,14 @@ export namespace SignatureEntity {
         userId: string
         serviceId: string
         expirationDate?: Date
+        quantityPerDay: number
     }
 
     export type Props = {
         userId: string
         serviceId: string
         expirationDate: Date
+        quantityPerDay: number
     }
 
     export type PropsJSON = Props  & { id: string}

@@ -21,6 +21,7 @@ export class CreateSignatureUseCase {
 
         const signatureEntity = SignatureEntity.create({
             ...input,
+            quantityPerDay: 1,
             expirationDate: undefined
         }) 
         await prismaSignatureRepository.create(signatureEntity)

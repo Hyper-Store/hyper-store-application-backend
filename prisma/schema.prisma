@@ -35,7 +35,7 @@ model Key {
   validUntil Int
   status String
   keyRedeemerId String?
-  quantityForDay Int?
+  quantityPerDay Int?
   @@map("keys")
 }
 
@@ -44,7 +44,7 @@ model Signature {
   userId String
   serviceId String
   expirationDate DateTime
-  quantityForDay Int @default(1)
+  quantityPerDay Int @default(1)
   
   @@id([userId, serviceId])
   @@map("signatures")

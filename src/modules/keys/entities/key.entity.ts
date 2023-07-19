@@ -55,7 +55,7 @@ export class KeyEntity extends BaseEntity<KeyEntity.Props>{
             validUntil: this.validUntil,
             status: this.status,
             keyRedeemerId: this.keyRedeemerId,
-            quantityForDay: this.quantityForDay
+            quantityPerDay: this.quantityPerDay
         }
     }
 
@@ -74,8 +74,8 @@ export class KeyEntity extends BaseEntity<KeyEntity.Props>{
     get keyRedeemerId(): string | undefined {
         return this.props.keyRedeemerId
     }
-    get quantityForDay(): number | undefined {
-        return this.props.quantityForDay
+    get quantityPerDay(): number | undefined {
+        return this.props.quantityPerDay
     }
 }
 
@@ -87,7 +87,7 @@ export namespace KeyEntity {
         key?: string
         serviceId: string
         validUntil: number
-        quantityForDay?: number
+        quantityPerDay?: number
     }
 
     export type Props = {
@@ -96,7 +96,7 @@ export namespace KeyEntity {
         validUntil: number
         status: Status
         keyRedeemerId?: string
-        quantityForDay?: number
+        quantityPerDay?: number
     }
 
     export type PropsJSON = Props  & { id: string}
