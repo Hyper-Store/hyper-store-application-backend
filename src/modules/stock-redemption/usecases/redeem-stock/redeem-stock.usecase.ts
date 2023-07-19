@@ -31,8 +31,8 @@ export class RedeemStockUsecase {
             const signature = await signatureFacade.getSignatureDetails(signatureId)
             if(!signature) throw new SignatureNotFoundError()
             
-            if(signature.service.type !== "ACCOUNT_GENERATOR") throw new ServiceTypeNotAccountGeneratorError()
             if(signature.userId !== userId) throw new SignatureNotFoundUserError()
+            if(signature.service.type !== "ACCOUNT_GENERATOR") throw new ServiceTypeNotAccountGeneratorError()
 
             const redemptionCount = await prismaStockRedemptionRepository.getRedemptionCount(userId, signatureId)
             if(redemptionCount >= signature.quantityPerDay) throw new MaxStockRedemptionReachedError()

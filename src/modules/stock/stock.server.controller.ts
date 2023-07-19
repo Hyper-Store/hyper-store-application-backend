@@ -6,7 +6,7 @@ import {
 } from './usecases';
 import { ServerAuthGuard } from 'src/guards';
 
-@Controller('stock')
+@Controller('server/stock')
 export class StockServerController {
 
   constructor(

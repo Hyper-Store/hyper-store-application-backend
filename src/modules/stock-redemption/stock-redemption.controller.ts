@@ -1,6 +1,6 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, UseGuards } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, UseGuards, Req } from '@nestjs/common';
 import { PrismaService } from 'src/infra/prisma/prisma.service';
-
+import { Request } from "express"
 import { 
   RedeemStockUsecase
 } from './usecases';
@@ -16,9 +16,15 @@ export class StockRedemptionController {
 
   @UseGuards(AuthGuard)
   @Post()
-  async create(@Body() body: any) {
+  async redeemStock(
+    @Body() body: any,
+    @Req() req: Request
+  ) {
     const redeemStockUsecase = new RedeemStockUsecase(this.prismaService)
-    return await redeemStockUsecase.execute(body)
+    return await redeemStockUsecase.execute({
+      signatureId: body.signatureId ?? "",
+      userId: req.currentUser.userId
+    })
   }
 
 
