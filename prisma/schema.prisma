@@ -84,7 +84,12 @@ model NotificationSeen {
   @@map("notifications_seen")
 }
 
-
+model Stock {
+  id       String      @id @default(uuid())
+  type String
+  value String
+  @@map("stocks")
+}
 
 
 model PrismaRabbitmqOutbox {
