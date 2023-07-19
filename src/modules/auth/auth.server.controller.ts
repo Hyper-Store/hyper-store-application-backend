@@ -14,6 +14,7 @@ export class AuthServerController {
         private readonly prismaService: PrismaService
     ) {}
 
+    @HttpCode(200)
     @UseGuards(ServerAuthGuard)
     @Post("/ban")
     ban(
@@ -22,7 +23,8 @@ export class AuthServerController {
         const banUserUsecase = new BanUserUsecase(this.prismaService)
         return banUserUsecase.execute(body);
     }
-
+    
+    @HttpCode(200)
     @UseGuards(ServerAuthGuard)
     @Post("/unban")
     unBan(@Body() body: UserIdDto) {

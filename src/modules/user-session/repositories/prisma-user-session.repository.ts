@@ -66,6 +66,12 @@ export class PrismaUserSessionRepository {
         return PrismaUserEntityMapper.toDomain(prismaUserSession)
     }
 
+    async deleteAll(userId: string): Promise<void> {
+        await this.prismaClient.userSession.deleteMany({
+            where: { userId: userId ?? "" }
+        })
+    }
+
     async update(userSessionEntity: UserSessionEntity): Promise<void> {
         const { accessToken, refreshToken, id, userId,...props} = userSessionEntity.toJSON()
         await this.prismaClient.userSession.update({

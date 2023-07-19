@@ -37,7 +37,6 @@ export class RedeemStockUsecase {
             const redemptionCount = await prismaStockRedemptionRepository.getRedemptionCount(userId, signatureId)
             if(redemptionCount >= signature.quantityPerDay) throw new MaxStockRedemptionReachedError()
 
-
             const stock = await stockFacade.takeOneFromStock(signature.service.id)
             if(!stock) throw new OutOfStockError()
 
