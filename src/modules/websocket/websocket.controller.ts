@@ -22,8 +22,8 @@ export interface UserSocket extends Socket {
 
 @WebSocketGateway(1000, {
     cors: {
-        origin: '*',
-        allowedHeaders: "*"
+        origin: 'http://localhost:8888',
+        credentials: true,
     }
 })
 export class WebsocketController{
