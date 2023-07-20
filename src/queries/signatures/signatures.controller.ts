@@ -51,7 +51,7 @@ export class SignaturesQueryController{
     
     @RabbitRPC({
         exchange: 'queues',
-        routingKey: "QuerySignatureRegisteredEvent",
+        routingKey: "QuerySignatureUpdatedEvent",
         queue: "show-signature-updated-query-2-queue",
     })
     async signatureUpdated(msg: BaseEvent.Schema){
