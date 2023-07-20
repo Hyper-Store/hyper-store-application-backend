@@ -21,7 +21,11 @@ export interface UserSocket extends Socket {
 
 
 @WebSocketGateway(1000, {
-    cors: "*"
+    cors: {
+        origin: "http://localhost:3000",  // replace with your client URL
+        methods: ["GET", "POST"],
+        credentials: true
+      }
 })
 export class WebsocketController{
 
