@@ -28,8 +28,8 @@ export class AuthController {
       ip: req.ip,
       userAgent: req.headers["user-agent"] ?? ""
     });
-    res.cookie("refreshToken", refreshToken, { httpOnly: true })
-    res.cookie("accesssToken", accessToken, { httpOnly: true })
+    res.cookie("refreshToken", refreshToken, )
+    res.cookie("accessToken", accessToken,)
     res.json({ id })
   }
 
@@ -46,8 +46,8 @@ export class AuthController {
       ip: req.ip,
       userAgent: req.headers["user-agent"] ?? ""
     });
-    res.cookie("refreshToken", refreshToken, { httpOnly: true })
-    res.cookie("accesssToken", accessToken, { httpOnly: true })
+    res.cookie("refreshToken", refreshToken, )
+    res.cookie("accessToken", accessToken, )
     res.json()
   }
 
@@ -63,8 +63,8 @@ export class AuthController {
       ip: req.ip ?? "",
       userAgent: req.headers["user-agent"] ?? ""
     });
-    res.cookie("refreshToken", refreshToken, { httpOnly: true })
-    res.cookie("accesssToken", accessToken, { httpOnly: true })
+    res.cookie("refreshToken", refreshToken, )
+    res.cookie("accessToken", accessToken, )
     res.json()
   }
 

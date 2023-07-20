@@ -38,7 +38,6 @@ export class AuthGuard implements CanActivate {
 
     
     const accessToken = req.cookies?.accessToken ?? ""
-      console.log("🚀 ~ file: auth.guard.ts:41 ~ AuthGuard ~ accessToken:", accessToken)
       
     const accessTokenValidationService = new AccessTokenValidationService(this.prismaService)
     const user = await accessTokenValidationService.validate(accessToken)

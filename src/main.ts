@@ -1,6 +1,7 @@
 import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
 import { CustomValidationPipe } from './infra/filters';
+import * as cookieParser from 'cookie-parser';
 
 
 async function bootstrap() {
@@ -9,6 +10,8 @@ async function bootstrap() {
     origin: '*',
     allowedHeaders: "*"
   });
+  app.use(cookieParser());
+
   app.useGlobalPipes(new CustomValidationPipe());
   await app.listen(5000);
 }
