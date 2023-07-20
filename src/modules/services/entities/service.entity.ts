@@ -7,7 +7,8 @@ export class ServiceEntity extends BaseEntity<ServiceEntity.Props>{
         if(props.type !== "ACCOUNT_GENERATOR") props.type = "ACCOUNT_GENERATOR"
         super({
             ...props,
-            type: props.type as ServiceEntity.Type
+            type: props.type as ServiceEntity.Type,
+            isMaintenance: false
         }, id)
     }
 
@@ -16,7 +17,8 @@ export class ServiceEntity extends BaseEntity<ServiceEntity.Props>{
             id: this.id,
             name: this.name,
             imageUrl: this.imageUrl,
-            type: this.type
+            type: this.type,
+            isMaintenance: this.isMaintenance()
         }
     }
 
@@ -31,6 +33,24 @@ export class ServiceEntity extends BaseEntity<ServiceEntity.Props>{
         this.props.imageUrl = imageUrl
         return success(null)
     }
+
+    isMaintenance() {
+        return this.props.isMaintenance
+    }
+
+    setMaintenance(): Either<"ServiceAlreadyIsInMaintenanceError", null> {
+        if(this.isMaintenance()) return failure("ServiceAlreadyIsInMaintenanceError")
+        this.props.isMaintenance = true
+        return success(null)
+    }
+
+    removeMaintenance(): Either<"ServiceAlreadyIsNotInMaintenanceError", null> {
+        if(!this.isMaintenance()) return failure("ServiceAlreadyIsNotInMaintenanceError")
+        this.props.isMaintenance = false
+        return success(null)
+    }
+    
+
 
     get name() {
         return this.props.name
@@ -58,6 +78,7 @@ export namespace ServiceEntity {
         name: string
         imageUrl: string
         type: Type
+        isMaintenance: boolean
     }
 
     export type PropsJSON = Props  & { id: string}

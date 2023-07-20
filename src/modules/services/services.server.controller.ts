@@ -8,7 +8,9 @@ import {
 import { 
   ChangeNameUsecase, 
   CreateServiceUsecase,
-  ChangeImageUrlUsecase
+  ChangeImageUrlUsecase,
+  SetMaintenanceUsecase,
+  RemoveMaintenanceUsecase
 } from './usecases';
 import { ServerAuthGuard } from 'src/guards';
 
@@ -18,6 +20,24 @@ export class ServicesController {
   constructor(
     private readonly prismaService: PrismaService,
   ) {}
+
+  @UseGuards(ServerAuthGuard)
+  @Patch("/set-maintenance/:serviceId")
+  async setMaintenance(
+    @Param("serviceId") serviceId: string
+  ) {
+    const setMaintenanceUsecase = new SetMaintenanceUsecase(this.prismaService)
+    return await setMaintenanceUsecase.execute({ serviceId: serviceId ?? "" })
+  }
+
+  @UseGuards(ServerAuthGuard)
+  @Patch("/remove-maintenance/:serviceId")
+  async remove(
+    @Param("serviceId") serviceId: string
+  ) {
+    const removeMaintenanceUsecase = new RemoveMaintenanceUsecase(this.prismaService)
+    return await removeMaintenanceUsecase.execute({ serviceId: serviceId ?? "" })
+  }
 
   // @UseGuards(ServerAuthGuard)
   // @Post()

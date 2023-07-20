@@ -19,3 +19,12 @@ export class SignatureAlreadyActiveError extends ConflictException {
         })
     }
 }
+
+export class ServiceIsInMaintenanceError extends ConflictException {
+
+    constructor(){
+        super({
+            name: "ServiceIsInMaintenanceError"
+        })
+    }
+}

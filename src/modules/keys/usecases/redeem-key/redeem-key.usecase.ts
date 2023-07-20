@@ -3,9 +3,10 @@ import { RedeemKeyDto } from "../../dto/redeem-key.dto";
 import { PrismaKeyRepository } from "../../respositories";
 import { PrismaRabbitmqOutbox } from "src/modules/@shared/providers";
 import { KeyNotFoundError } from "../_errors";
-import {  KeyNotActivatedError, SignatureAlreadyActiveError } from "./errors";
+import {  KeyNotActivatedError, ServiceIsInMaintenanceError, SignatureAlreadyActiveError } from "./errors";
 import { KeyRedeemedEvent } from "./key-redeemed.event";
 import { SignatureFacade } from "src/modules/signatures/facades";
+import { ServiceFacade } from "src/modules/services/facades";
 
 
 export class RedeemKeyUsecase {
@@ -19,8 +20,8 @@ export class RedeemKeyUsecase {
         return await this.prismaClient.$transaction(async (prisma: PrismaClient) => {
             const prismaKeyRepository = new PrismaKeyRepository(prisma)
             const signatureFacade = new SignatureFacade(prisma)
+            const serviceFacade = new ServiceFacade(prisma)
             const prismaRabbitmqOutbox = new PrismaRabbitmqOutbox(prisma)
-
             
             const keyEntity = await prismaKeyRepository.findByKey(key)
             if(!keyEntity) throw new KeyNotFoundError()
@@ -31,6 +32,8 @@ export class RedeemKeyUsecase {
             const signatureAlreadyActive = await signatureFacade.isSignatureActive(keyRedeemerId, keyEntity.serviceId)            
             if(signatureAlreadyActive) throw new SignatureAlreadyActiveError()
 
+            const serviceInMaintenance = await serviceFacade.isServiceInMaintenance(keyEntity.serviceId)
+            if(serviceInMaintenance) throw new ServiceIsInMaintenanceError()
 
             await prismaKeyRepository.update(keyEntity)
             

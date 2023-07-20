@@ -25,6 +25,7 @@ model Service {
   name     String      @unique
   imageUrl      String 
   type String @default("ACCOUNT_GENERATOR")
+  isMaintenance Boolean @default(false)
   @@map("services")
 }
 

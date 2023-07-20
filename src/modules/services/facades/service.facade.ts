@@ -12,6 +12,13 @@ export class ServiceFacade {
         return !!await prismaServiceRepository.findById(serviceId)
     }
 
+    async isServiceInMaintenance(serviceId: string): Promise<boolean> {
+        const prismaServiceRepository = new PrismaServiceRepository(this.prismaClient)
+        const serviceEntity = await prismaServiceRepository.findById(serviceId)
+        if(!serviceEntity) return false
+        return serviceEntity.isMaintenance()
+    }
+
     async serviceNameExists(name: string): Promise<boolean> {
         const prismaServiceRepository = new PrismaServiceRepository(this.prismaClient)
         return !!await prismaServiceRepository.findByName(name)
@@ -33,5 +40,6 @@ export namespace ServiceFacade {
         id: string
         name: string
         type: string
+        isMaintenance: boolean
     }
 }

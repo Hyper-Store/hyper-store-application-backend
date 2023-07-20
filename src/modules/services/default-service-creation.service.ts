@@ -12,18 +12,23 @@ export class DefaultServiceCreationService implements OnModuleInit {
     
     async onModuleInit() {
         const createServiceUsecase = new CreateServiceUsecase(this.prismaService)
+        
+        try {
+            await createServiceUsecase.execute({
+                name: "Rockstar",
+                imageUrl: "any_image",
+                type: "default"
+            })
+    
+            await createServiceUsecase.execute({
+                name: "Valorant",
+                imageUrl: "any_image",
+                type: "default"
+            })
 
-        await createServiceUsecase.execute({
-            name: "default-service",
-            imageUrl: "any_image",
-            type: "default"
-        })
+        }catch(err){
 
-        await createServiceUsecase.execute({
-            name: "default-service",
-            imageUrl: "any_image",
-            type: "default"
-        })
+        }
     }
 
 }

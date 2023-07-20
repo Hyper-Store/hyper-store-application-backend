@@ -4,7 +4,9 @@ import { ServiceEntity } from "../entities";
 class PrismaServiceEntityMapper {
 
     static toDomain(prismaService: Service){
-        return new ServiceEntity(prismaService, prismaService.id)
+        const serviceEntity = new ServiceEntity(prismaService, prismaService.id)
+        if(prismaService.isMaintenance) serviceEntity.setMaintenance()
+        return serviceEntity
     }
 }
 

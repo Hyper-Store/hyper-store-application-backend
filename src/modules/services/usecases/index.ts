@@ -1,3 +1,5 @@
 export * from "./create-service/create-service.usecase"
 export * from "./change-name/change-name.usecase"
 export * from "./change-image-url/change-image-url.usecase"
+export * from "./set-maintenance/set-maintenance.usecase"
+export * from "./remove-maintenance/remove-maintenance.usecase"
