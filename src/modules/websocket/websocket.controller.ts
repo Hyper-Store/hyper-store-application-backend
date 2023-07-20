@@ -21,7 +21,10 @@ export interface UserSocket extends Socket {
 
 
 @WebSocketGateway(1000, {
-    cors: true
+    cors: {
+        origin: '*',
+        allowedHeaders: "*"
+    }
 })
 export class WebsocketController{
 
