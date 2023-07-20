@@ -17,7 +17,7 @@ import { UserSocket } from '../websocket';
 
 
 
-@WebSocketGateway(1000)
+@WebSocketGateway()
 export class NoficationController{
 
     
