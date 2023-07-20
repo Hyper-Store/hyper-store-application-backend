@@ -17,11 +17,13 @@ export class UpdateSignatureUsecase {
         const prismaRabbitmqOutbox = new PrismaRabbitmqOutbox(this.prismaClient)
         const mongoNotificationQueryRepository = new MongoNotificationQueryRepository(this.session)
 
+        const signature = await mongoNotificationQueryRepository.findById(signatureModel.id)
 
         await mongoNotificationQueryRepository.update(signatureModel)
 
         const querySignatureUpdatedEvent = new QuerySignatureUpdatedEvent({
-            ...signatureModel
+            ...signatureModel,
+            userId: signature.userId,
         })
         await prismaRabbitmqOutbox.publish(querySignatureUpdatedEvent)
     }

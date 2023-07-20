@@ -4,6 +4,7 @@ import { SignatureModel } from "../../models"
 import { PrismaRabbitmqOutbox } from "src/modules/@shared/providers"
 import { PrismaClient } from "@prisma/client"
 import { QuerySignatureRegisteredEvent } from "./query-signature-registered.event"
+import { SignatureFacade } from "src/modules/signatures/facades"
 
 
 export class RegisterSignatureCreatedUsecase {
@@ -15,11 +16,18 @@ export class RegisterSignatureCreatedUsecase {
     
     async execute(signatureModel: SignatureModel) {
         const prismaRabbitmqOutbox = new PrismaRabbitmqOutbox(this.prismaClient)
+        const signatureFacade = new SignatureFacade(this.prismaClient)
+        const signatureDetails = await signatureFacade.getSignatureDetails(signatureModel.id)
+
         const mongoNotificationQueryRepository = new MongoNotificationQueryRepository(this.session)
-        await mongoNotificationQueryRepository.create(signatureModel)
+        await mongoNotificationQueryRepository.create({
+            ...signatureModel,
+            service: signatureDetails.service
+        })
 
         const querySignatureRegisteredEvent = new QuerySignatureRegisteredEvent({
-            ...signatureModel
+            ...signatureModel,
+            service: signatureDetails.service
         })
         await prismaRabbitmqOutbox.publish(querySignatureRegisteredEvent)
     }

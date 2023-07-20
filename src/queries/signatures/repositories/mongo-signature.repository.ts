@@ -5,7 +5,7 @@ import { MongoSignatureModel } from "./models";
 export class MongoNotificationQueryRepository {
 
     constructor(
-        private readonly session: mongoose.mongo.ClientSession
+        private readonly session?: mongoose.mongo.ClientSession
     ){}
 
     async create(signatureModel: SignatureModel){
@@ -31,5 +31,10 @@ export class MongoNotificationQueryRepository {
         }
         delete updateProps?.id
         await MongoSignatureModel.updateOne({ id: signatureModel.id },  { $set: { ...updateProps }}, { session: this.session })
+    }
+
+    async getAllActiveSignatures(userId: string): Promise<SignatureModel[]>{
+        const mongoData = await MongoSignatureModel.find({ userId }, null, { session: this.session })
+        return mongoData.map(signature => signature.toObject())
     }
 }

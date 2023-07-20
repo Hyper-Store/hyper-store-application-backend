@@ -5,4 +5,8 @@ export interface SignatureModel  {
     serviceId: string
     expirationDate: Date
     quantityPerDay: number
+    service: {
+        id: string
+        name: string
+    }
 }

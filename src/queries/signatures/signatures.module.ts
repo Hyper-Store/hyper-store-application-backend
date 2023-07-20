@@ -1,5 +1,6 @@
 import { Module } from '@nestjs/common';
 import { SignaturesConsumerService } from './signatures.consumer.service';
+import { SignaturesQueryController } from './signatures.controller';
 
 
 
@@ -8,7 +9,8 @@ import { SignaturesConsumerService } from './signatures.consumer.service';
     
    ],
   providers: [ 
-    SignaturesConsumerService
+    SignaturesConsumerService,
+    SignaturesQueryController
   ]
 })
 export class SignaturesQueryModule {}
