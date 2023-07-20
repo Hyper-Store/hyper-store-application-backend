@@ -42,7 +42,11 @@ export class WebsocketController{
         const accessTokenValidationService = new AccessTokenValidationService(this.prismaService) 
         const user = await accessTokenValidationService.validate(accessToken)
         
-        if(user.isFailure()) return client.disconnect() 
+        if(user.isFailure()) {
+            // InvalidAccessTokenError or UserBannedError
+            client.emit(user.value, {})
+            return client.disconnect() 
+        }
         client.userId = user.value.userId
 
         this.websocketConnectionsService.addClient(client)
