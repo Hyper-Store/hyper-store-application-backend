@@ -45,7 +45,7 @@ export class SignaturesConsumerService {
             new UpdateSignatureUsecase(this.prismaService, session)
               .execute({
                 id: msg.payload.signatureId,
-                expirationDate: msg.payload.expirationDate,
+                expirationDate: new Date(msg.payload.expirationDate),
               })
           )
     }

@@ -9,7 +9,7 @@ export class MongoNotificationQueryRepository {
     ){}
 
     async create(signatureModel: SignatureModel){
-        await MongoSignatureModel.create([{ ...signatureModel }], { session: this.session })
+        await MongoSignatureModel.create([{ ...signatureModel, expirationDate: new Date(signatureModel.expirationDate) }], { session: this.session })
     }
 
     async findById(id: string): Promise<SignatureModel | null>{
