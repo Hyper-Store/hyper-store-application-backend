@@ -34,7 +34,10 @@ export class MongoNotificationQueryRepository {
     }
 
     async getAllActiveSignatures(userId: string): Promise<SignatureModel[]>{
-        const mongoData = await MongoSignatureModel.find({ userId }, null, { session: this.session })
+        const mongoData = await MongoSignatureModel.find({ 
+            userId,
+            expirationDate: { $gte: new Date() }
+         }, null, { session: this.session })
         return mongoData.map(signature => signature.toObject()) ?? []
     }
 }
