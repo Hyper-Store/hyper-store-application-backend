@@ -21,6 +21,7 @@ import { StockModule } from './modules/stock/stock.module';
 import { StockRedemptionModule } from './modules/stock-redemption/stock-redemption.module';
 import { KeyRedemptionInfoModule } from './queries/key-redemption-info/key-redemption-info.module';
 import { SignaturesQueryModule } from './queries/signatures/signatures.module';
+import { ServicesQueryModule } from './queries/services/signatures.module';
 
 @Global()
 @Module({
@@ -43,7 +44,8 @@ import { SignaturesQueryModule } from './queries/signatures/signatures.module';
     StockModule,
     StockRedemptionModule,
     KeyRedemptionInfoModule,
-    SignaturesQueryModule
+    SignaturesQueryModule,
+    ServicesQueryModule
   ],
   controllers: [],
   providers: [
