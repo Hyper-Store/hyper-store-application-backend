@@ -9,3 +9,12 @@ export class UserNotFoundError extends NotFoundException {
         })
     }
 }
+
+export class InvalidAccessTokenError extends NotFoundException {
+
+    constructor(){
+        super({
+            name: "InvalidAccessTokenError"
+        })
+    }
+}

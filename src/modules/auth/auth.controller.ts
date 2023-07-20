@@ -3,7 +3,9 @@ import { CreateUserDto } from './dto/create-user.dto';
 import { 
   SignupUsecase,
   LoginUsecase, 
-  RefreshTokenUsecase
+  RefreshTokenUsecase,
+  LogoutUsecase,
+
 } from './usecases';
 import { Response, Request } from "express"
 import { PrismaService } from 'src/infra/prisma/prisma.service';
@@ -65,6 +67,21 @@ export class AuthController {
     });
     res.cookie("refreshToken", refreshToken, )
     res.cookie("accessToken", accessToken, )
+    res.json()
+  }
+
+  @HttpCode(200)
+  @Post("/logout")
+  async logout(
+    @Req() req: Request,
+    @Res() res: Response
+  ) {
+    const logoutUsecase = new LogoutUsecase(this.prismaService)
+     await logoutUsecase.execute({
+      accessToken: req.cookies?.accessToken ?? ""
+    });
+    res.clearCookie("refreshToken")
+    res.clearCookie("accessToken" )
     res.json()
   }
 

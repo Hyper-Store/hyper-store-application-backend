@@ -26,6 +26,20 @@ export class UserSessionFacade {
         return await createSessionUsecase.execute(input)
     }
 
+    async getSessionByAccessToken(accessToken: string): Promise<{ sessionId: string } | null>{
+        const prismaUserSessionRepository = new PrismaUserSessionRepository(this.prismaClient)
+        const userSessionEntity = await prismaUserSessionRepository.findByAccessToken(accessToken)
+        if(!userSessionEntity) return null
+        return { sessionId: userSessionEntity.id }
+    }
+
+    async deleteSessionByAccessToken(accessToken: string): Promise<void> {
+        const prismaUserSessionRepository = new PrismaUserSessionRepository(this.prismaClient)
+        const userSessionEntity = await prismaUserSessionRepository.findByAccessToken(accessToken)
+        if(!userSessionEntity) return
+        await prismaUserSessionRepository.delete(userSessionEntity.id)
+    }
+
     async revalidateSession(input: RevalidateSessionUsecase.Input): Promise<JwtGateway.Tokens | RevalidateSessionUsecase.Errors> {
         const revalidateSessionUsecase = new RevalidateSessionUsecase(this.prismaClient)
         const result = await revalidateSessionUsecase.execute(input)
