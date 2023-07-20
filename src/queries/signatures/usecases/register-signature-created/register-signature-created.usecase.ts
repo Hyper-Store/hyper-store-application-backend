@@ -22,12 +22,12 @@ export class RegisterSignatureCreatedUsecase {
         const mongoNotificationQueryRepository = new MongoNotificationQueryRepository(this.session)
         await mongoNotificationQueryRepository.create({
             ...signatureModel,
-            serviceId: signatureDetails.service
+            serviceId: signatureDetails.service.id
         })
 
         const querySignatureRegisteredEvent = new QuerySignatureRegisteredEvent({
             ...signatureModel,
-            service: signatureDetails.service
+            serviceId: signatureDetails.service.id
         })
         await prismaRabbitmqOutbox.publish(querySignatureRegisteredEvent)
     }

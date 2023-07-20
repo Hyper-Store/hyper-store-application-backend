@@ -34,10 +34,28 @@ export class MongoNotificationQueryRepository {
     }
 
     async getAllActiveSignatures(userId: string): Promise<SignatureModel[]>{
-        const mongoData = await MongoSignatureModel.find({ 
-            userId,
-            expirationDate: { $gte: new Date() }
-         }, null, { session: this.session })
-        return mongoData.map(signature => signature.toObject()) ?? []
+        const mongoData = await MongoSignatureModel.aggregate([
+            {
+                $match: {
+                    userId,
+                    expirationDate: { $gte: new Date() },
+                }
+            },
+            {
+                $lookup: {
+                    from: "services", 
+                    localField: "serviceId", 
+                    foreignField: "id", 
+                    as: "service"
+                }
+            },
+            {
+                $unwind: {
+                    path: "$service",
+                    preserveNullAndEmptyArrays: true // this is optional and allows documents with no match to continue through the pipeline
+                }
+            }
+        ], { session: this.session })
+        return mongoData ?? []
     }
 }
