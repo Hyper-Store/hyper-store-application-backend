@@ -13,7 +13,6 @@ export class UpdateServiceUsecase {
     ) {}
     
     async execute(serviceModel: Partial<ServiceModel> ) {
-
         const mongoServiceRepository = new MongoServiceRepository(this.session)
         await mongoServiceRepository.update(serviceModel)
     }

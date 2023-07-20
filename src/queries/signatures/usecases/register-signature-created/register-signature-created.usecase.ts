@@ -22,7 +22,7 @@ export class RegisterSignatureCreatedUsecase {
         const mongoNotificationQueryRepository = new MongoNotificationQueryRepository(this.session)
         await mongoNotificationQueryRepository.create({
             ...signatureModel,
-            service: signatureDetails.service
+            serviceId: signatureDetails.service
         })
 
         const querySignatureRegisteredEvent = new QuerySignatureRegisteredEvent({

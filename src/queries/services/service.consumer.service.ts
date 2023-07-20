@@ -18,9 +18,9 @@ export class ServiceConsumerService {
     ){}
 
     @RabbitRPC({
-        exchange: 'signature',
-        routingKey: "SignatureCreatedEvent",
-        queue: "register-signature-created-queue",
+        exchange: 'services',
+        routingKey: "ServiceCreatedEvent",
+        queue: "register-service-created-queue",
     })
     async register(msg: BaseEvent.Schema){
         await MongoIdpotenceConsumerService.consume(
@@ -35,36 +35,37 @@ export class ServiceConsumerService {
     }
 
     @RabbitRPC({
-        exchange: 'signature',
-        routingKey: "DaysAddedEvent",
-        queue: "register-signature-days-added-queue",
+        exchange: 'services',
+        routingKey: "MaintananceSetEvent",
+        queue: "register-signature-set-maintenance-queue",
     })
     async updateDays(msg: BaseEvent.Schema){
         await MongoIdpotenceConsumerService.consume(
             msg.id,
-            "register-signature-days-added-queue",
+            "register-signature-set-maintenance-queue",
             async (session) => 
             new UpdateServiceUsecase(session)
               .execute({
-                id: msg.payload.signatureId,
-
+                id: msg.payload.serviceId,
+                isMaintenance: true
               })
           )
     }
 
     @RabbitRPC({
-        exchange: 'signature',
-        routingKey: "QuantityPerDayChangedEvent",
-        queue: "register-signature-change-quantity-per-day-queue",
+        exchange: 'services',
+        routingKey: "MaintananceRemovedEvent",
+        queue: "register-signature-remove-maintenance-queue",
     })
     async updateQuantyPerDay(msg: BaseEvent.Schema){
         await MongoIdpotenceConsumerService.consume(
             msg.id,
-            "register-signature-change-quantity-per-day-queue",
+             "register-signature-remove-maintenance-queue",
             async (session) => 
             new UpdateServiceUsecase(session)
               .execute({
-                id: msg.payload.signatureId
+                id: msg.payload.serviceId,
+                isMaintenance: false
               })
           )
     }
