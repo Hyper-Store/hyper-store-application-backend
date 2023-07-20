@@ -11,4 +11,5 @@ export const exchanges: RabbitMQExchangeConfig[] = [
     { name: "notification", type: "topic" },
     { name: "stock", type: "topic" },
     { name: "stockRedemption", type: "topic" },
+    { name: "queues", type: "topic" },
 ]

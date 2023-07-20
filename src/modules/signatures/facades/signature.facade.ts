@@ -27,6 +27,7 @@ export class SignatureFacade {
         return {
             id: signatureEntity.id,
             isExpired: signatureEntity.isExpired(),
+            expirationDate: signatureEntity.expirationDate,
             userId: signatureEntity.userId,
             quantityPerDay: signatureEntity.quantityPerDay,
             service: {
@@ -41,7 +42,7 @@ export class SignatureFacade {
         const prismaSignatureRepository = new PrismaSignatureRepository(this.prismaClient)
         const signature = await prismaSignatureRepository.findByUserIdAndServiceId(userId, serviceId)
         if(!signature) return false
-        return !signature?.isExpired()
+        return signature?.isExpired()
     }
 
     async create(input: SignatureFacade.CreateInput): Promise<boolean> {
@@ -61,6 +62,7 @@ export namespace SignatureFacade {
         id: string
         isExpired: boolean
         userId: string
+        expirationDate: Date
         quantityPerDay: number
         service: {
             id: string

@@ -31,6 +31,7 @@ export class AddDaysUsecase {
     
             const daysAddedEvent = new DaysAddedEvent({
                 signatureId: signatureEntity.id,
+                daysAdded: input.days,
                 expirationDate: signatureEntity.expirationDate,
             })
             await prismaRabbitmqOutbox.publish(daysAddedEvent)

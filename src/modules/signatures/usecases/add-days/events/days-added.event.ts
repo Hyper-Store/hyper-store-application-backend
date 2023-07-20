@@ -14,6 +14,7 @@ export class DaysAddedEvent extends BaseEvent {
 export namespace DaysAddedEvent {
     export type Payload = {
         signatureId: string
+        daysAdded: number
         expirationDate: Date
     }
 }

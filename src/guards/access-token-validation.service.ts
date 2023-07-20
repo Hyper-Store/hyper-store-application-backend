@@ -20,7 +20,6 @@ export class AccessTokenValidationService {
         const authFacade = new AuthFacade(this.prismaClient)
         const isUserBanned = await authFacade.isUserBanned(user.userId)
         if(isUserBanned) return failure("UserBannedError")
-
         return success(user)
     }
 

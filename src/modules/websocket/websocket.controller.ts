@@ -39,7 +39,7 @@ export class WebsocketController{
         const accessToken = client.handshake.query.accessToken as string ?? "" 
         const accessTokenValidationService = new AccessTokenValidationService(this.prismaService) 
         const user = await accessTokenValidationService.validate(accessToken)
-
+        
         if(user.isFailure()) return client.disconnect() 
         client.userId = user.value.userId
 
