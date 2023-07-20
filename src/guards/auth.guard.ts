@@ -34,16 +34,17 @@ export class AuthGuard implements CanActivate {
   ):  Promise<boolean>  {
 
     const ctx = context.switchToHttp();
-    const req = ctx.getRequest<Request & any>();
+    const req: Request = ctx.getRequest<Request & any>();
 
     
-    const accessToken = req.headers.authorization ?? ""
-    
+    const accessToken = req.cookies?.accessToken ?? ""
+      console.log("🚀 ~ file: auth.guard.ts:41 ~ AuthGuard ~ accessToken:", accessToken)
+      
     const accessTokenValidationService = new AccessTokenValidationService(this.prismaService)
     const user = await accessTokenValidationService.validate(accessToken)
     if(user.isFailure()) UserValidationMapper.map(user.value) 
 
-    req.currentUser = user.value
+    req.currentUser = user.value as any
 
     return true;
   }
