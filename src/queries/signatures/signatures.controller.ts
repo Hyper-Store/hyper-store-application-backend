@@ -17,16 +17,17 @@ import { WebsocketConnectionsService } from 'src/modules/websocket/websocket-con
 import { GetAllActiveSignaturesUsecase } from './usecases';
 
 
-@WebSocketGateway()
+@WebSocketGateway(1000)
 export class SignaturesQueryController{
 
-    
-    
+
     constructor(
         private readonly websocketConnectionsService: WebsocketConnectionsService
     ){}
-    @WebSocketServer() server: Server;
     
+    @WebSocketServer() server: Server;
+
+
     async getUserSignaturesInBirary(userId: string) {
         const getAllActiveSignaturesUsecase = new GetAllActiveSignaturesUsecase()
         const signatures = await getAllActiveSignaturesUsecase.execute(userId)
@@ -46,6 +47,8 @@ export class SignaturesQueryController{
             client.emit('activated-signatures', signatures)
         }
     }
+
+    
     @RabbitRPC({
         exchange: 'queues',
         routingKey: "QuerySignatureRegisteredEvent",
@@ -62,6 +65,7 @@ export class SignaturesQueryController{
     @SubscribeMessage('retrieve-activated-signatures')
     async retrieveActivatedSignatures(client: UserSocket, payload: any): Promise<void> {
         const signatures = await this.getUserSignaturesInBirary(client.userId)
+        
         client.emit('activated-signatures', signatures)
     }
     
