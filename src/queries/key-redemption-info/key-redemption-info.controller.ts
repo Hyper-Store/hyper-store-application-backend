@@ -16,8 +16,6 @@ import { BaseEvent } from 'src/modules/@shared';
 import { WebsocketConnectionsService } from 'src/modules/websocket/websocket-connections.service';
 
 
-
-
 @WebSocketGateway(1000)
 export class KeyRedemptionInfoController{
 

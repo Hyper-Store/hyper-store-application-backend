@@ -20,7 +20,9 @@ export interface UserSocket extends Socket {
 
 
 
-@WebSocketGateway(1000)
+@WebSocketGateway(1000, {
+    cors: "*"
+})
 export class WebsocketController{
 
     constructor(
