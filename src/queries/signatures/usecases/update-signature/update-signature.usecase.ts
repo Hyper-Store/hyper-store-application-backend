@@ -23,7 +23,7 @@ export class UpdateSignatureUsecase {
 
         const querySignatureUpdatedEvent = new QuerySignatureUpdatedEvent({
             ...signatureModel,
-            userId: signature.userId,
+            userId: signature?.userId ?? "",
         })
         await prismaRabbitmqOutbox.publish(querySignatureUpdatedEvent)
     }
