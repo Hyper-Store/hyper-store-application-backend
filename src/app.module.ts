@@ -20,6 +20,7 @@ import { PrismaIdpotenceConsumerService } from './modules/@shared/services';
 import { StockModule } from './modules/stock/stock.module';
 import { StockRedemptionModule } from './modules/stock-redemption/stock-redemption.module';
 import { KeyRedemptionInfoModule } from './queries/key-redemption-info/key-redemption-info.module';
+import { SignaturesQueryModule } from './queries/signatures/signatures.module';
 
 @Global()
 @Module({
@@ -41,7 +42,8 @@ import { KeyRedemptionInfoModule } from './queries/key-redemption-info/key-redem
     WebsocketModule,
     StockModule,
     StockRedemptionModule,
-    KeyRedemptionInfoModule
+    KeyRedemptionInfoModule,
+    SignaturesQueryModule
   ],
   controllers: [],
   providers: [
