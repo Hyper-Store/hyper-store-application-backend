@@ -14,7 +14,7 @@ export class PrismaStockRedemptionRepository {
         })
     }
 
-    async getRedemptionCount(userId: string, signatureId: string): Promise<number>{
+    async getTodayRedemptionCount(userId: string, signatureId: string): Promise<number>{
         const todayStart = startOfDay(new Date());
         const todayEnd = endOfDay(new Date());
         return await this.prismaClient.stockRedemption.count({

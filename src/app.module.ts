@@ -24,6 +24,7 @@ import { SignaturesQueryModule } from './queries/signatures/signatures.module';
 import { ServicesQueryModule } from './queries/services/signatures.module';
 import { StockRedemptionQueryModule } from './queries/stock-redeemed/stock-redemption.module';
 import { UserInfoQueryModule } from './queries/user-info/user-info.module';
+import { TodayStockInfoQueryModule } from './queries/today-stock-info/today-stock-info.module';
 
 @Global()
 @Module({
@@ -49,7 +50,8 @@ import { UserInfoQueryModule } from './queries/user-info/user-info.module';
     SignaturesQueryModule,
     ServicesQueryModule,
     StockRedemptionQueryModule,
-    UserInfoQueryModule
+    UserInfoQueryModule,
+    TodayStockInfoQueryModule
   ],
   controllers: [],
   providers: [
