@@ -22,7 +22,9 @@ export class StockRedemptionController{
     constructor(
     ){}
     @WebSocketServer() server: Server;
-        
+    
+    
+
 
     @SubscribeMessage('get-redeemed-stock')
     async messageConsumer(client: UserSocket, payload: any) {

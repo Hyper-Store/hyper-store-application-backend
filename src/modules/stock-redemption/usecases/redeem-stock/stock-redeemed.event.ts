@@ -13,5 +13,5 @@ export class StockRedeemedEvent extends BaseEvent {
 }
 
 export namespace StockRedeemedEvent {
-    export type Payload = StockRedemptionEntity.PropsJSON
+    export type Payload = StockRedemptionEntity.PropsJSON & { value: string }
 }
