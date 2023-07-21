@@ -43,5 +43,9 @@ export class WebsocketConnectionsService {
         if(!this.clients.has(userId)) return null
         return this.clients.get(userId).get(clientId) ?? null
     }
+
+    getPeopleConnectedCount(): number {
+        return Array.from(this.clients.values()).reduce((acc, clients) => acc + clients.size, 0)
+    }
 }
 
