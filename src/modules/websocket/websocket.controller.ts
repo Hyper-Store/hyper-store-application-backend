@@ -20,7 +20,7 @@ export interface UserSocket extends Socket {
 
 @WebSocketGateway( 1000,{
     cors: {
-        origin: ['http://localhost:8888', 'app://.', 'http://207.32.218.146'],
+        origin: "*",
         methods: ['GET', 'POST'],
     }
 })
