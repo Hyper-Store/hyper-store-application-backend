@@ -27,7 +27,6 @@ async function bootstrap() {
       });
     }
   }));
-  process.setMaxListeners(0);
   app.use(cookieParser());
   app.useGlobalPipes(new CustomValidationPipe());
   await app.listen(5000);

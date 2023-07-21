@@ -7,6 +7,7 @@ import {
     OnGatewayDisconnect,
     WebSocketServer,
     SubscribeMessage,
+    
 } from '@nestjs/websockets';
 import { Server, Socket } from 'socket.io';
 import { AccessTokenValidationService } from 'src/guards';
@@ -24,7 +25,7 @@ export interface UserSocket extends Socket {
         methods: ['GET', 'POST'],
     }
 })
-export class WebsocketController{
+export class WebsocketController implements OnGatewayConnection, OnGatewayDisconnect{
 
     constructor(
         private readonly prismaService: PrismaService,
