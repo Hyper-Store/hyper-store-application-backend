@@ -7,7 +7,7 @@ WORKDIR /home/node/app
 COPY package*.json ./
 
 RUN npm install
-USER node
+# USER node
 
 CMD [ "tail", "-f", "/dev/null" ]
 
