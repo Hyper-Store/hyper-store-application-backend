@@ -14,7 +14,7 @@ import { UserSocket } from 'src/modules/websocket';
 import { GetUserInfoUsecase } from './usecases';
 
 
-@WebSocketGateway(80)
+@WebSocketGateway(1000)
 export class StockRedemptionController{
 
     
