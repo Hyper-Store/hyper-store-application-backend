@@ -1,5 +1,5 @@
 import mongoose from "mongoose"
-import { MongoNotificationQueryRepository } from "../../repositories"
+import { MongoSignatureRepository } from "../../repositories"
 import { SignatureModel } from "../../models"
 import { PrismaRabbitmqOutbox } from "src/modules/@shared/providers"
 import { PrismaClient } from "@prisma/client"
@@ -19,8 +19,8 @@ export class RegisterSignatureCreatedUsecase {
         const signatureFacade = new SignatureFacade(this.prismaClient)
         const signatureDetails = await signatureFacade.getSignatureDetails(signatureModel.id)
 
-        const mongoNotificationQueryRepository = new MongoNotificationQueryRepository(this.session)
-        await mongoNotificationQueryRepository.create({
+        const mongoSignatureRepository = new MongoSignatureRepository(this.session)
+        await mongoSignatureRepository.create({
             ...signatureModel,
             serviceId: signatureDetails.service.id
         })

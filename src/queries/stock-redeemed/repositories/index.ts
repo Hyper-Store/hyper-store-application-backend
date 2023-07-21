@@ -1,1 +1,1 @@
-export * from "./mongo-service.repository"
+export * from "./mongo-stock-redeemed.repository"

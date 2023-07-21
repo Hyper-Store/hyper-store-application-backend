@@ -1,1 +1,1 @@
-export * from "./mongo-signature.model"
+export * from "./mongo-stock-redeemed.model"

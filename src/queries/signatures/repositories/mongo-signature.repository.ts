@@ -2,7 +2,7 @@ import mongoose from "mongoose";
 import { SignatureModel } from "../models";
 import { MongoSignatureModel } from "./models";
 
-export class MongoNotificationQueryRepository {
+export class MongoSignatureRepository {
 
     constructor(
         private readonly session?: mongoose.mongo.ClientSession

@@ -1,2 +1,2 @@
-export * from "./register-service-created/register-service-created.usecase"
-export * from "./update-signature/update-service.usecase"
+export * from "./register-service-created/register-stock-redeemed.usecase"
+export * from "./get-redeemed-stock/get-redeemed-stock.usecaes"

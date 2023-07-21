@@ -1,8 +1,8 @@
 import mongoose, { Schema, Document } from 'mongoose';
-import {  ServiceModel } from "../../models"
+import {  StockRedeemedModel } from "../../models"
 
 
-export interface MongoService extends Document, ServiceModel {
+export interface MongoStockRedeemed extends Document, StockRedeemedModel {
     id: string
 }
 
@@ -11,5 +11,5 @@ const EventSchema: Schema = new Schema({
 }, { strict: false });
 EventSchema.index({ id: 1 }, { unique: true  });
 
-export const MongoServiceModel = mongoose.model<MongoService>('services', EventSchema);
+export const MongoStockRedeemedModel = mongoose.model<MongoStockRedeemed>('stock_redeemed', EventSchema);
 

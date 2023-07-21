@@ -1,5 +1,5 @@
 import mongoose from "mongoose"
-import { MongoNotificationQueryRepository } from "../../repositories"
+import { MongoSignatureRepository } from "../../repositories"
 import { SignatureModel } from "../../models"
 import { PrismaRabbitmqOutbox } from "src/modules/@shared/providers"
 import { PrismaClient } from "@prisma/client"
@@ -15,11 +15,11 @@ export class UpdateSignatureUsecase {
     
     async execute(signatureModel: Partial<SignatureModel> ) {
         const prismaRabbitmqOutbox = new PrismaRabbitmqOutbox(this.prismaClient)
-        const mongoNotificationQueryRepository = new MongoNotificationQueryRepository(this.session)
+        const mongoSignatureRepository = new MongoSignatureRepository(this.session)
 
-        const signature = await mongoNotificationQueryRepository.findById(signatureModel.id)
+        const signature = await mongoSignatureRepository.findById(signatureModel.id)
 
-        await mongoNotificationQueryRepository.update(signatureModel)
+        await mongoSignatureRepository.update(signatureModel)
 
         const querySignatureUpdatedEvent = new QuerySignatureUpdatedEvent({
             ...signatureModel,

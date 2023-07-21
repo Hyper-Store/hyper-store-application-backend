@@ -1,1 +1,1 @@
-export * from "./service.model"
+export * from "./stock-redeemed.model"
