@@ -17,7 +17,8 @@ import { WebsocketConnectionsService } from 'src/modules/websocket/websocket-con
 import { GetAllActiveSignaturesUsecase } from './usecases';
 
 
-@WebSocketGateway()
+@WebSocketGateway(80)
+
 export class SignaturesQueryController{
 
 

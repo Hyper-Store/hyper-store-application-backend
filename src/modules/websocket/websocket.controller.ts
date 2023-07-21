@@ -22,8 +22,7 @@ export interface UserSocket extends Socket {
     cors: {
         origin: '*',
         methods: ['GET', 'POST'],
-    },
-    path: "websocket"
+    }
 })
 export class WebsocketController{
 
