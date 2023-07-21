@@ -16,7 +16,12 @@ import { BaseEvent } from 'src/modules/@shared';
 import { WebsocketConnectionsService } from 'src/modules/websocket/websocket-connections.service';
 
 
-@WebSocketGateway(1000)
+@WebSocketGateway( 1000,{
+    cors: {
+        origin: "*",
+        methods: ['GET', 'POST'],
+    }
+})
 
 export class KeyRedemptionInfoController{
 

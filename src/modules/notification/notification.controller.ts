@@ -17,7 +17,12 @@ import { UserSocket } from '../websocket';
 
 
 
-@WebSocketGateway(1000)
+@WebSocketGateway( 1000,{
+    cors: {
+        origin: "*",
+        methods: ['GET', 'POST'],
+    }
+})
 
 export class NoficationController{
 
