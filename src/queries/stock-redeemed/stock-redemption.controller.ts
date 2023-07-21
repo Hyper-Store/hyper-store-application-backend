@@ -12,18 +12,36 @@ import { Server, Socket } from 'socket.io';
 
 import { UserSocket } from 'src/modules/websocket';
 import { GetAllRedeemedStockUsecaseUsecase } from './usecases';
+import { RabbitRPC } from '@golevelup/nestjs-rabbitmq';
+import { BaseEvent } from 'src/modules/@shared';
+import { WebsocketConnectionsService } from 'src/modules/websocket/websocket-connections.service';
 
 
 @WebSocketGateway(1000)
 export class StockRedemptionController{
-
+    
     
     
     constructor(
+        private readonly websocketConnectionsService: WebsocketConnectionsService
     ){}
     @WebSocketServer() server: Server;
     
     
+    @RabbitRPC({
+        exchange: 'stockRedemption',
+        routingKey: "StockRedeemedEvent",
+        queue: "show-websocket-stock-redeemed-query-queue",
+    })
+    async showRedeemedStock(msg: BaseEvent.Schema){
+        const clients = this.websocketConnectionsService.getClients(msg.payload.userId)
+        for(const client of clients) {
+            const jsonString = JSON.stringify(msg.payload);
+            const buffer =  Buffer.from(jsonString);
+            client.emit('stock-redeemed', buffer);
+        }
+    }
+
 
 
     @SubscribeMessage('get-redeemed-stock')
