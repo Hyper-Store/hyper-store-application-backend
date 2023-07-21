@@ -4,6 +4,7 @@ services:
       
   app:
     build: .
+    command: node dist/main.js
     ports:
       - "5000:5000"
       - "1000:1000"
