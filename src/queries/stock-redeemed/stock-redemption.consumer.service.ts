@@ -28,7 +28,8 @@ export class StockRedemptionConsumerService {
             async (session) => 
             new RegisterStockRedeemedUsecase(session)
               .execute({
-                    ...msg.payload
+                    ...msg.payload,
+                    dateTimeRedeemed: new Date(msg.payload.dateTimeRedeemed)
               })
           )
     }

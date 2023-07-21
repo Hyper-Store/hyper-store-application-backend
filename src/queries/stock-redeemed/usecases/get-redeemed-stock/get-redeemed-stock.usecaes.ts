@@ -18,8 +18,7 @@ export class GetAllRedeemedStockUsecaseUsecase {
             page,
             signatureId
         })
-
-        return result
+        return result ?? []
     }
 }
 

@@ -26,15 +26,19 @@ export class StockRedemptionController{
 
     @SubscribeMessage('get-redeemed-stock')
     async messageConsumer(client: UserSocket, payload: any) {
+
+        const requestJsonString = new TextDecoder('utf-8').decode(payload);
+        const request = JSON.parse(requestJsonString);
         const getAllRedeemedStockUsecaseUsecase = new GetAllRedeemedStockUsecaseUsecase()
+        
         const result = await getAllRedeemedStockUsecaseUsecase.execute({
             userId: client.userId,
-            page: payload?.page ?? 1,
-            signatureId: payload?.signatureId ?? ""
+            page: request?.page ?? 1,
+            signatureId: request?.signatureId ?? ""
         })
         const jsonString = JSON.stringify(result);
         const buffer =  Buffer.from(jsonString);
-        client.emit('get-redeemed-stock', buffer);
+        client.emit('get-redeemed-stock-result', buffer);
     }
         
 

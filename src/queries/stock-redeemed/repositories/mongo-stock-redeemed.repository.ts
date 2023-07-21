@@ -12,8 +12,16 @@ export class MongoStockRedeemedRepository {
         await MongoStockRedeemedModel.create([{ ...stockRedeemedModel }], { session: this.session })
     }
 
-    async getAll({ userId, page, signatureId }: MongoStockRedeemedRepository.GetAllInput){
-
+    async getAll({ userId, page, signatureId }: MongoStockRedeemedRepository.GetAllInput): Promise<any>{
+        const result = await MongoStockRedeemedModel.find({
+            userId,
+            signatureId
+        })
+        .skip((page - 1) * 6)
+        .limit(6)
+        .sort({ dateTimeRedeemed: -1 })
+        .exec()
+        return result
     }
 }
 
