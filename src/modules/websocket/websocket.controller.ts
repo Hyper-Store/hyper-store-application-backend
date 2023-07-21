@@ -65,9 +65,6 @@ export class WebsocketController{
         this.websocketConnectionsService.removeClient(client)
     }
 
-    afterInit(server: Server) {
-        server.setMaxListeners(100)
-    }
   
 
 
