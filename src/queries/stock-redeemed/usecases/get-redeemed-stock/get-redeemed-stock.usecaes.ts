@@ -16,7 +16,8 @@ export class GetAllRedeemedStockUsecaseUsecase {
         const result = await mongoStockRedeemedRepository.getAll({
             userId,
             page,
-            signatureId
+            signatureId,
+            recordsPerPage: 6
         })
         return result ?? []
     }

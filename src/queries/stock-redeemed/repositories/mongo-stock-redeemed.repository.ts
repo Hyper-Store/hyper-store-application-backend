@@ -12,13 +12,13 @@ export class MongoStockRedeemedRepository {
         await MongoStockRedeemedModel.create([{ ...stockRedeemedModel }], { session: this.session })
     }
 
-    async getAll({ userId, page, signatureId }: MongoStockRedeemedRepository.GetAllInput): Promise<any>{
+    async getAll({ userId, page, signatureId, recordsPerPage }: MongoStockRedeemedRepository.GetAllInput): Promise<any>{
         const result = await MongoStockRedeemedModel.find({
             userId,
             signatureId
         })
-        .skip((page - 1) * 6)
-        .limit(6)
+        .skip((page - 1) * recordsPerPage)
+        .limit(recordsPerPage)
         .sort({ dateTimeRedeemed: -1 })
         .exec()
         return result
@@ -30,5 +30,6 @@ export namespace MongoStockRedeemedRepository {
         userId: string
         signatureId: string
         page: number
+        recordsPerPage: number
     }
 }
