@@ -14,7 +14,12 @@ import { UserSocket } from 'src/modules/websocket';
 import { GetUserInfoUsecase } from './usecases';
 
 
-@WebSocketGateway(1000)
+@WebSocketGateway( 1000,{
+    cors: {
+        origin: "*",
+        methods: ['GET', 'POST'],
+    }
+})
 export class StockRedemptionController{
 
     
