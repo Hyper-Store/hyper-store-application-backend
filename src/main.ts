@@ -27,6 +27,7 @@ async function bootstrap() {
       });
     }
   }));
+  console.log(process.env.RABBITMQ_LOGIN_CREDENTIALS)
   app.use(cookieParser());
   app.useGlobalPipes(new CustomValidationPipe());
   await app.listen(5000);
