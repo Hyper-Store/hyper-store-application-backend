@@ -18,7 +18,6 @@ import { GetUserInfoUsecase } from './usecases';
 export class StockRedemptionController{
 
     
-    
     constructor(
     ){}
     @WebSocketServer() server: Server;
