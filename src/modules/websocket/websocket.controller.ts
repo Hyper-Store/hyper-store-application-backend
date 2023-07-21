@@ -18,9 +18,7 @@ export interface UserSocket extends Socket {
     userId: string
 }
 
-
-
-@WebSocketGateway(1000, {
+@WebSocketGateway(80, {
     cors: {
         origin: '*',
         methods: ['GET', 'POST'],
