@@ -30,7 +30,6 @@ export class WebsocketController{
         private readonly prismaService: PrismaService,
         private readonly websocketConnectionsService: WebsocketConnectionsService
     ){
-        this.server.setMaxListeners(1000)
     }
     @WebSocketServer() server: Server;
 
@@ -64,6 +63,10 @@ export class WebsocketController{
   
     async handleDisconnect(client: UserSocket) {
         this.websocketConnectionsService.removeClient(client)
+    }
+
+    afterInit(server: Server) {
+        server.setMaxListeners(100)
     }
   
 
