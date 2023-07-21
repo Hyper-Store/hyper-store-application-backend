@@ -17,7 +17,7 @@ import { BaseEvent } from 'src/modules/@shared';
 import { WebsocketConnectionsService } from 'src/modules/websocket/websocket-connections.service';
 
 
-@WebSocketGateway(80)
+@WebSocketGateway()
 export class StockRedemptionController{
     
     
