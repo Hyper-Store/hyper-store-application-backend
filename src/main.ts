@@ -4,7 +4,7 @@ import { CustomValidationPipe } from './infra/filters';
 import * as cookieParser from 'cookie-parser';
 import rateLimit from 'express-rate-limit';
 import { NestExpressApplication } from "@nestjs/platform-express"
-
+import "dotenv/config"
 
 async function bootstrap() {
   const app = await NestFactory.create<NestExpressApplication>(AppModule);
