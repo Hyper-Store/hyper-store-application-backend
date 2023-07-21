@@ -23,7 +23,7 @@ export class CreateServiceUsecase {
             const serviceAlreadyExists = await prismaServiceRepository.findByName(input.name)
             if(serviceAlreadyExists) throw new ServiceNameAlreadyInUseError()
     
-            const serviceEntity = new ServiceEntity(input)
+            const serviceEntity = new ServiceEntity(input,  input.name)
             await prismaServiceRepository.create(serviceEntity)
     
             const userCreatedEvent = new ServiceCreatedEvent({

@@ -43,7 +43,6 @@ export class StockRedemptionEntity extends BaseEntity<StockRedemptionEntity.Prop
 
 export namespace StockRedemptionEntity {
 
-
     export type Input = {
         stockId: string
         userId: string
