@@ -11,7 +11,7 @@ import {
 import { Server, Socket } from 'socket.io';
 
 import { UserSocket } from 'src/modules/websocket';
-import { GetAllRedeemedStockUsecaseUsecase } from './usecases';
+import { GetUserInfoUsecase } from './usecases';
 
 
 @WebSocketGateway(1000)
@@ -24,17 +24,13 @@ export class StockRedemptionController{
     @WebSocketServer() server: Server;
         
 
-    @SubscribeMessage('get-redeemed-stock')
+    @SubscribeMessage('get-user-info')
     async messageConsumer(client: UserSocket, payload: any) {
-        const getAllRedeemedStockUsecaseUsecase = new GetAllRedeemedStockUsecaseUsecase()
-        const result = await getAllRedeemedStockUsecaseUsecase.execute({
-            userId: client.userId,
-            page: payload?.page ?? 1,
-            signatureId: payload?.signatureId ?? ""
-        })
+        const getetUserInfoUsecase = new GetUserInfoUsecase()
+        const result = await getetUserInfoUsecase.execute(client.userId)
         const jsonString = JSON.stringify(result);
         const buffer =  Buffer.from(jsonString);
-        client.emit('get-redeemed-stock', buffer);
+        client.emit('get-user-info-response', buffer);
     }
         
 

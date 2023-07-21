@@ -21,7 +21,7 @@ export class AuthFacade {
     async isUserBanned(userId: string) {
         const userRepository = new PrismaUserRepository(this.prismaClient)
         const userEntity = await userRepository.findById(userId)
-        if(!userEntity) throw new UserNotFoundError()
+        if(!userEntity) return true
         return userEntity.isBanned()
     }
 }
