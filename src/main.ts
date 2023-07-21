@@ -7,6 +7,7 @@ import { NestExpressApplication } from "@nestjs/platform-express"
 import "dotenv/config"
 
 async function bootstrap() {
+  console.log(process.env.RABBITMQ_LOGIN_CREDENTIALS)
   const app = await NestFactory.create<NestExpressApplication>(AppModule);
   app.enableCors({
     origin: (origin, callback) => {
@@ -27,7 +28,6 @@ async function bootstrap() {
       });
     }
   }));
-  console.log(process.env.RABBITMQ_LOGIN_CREDENTIALS)
   app.use(cookieParser());
   app.useGlobalPipes(new CustomValidationPipe());
   await app.listen(5000);
