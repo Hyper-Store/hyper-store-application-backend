@@ -7,7 +7,6 @@ import { NestExpressApplication } from "@nestjs/platform-express"
 import "dotenv/config"
 
 async function bootstrap() {
-  console.log(process.env.RABBITMQ_LOGIN_CREDENTIALS)
   const app = await NestFactory.create<NestExpressApplication>(AppModule);
   app.enableCors({
     origin: (origin, callback) => {
