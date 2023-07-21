@@ -3,16 +3,18 @@ import { AppModule } from './app.module';
 import { CustomValidationPipe } from './infra/filters';
 import * as cookieParser from 'cookie-parser';
 import rateLimit from 'express-rate-limit';
+import { NestExpressApplication } from "@nestjs/platform-express"
+
 
 async function bootstrap() {
-  const app = await NestFactory.create(AppModule);
+  const app = await NestFactory.create<NestExpressApplication>(AppModule);
   app.enableCors({
     origin: (origin, callback) => {
       callback(null, true);
     },
     credentials: true
   });
-
+  app.set('trust proxy', 1)
   app.use(rateLimit({
     windowMs: 1000, // 1 second
     max: 5, // limit each IP to 5 requests per windowMs
@@ -29,6 +31,8 @@ async function bootstrap() {
   app.use(cookieParser());
 
   app.useGlobalPipes(new CustomValidationPipe());
-  await app.listen(5000);
+  await app.listen(80);
 }
 bootstrap();
+
+

@@ -14,7 +14,8 @@ import { UserSocket } from 'src/modules/websocket';
 import { StockRedemptionFacade } from 'src/modules/stock-redemption/facades';
 
 
-@WebSocketGateway(1000)
+@WebSocketGateway(80)
+
 export class TodayStockInfoController{
 
     
