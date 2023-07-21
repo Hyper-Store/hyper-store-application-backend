@@ -29,7 +29,9 @@ export class WebsocketController{
     constructor(
         private readonly prismaService: PrismaService,
         private readonly websocketConnectionsService: WebsocketConnectionsService
-    ){}
+    ){
+        this.server.setMaxListeners(1000)
+    }
     @WebSocketServer() server: Server;
 
 
