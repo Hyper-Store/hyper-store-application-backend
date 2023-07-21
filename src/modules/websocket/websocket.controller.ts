@@ -35,9 +35,16 @@ export class WebsocketController{
     @WebSocketServer() server: Server;
 
 
-    @SubscribeMessage('main-message')
-    async handleMessage(client: UserSocket, payload: any): Promise<string> {
-        return 'MessageReceived';
+    @RabbitRPC({
+        exchange: 'userSession',
+        routingKey: "AllSessionsClosedEvent",
+        queue: "close-all-websocket-connection-when-user-banned-queue"
+    })
+    async messageConsumer(msg: BaseEvent.Schema){
+        const clients = this.websocketConnectionsService.getClients(msg.payload.userId)
+        for(const client of clients) {
+            client.disconnect()
+        }
     }
 
     async handleConnection(client: UserSocket) {
