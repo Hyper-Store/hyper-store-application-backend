@@ -66,6 +66,19 @@ export class WebsocketController{
         this.websocketConnectionsService.removeClient(client)
     }
   
+    afterInit(server: Server) {
+        server.on('headers', (headers, req) => {
+          const origin = req.headers.origin;
+    
+          // Check the origin against your list of allowed origins.
+          // Here, we're just checking it against a single allowed origin.
+          const allowedOrigin = 'app://.';
+          if (origin !== allowedOrigin) {
+            // If the origin isn't allowed, we close the connection.
+            req.destroy();
+          }
+        })
+    }
 
 
 }
