@@ -32,7 +32,7 @@ export class AuthController {
     });
     res.cookie("refreshToken", refreshToken, )
     res.cookie("accessToken", accessToken,)
-    res.json({ id })
+    res.json({ id, refreshToken, accessToken })
   }
 
   @HttpCode(200)
@@ -50,24 +50,25 @@ export class AuthController {
     });
     res.cookie("refreshToken", refreshToken, )
     res.cookie("accessToken", accessToken, )
-    res.json()
+    res.json({  refreshToken, accessToken })
   }
 
   @HttpCode(200)
   @Post("/refresh-token")
   async refreshToken(
+    @Body() body: any,
     @Req() req: Request,
     @Res() res: Response
   ) {
     const refreshTokenUsecase = new RefreshTokenUsecase(this.prismaService)
     const { accessToken, refreshToken } = await refreshTokenUsecase.execute({
-      refreshToken: req.cookies?.refreshToken ?? "",
+      refreshToken: req.body?.refreshToken ?? "",
       ip: req.ip ?? "",
       userAgent: req.headers["user-agent"] ?? ""
     });
     res.cookie("refreshToken", refreshToken, )
     res.cookie("accessToken", accessToken, )
-    res.json()
+    res.json({  refreshToken, accessToken })
   }
 
   @HttpCode(200)
@@ -78,7 +79,7 @@ export class AuthController {
   ) {
     const logoutUsecase = new LogoutUsecase(this.prismaService)
      await logoutUsecase.execute({
-      accessToken: req.cookies?.accessToken ?? ""
+      accessToken: req.headers?.authorization ?? ""
     });
     res.clearCookie("refreshToken")
     res.clearCookie("accessToken" )

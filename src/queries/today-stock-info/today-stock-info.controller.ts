@@ -15,6 +15,7 @@ import { StockRedemptionFacade } from 'src/modules/stock-redemption/facades';
 
 
 @WebSocketGateway(1000)
+
 export class TodayStockInfoController{
 
     

@@ -18,6 +18,7 @@ import { WebsocketConnectionsService } from 'src/modules/websocket/websocket-con
 
 
 @WebSocketGateway(1000)
+
 export class StockRedemptionController{
     
     

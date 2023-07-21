@@ -18,6 +18,7 @@ import { GetAllActiveSignaturesUsecase } from './usecases';
 
 
 @WebSocketGateway(1000)
+
 export class SignaturesQueryController{
 
 
