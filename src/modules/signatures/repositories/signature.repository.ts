@@ -13,6 +13,16 @@ export class PrismaSignatureRepository {
         })
     }
 
+    async findAllSignaturesByUserId(userId: string): Promise<SignatureEntity[]> {
+        const signatures = await this.prismaClient.signature.findMany({
+            where: {
+                userId
+            }
+        })
+        if(!signatures) return []
+        return signatures.map(signature => SignatureEntity.create(signature, signature.id))
+    }
+
     async findByUserIdAndServiceId(userId: string, serviceId: string): Promise<SignatureEntity | null> {
         const signature = await this.prismaClient.signature.findFirst({
             where: {

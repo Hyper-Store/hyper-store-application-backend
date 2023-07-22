@@ -40,6 +40,10 @@ export class SignatureEntity extends BaseEntity<SignatureEntity.Props>{
         return this.expirationDate.getTime() < Date.now()
     }
 
+    expire(): void {
+        this.props.expirationDate = new Date()
+    }
+
     get userId() {
         return this.props.userId
     }

@@ -5,7 +5,8 @@ import { RabbitRPC } from '@golevelup/nestjs-rabbitmq';
 import { BaseEvent } from '../@shared';
 import { 
   AddDaysUsecase,
-  ChangeQuantityPerDayUsecase
+  ChangeQuantityPerDayUsecase,
+  ExpireAllSignaturesUseCase
 } from './usecases';
 import { PrismaIdpotenceConsumerService } from '../@shared/services';
 
@@ -35,6 +36,23 @@ export class SignaturesController {
   }
 
   @RabbitRPC({
+    exchange: 'auth',
+    routingKey: "UserBannedEvent",
+    queue:  "expire-all-signatures-when-user-banned-queue"
+  })
+  async expireAllSignatures(msg: BaseEvent.Schema) {
+    await this.prismaIdpotenceConsumerService.consume(
+      msg.id,
+      "expire-all-signatures-when-user-banned-queue",
+      async (prisma) => 
+      new ExpireAllSignaturesUseCase(prisma)
+        .execute({
+          userId: msg.payload.userId
+        })
+    )
+  }
+
+  @RabbitRPC({
     exchange: 'keyRedemption',
     routingKey: "RedeemKeyProcessedEvent",
     queue:  "change-quantity-per-day-signature-queue"
@@ -51,6 +69,5 @@ export class SignaturesController {
           userId: msg.payload.keyRedeemerId
         })
     )
-
   }
 }
