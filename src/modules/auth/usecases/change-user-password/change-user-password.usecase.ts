@@ -19,8 +19,7 @@ export class ChangeUserPasswordUsecase {
             const userEntity = await prismaUserRepository.findById(userId)
             if(!userEntity) throw new UserNotFoundError()
             
-            userEntity.changePassword(password)
-            userEntity.encryptPassword(password)
+            await userEntity.encryptPassword(password)
 
             await prismaUserRepository.update(userEntity)
 

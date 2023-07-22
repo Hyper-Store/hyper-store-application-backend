@@ -9,7 +9,7 @@ export class GetUserDetailsUsecase {
         private readonly prismaClient: PrismaClient,
       ){}
     
-    async execute({ userId, }: GetUserDetailsUsecase.Input) {
+    async execute({ userId }: GetUserDetailsUsecase.Input) {
             
         const prismaUserRepository = new PrismaUserRepository(this.prismaClient)
 
