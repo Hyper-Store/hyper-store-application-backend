@@ -2,6 +2,7 @@ import { PrismaClient } from "@prisma/client";
 import { JwtGateway } from "../gateways";
 import { PrismaUserSessionRepository } from "../repositories";
 import { CreateSessionUsecase, RevalidateSessionUsecase } from "../usecases";
+import { UserSessionEntity } from "../entities";
 
 export class UserSessionFacade {
 
@@ -46,4 +47,11 @@ export class UserSessionFacade {
         if(result.isFailure()) return result.value
         return result.value
     }   
+
+    async getUserLastSession(userId: string): Promise< UserSessionEntity.PropsJSON | null> {
+        const prismaUserSessionRepository = new PrismaUserSessionRepository(this.prismaClient)
+        const userSessionEntity = await prismaUserSessionRepository.findLastByUserId(userId)
+        if(!userSessionEntity) return null
+        return userSessionEntity.toJSON()
+    }
 }

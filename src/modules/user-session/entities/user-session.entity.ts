@@ -16,7 +16,8 @@ export class UserSessionEntity extends BaseEntity<UserSessionEntity.Props>{
 
         const userSessionEntity = new UserSessionEntity({
             ...input,
-            status: "ACTIVE"
+            status: "ACTIVE",
+            dateTimeCreated: input.dateTimeCreated ?? new Date(),
         }, id)
         return userSessionEntity
     }
@@ -26,6 +27,7 @@ export class UserSessionEntity extends BaseEntity<UserSessionEntity.Props>{
         if(input.userAgent) this.props.userAgent = input.userAgent
         if(input.accessToken) this.props.accessToken = input.accessToken
         if(input.refreshToken) this.props.refreshToken = input.refreshToken
+        this.props.dateTimeCreated = new Date()
     }
 
     expireSession():  Either<string, null>{
@@ -55,7 +57,8 @@ export class UserSessionEntity extends BaseEntity<UserSessionEntity.Props>{
             userAgent: this.props.userAgent,
             accessToken: this.accessToken.toJSON(),
             refreshToken: this.refreshToken.toJSON(),
-            status: this.props.status
+            status: this.props.status,
+            dateTimeCreated: this.props.dateTimeCreated
         }
     }
 
@@ -78,6 +81,10 @@ export class UserSessionEntity extends BaseEntity<UserSessionEntity.Props>{
     get userAgent(): string {
         return this.props.userAgent
     }
+
+    get dateTimeCreated(): Date {
+        return this.props.dateTimeCreated
+    }
 }
 
 export namespace UserSessionEntity {
@@ -86,7 +93,7 @@ export namespace UserSessionEntity {
 
     export type Update = Partial<Omit<Props, "userId" | "status">>
 
-    export type Input = Omit<Props, "status">
+    export type Input = Omit<Props, "status" | "dateTimeCreated"> & { dateTimeCreated?: Date }
 
     export type Props = {
         userId: string
@@ -95,6 +102,7 @@ export namespace UserSessionEntity {
         accessToken: AccessTokenValueObject
         refreshToken: RefreshTokenValueObject
         status: Status
+        dateTimeCreated: Date
     }
 
     export type PropsJSON = Omit<Props, "accessToken" | "refreshToken">  & { 

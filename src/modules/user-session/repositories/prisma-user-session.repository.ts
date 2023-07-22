@@ -42,6 +42,15 @@ export class PrismaUserSessionRepository {
         })
     }
 
+    async findLastByUserId(userId: string): Promise<UserSessionEntity | null> {
+        const prismaUserSession = await this.prismaClient.userSession.findFirst({
+            where: { userId: userId ?? "" },
+            orderBy: { dateTimeCreated: "desc" }
+        })
+        if(!prismaUserSession) return null
+        return PrismaUserEntityMapper.toDomain(prismaUserSession)
+    }
+
     async findById(id: string): Promise<UserSessionEntity | null> {
         const prismaUserSession = await this.prismaClient.userSession.findUnique({
             where: { id: id ?? "" }
