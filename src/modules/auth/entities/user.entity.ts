@@ -14,6 +14,10 @@ export class UserEntity extends BaseEntity<UserEntity.Props>{
         return encryptedPassword
     }
 
+    async changePassword(newPassword: string): Promise<void> {
+        this.props.password = newPassword
+    }
+
     ban(){
         this.props.isBanned = true
     }
@@ -44,6 +48,9 @@ export class UserEntity extends BaseEntity<UserEntity.Props>{
         return this.props.email
     }
 
+    get password(): string {
+        return this.props.password
+    }
 }
 
 export namespace UserEntity {

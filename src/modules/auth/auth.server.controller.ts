@@ -2,7 +2,8 @@ import { Controller, Get, Post, Body, Patch, Param, Delete, ValidationPipe, UseP
 import { CreateUserDto } from './dto/create-user.dto';
 import { 
   UnBanUserUsecase,
-  BanUserUsecase
+  BanUserUsecase,
+  ChangeUserPasswordUsecase
 } from './usecases';
 import { PrismaService } from 'src/infra/prisma/prisma.service';
 import { ServerAuthGuard } from 'src/guards';
@@ -30,5 +31,13 @@ export class AuthServerController {
     unBan(@Body() body: UserIdDto) {
         const unBanUserUsecase = new UnBanUserUsecase(this.prismaService)
         return unBanUserUsecase.execute(body);
+    }
+
+    @HttpCode(200)
+    @UseGuards(ServerAuthGuard)
+    @Post("/change-password")
+    changePassword(@Body() body: any) {
+        const changeUserPasswordUsecase = new ChangeUserPasswordUsecase(this.prismaService)
+        return changeUserPasswordUsecase.execute(body);
     }
 }

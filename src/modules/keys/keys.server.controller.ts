@@ -6,6 +6,7 @@ import {
   ActivateKeyUsecase,
   DisableKeyUsecase,
   DeleteKeyUsecase,
+  GetKeyDetailsUsecase,
   
 } from './usecases';
 import { ServerAuthGuard } from 'src/guards';
@@ -52,4 +53,13 @@ export class KeysServerController {
   }
 
 
+  @UseGuards(ServerAuthGuard)
+  @Get("/:key")
+  async getKeyDetails(
+    @Param("key") key: string
+  ) {
+    const getKeyDetailsUsecase = new GetKeyDetailsUsecase(this.prismaService)
+    return await getKeyDetailsUsecase.execute({ key: key ?? "" })
+  
+  }
 }
