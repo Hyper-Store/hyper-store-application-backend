@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, UseGuards } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, UseGuards, OnModuleInit } from '@nestjs/common';
 import { PrismaService } from 'src/infra/prisma/prisma.service';
 
 import {
@@ -14,6 +14,7 @@ import { AccessTokenValidationService } from 'src/guards';
 import { RabbitRPC } from '@golevelup/nestjs-rabbitmq';
 import { BaseEvent } from '../@shared';
 import { WebsocketConnectionsService } from './websocket-connections.service';
+import { Console } from 'console';
 
 export interface UserSocket extends Socket {
     userId: string
@@ -25,7 +26,7 @@ export interface UserSocket extends Socket {
         methods: ['GET', 'POST'],
     }
 })
-export class WebsocketController implements OnGatewayConnection, OnGatewayDisconnect{
+export class WebsocketController implements OnGatewayConnection, OnGatewayDisconnect, OnModuleInit{
 
     constructor(
         private readonly prismaService: PrismaService,
@@ -34,6 +35,9 @@ export class WebsocketController implements OnGatewayConnection, OnGatewayDiscon
     }
     @WebSocketServer() server: Server;
 
+    onModuleInit() {
+        this.server.setMaxListeners(50)
+    }
 
     @RabbitRPC({
         exchange: 'userSession',
