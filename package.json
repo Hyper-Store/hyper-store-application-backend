@@ -9,7 +9,7 @@
     "build": "nest build",
     "docker:build": "docker build --no-cache .",
     "docker:prod": "docker compose -f docker-compose.prod.yaml up -d",
-    "docker:down": "docker-compose --file docker-compose.prod.yaml down",
+    "docker:down": "docker compose --file docker-compose.prod.yaml down",
     "docker:logs": "docker compose --file docker-compose.prod.yaml logs -f app",
     "format": "prettier --write \"src/**/*.ts\" \"test/**/*.ts\"",
     "start": "nest start",
