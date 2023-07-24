@@ -1,10 +1,10 @@
 import { Controller, Get, Post, Body, Patch, Param, Delete, ValidationPipe, UsePipes, Res, Req, HttpCode, UseGuards } from '@nestjs/common';
 import { CreateUserDto } from './dto/create-user.dto';
-import { 
-  UnBanUserUsecase,
-  BanUserUsecase,
-  ChangeUserPasswordUsecase,
-  GetUserDetailsUsecase
+import {
+    UnBanUserUsecase,
+    BanUserUsecase,
+    ChangeUserPasswordUsecase,
+    GetUserDetailsUsecase
 } from './usecases';
 import { PrismaService } from 'src/infra/prisma/prisma.service';
 import { ServerAuthGuard } from 'src/guards';
@@ -14,7 +14,7 @@ import { UserIdDto } from './dto';
 export class AuthServerController {
     constructor(
         private readonly prismaService: PrismaService
-    ) {}
+    ) { }
 
     @HttpCode(200)
     @UseGuards(ServerAuthGuard)
@@ -25,7 +25,7 @@ export class AuthServerController {
         const banUserUsecase = new BanUserUsecase(this.prismaService)
         return banUserUsecase.execute(body);
     }
-    
+
     @HttpCode(200)
     @UseGuards(ServerAuthGuard)
     @Post("/unban")
@@ -39,7 +39,7 @@ export class AuthServerController {
     @Post("/change-password")
     changePassword(@Body() body: any) {
         const changeUserPasswordUsecase = new ChangeUserPasswordUsecase(this.prismaService)
-        return changeUserPasswordUsecase.execute({...body,  password: body.password ?? "default"});
+        return changeUserPasswordUsecase.execute({ ...body, password: body.password ?? "default" });
     }
 
     @HttpCode(200)
