@@ -10,6 +10,10 @@ export class RegisterServiceCreatedUsecase {
     
     async execute(serviceModel: ServiceModel) {
         const mongoServiceRepository = new MongoServiceRepository(this.session)
+
+        const serviceExists = await mongoServiceRepository.findById(serviceModel.id)
+        if(serviceExists) return
+
         await mongoServiceRepository.create({
             ...serviceModel
         })
