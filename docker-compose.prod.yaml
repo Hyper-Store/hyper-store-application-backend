@@ -6,7 +6,7 @@ services:
     build: .
     command: sh -c "npm run build && npm run start:prod"
     ports:
-      - "80:5000"
+      - "5000:5000"
       - "1000:1000"
     volumes:
       - .:/usr/src/app
