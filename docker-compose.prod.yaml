@@ -5,6 +5,8 @@ services:
   app:
     build: .
     command: sh -c "npm run build && npm run start:prod"
+    restart: always
+
     ports:
       - "5000:5000"
       - "1000:1000"
