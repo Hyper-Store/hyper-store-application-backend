@@ -1,27 +1,60 @@
+# 💗 Hyper Store (BACK-END)
+This is the backend built for the account <a href="https://github.com/Hyper-Store/hyper-store-application">generator app</a>
 
-For you to be able to run this project:
+#### **❤️ Languages:** `Typescript`
 
-``` 
+#### **💥 Technologies**: `RabbitMQ`, `NestJS`, `Docker`, `Websocket`
+
+## 💻 Requirements
+
+* Have Node.JS version `18.0.0` or newer
+* Have `visual studio` or any other code editor installed
+
+## 🚀 Installation (Application)
+
+To install project, follow these steps:
+
+**Windows, Linux and macOS:**
+```
+git clone https://github.com/Hyper-Store/hyper-store-application-backend.git
+```
+
+```
+cd hyper-store-application-backend
+```
+
+## 💾 Running (Application)
+
+To start the project follow the instructions below:
+
+**Installing dependencies:**
+```
 npm install
 ```
-and then
-``` 
-docker-compose up -d
+
+**Starting**
 ```
-after this, you run
-```
-npx prisma migrate dev
-```
-and then you can start the application by
-``` 
-npm run start:dev
+npm run dev
 ```
 
-you can test the api by sending a request of method POST to  `http://localhost:5000/auth/signup` with this request body
-```
-{
-	"email": "any_email@gmail.com",
-	"password": "Bany_password1",
-	"username":"any_username"
-}
-```
+## 🤝 Collaborators
+<table>
+  <tr>
+    <td align="center">
+      <a href="https://github.com/Daniel-D3V">
+        <img src="https://avatars.githubusercontent.com/u/103064271?v=4" width="100px;" alt="Daniel Silva"/><br>
+        <sub>
+          <b>Daniel Silva</b>
+        </sub>
+      </a>
+    </td>
+    <td align="center">
+      <a href="https://github.com/rethred">
+        <img src="https://avatars.githubusercontent.com/u/92902916?v=4" width="100px;" alt="Daniel Silva"/><br>
+        <sub>
+          <b>Wilson Gabriel (RETH)</b>
+        </sub>
+      </a>
+    </td>
+  </tr>
+</table>
